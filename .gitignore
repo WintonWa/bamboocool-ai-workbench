@@ -1,0 +1,32 @@
+# macOS / editor noise
+.DS_Store
+**/.DS_Store
+
+# Dependencies and language caches
+**/node_modules/
+**/__pycache__/
+**/*.py[cod]
+**/.superpowers/
+
+# Local runtime state
+**/*.log
+**/*.pid
+**/*.id
+**/*.sqlite
+**/*.sqlite-*
+**/*.sqlite.*
+**/*.db
+**/*.bak
+
+# Agent-generated outputs and caches
+09-工作台/modules/*/derived/
+
+# Customer-provided source data is not stored in GitHub
+数据源/
+
+# Generated data packages; keep their builders and documentation only
+02-产品销售库存模块/02-数据构建/v*/
+04-广告分析模块/02-数据构建/v*/
+04-广告分析模块/02-数据构建/page2-ext/
+07-关键词分析模块/02-数据构建/v*/
+08-竞品分析模块/02-数据构建/v*/

@@ -1,0 +1,517 @@
+{
+  "condition": "正常",
+  "source": "Pi Agent",
+  "context_hash_matched": true,
+  "run_id": "B0B3LWGP36-2026-08-03-ads-agent-20260831083435-f2cc09",
+  "child_asin": "B0B3LWGP36",
+  "data_as_of": "2026-08-03",
+  "context_id": "dec_B0B3LWGP36_20260803@3e0bbac369f0",
+  "context_hash": "3e0bbac369f0b0ac9337066d0a33899c429305d20210d2621d471dfe7c6f7456",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "method_version": "ads-agent-v1",
+  "schema_version": "ads-agent-contract-v1",
+  "dataset_version": "0.2.0+page2-ext",
+  "rule_version": "f7773154f3e3",
+  "created_at": "2026-08-31T08:34:35",
+  "completed_at": "2026-08-31T08:34:35",
+  "mode": "条件性判断",
+  "stage_order": [
+    "task",
+    "mapping",
+    "diagnosis",
+    "proposal"
+  ],
+  "stages": [
+    {
+      "stage": "task",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "items": [
+        {
+          "task_id": "t_GP36_inbound",
+          "task_type": "<词表内取值，由 Agent 判断>",
+          "task_direction": "<词表内取值，由 Agent 判断>",
+          "priority": "<词表内取值，由 Agent 判断>",
+          "target_scope": "B0B3LWGP36",
+          "constraints": [
+            "立即可售覆盖有限",
+            "入库尚未核实"
+          ],
+          "evaluation_direction": "<中文一句话，结论先行，由 Agent 产出>",
+          "stop_condition": "<中文一句话，结论先行，由 Agent 产出>",
+          "applies_from": "2026-08-03",
+          "applies_to": null,
+          "exact_budget": null,
+          "exact_bid": null,
+          "exact_placement_adjustment": null,
+          "evidence_ids": [
+            "ev_GP36_goal",
+            "ev_GP36_inventory",
+            "ev_GP36_events"
+          ],
+          "inventory_constrained": true,
+          "mode": "条件性判断",
+          "exact_values_withheld": true,
+          "nature": "推导",
+          "task_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "direction_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "judgment_mode": "conditional",
+          "decision_id": "dec_B0B3LWGP36_20260803",
+          "goal_version": "goal_B0B3LWGP36",
+          "rule_status": "unconfirmed"
+        },
+        {
+          "task_id": "t_GP36_defend",
+          "task_type": "<词表内取值，由 Agent 判断>",
+          "task_direction": "<词表内取值，由 Agent 判断>",
+          "priority": "<词表内取值，由 Agent 判断>",
+          "target_scope": "核心搜索词",
+          "constraints": [
+            "产品目标待确认",
+            "库存为前置条件"
+          ],
+          "evaluation_direction": "<中文一句话，结论先行，由 Agent 产出>",
+          "stop_condition": "<中文一句话，结论先行，由 Agent 产出>",
+          "applies_from": "2026-08-03",
+          "applies_to": null,
+          "exact_budget": null,
+          "exact_bid": null,
+          "exact_placement_adjustment": null,
+          "evidence_ids": [
+            "ev_GP36_keyword",
+            "ev_GP36_competitor",
+            "ev_GP36_inventory"
+          ],
+          "inventory_constrained": true,
+          "mode": "条件性判断",
+          "exact_values_withheld": true,
+          "nature": "推导",
+          "task_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "direction_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "judgment_mode": "conditional",
+          "decision_id": "dec_B0B3LWGP36_20260803",
+          "goal_version": "goal_B0B3LWGP36",
+          "rule_status": "unconfirmed"
+        },
+        {
+          "task_id": "t_GP36_eff",
+          "task_type": "<词表内取值，由 Agent 判断>",
+          "task_direction": "<词表内取值，由 Agent 判断>",
+          "priority": "<词表内取值，由 Agent 判断>",
+          "target_scope": "可比广告组",
+          "constraints": [
+            "没有客户确认的单组 ACoS 上限"
+          ],
+          "evaluation_direction": "<中文一句话，结论先行，由 Agent 产出>",
+          "stop_condition": "<中文一句话，结论先行，由 Agent 产出>",
+          "applies_from": "2026-08-03",
+          "applies_to": null,
+          "exact_budget": null,
+          "exact_bid": null,
+          "exact_placement_adjustment": null,
+          "evidence_ids": [
+            "ev_GP36_adperf",
+            "ev_GP36_share"
+          ],
+          "inventory_constrained": false,
+          "mode": "条件性判断",
+          "exact_values_withheld": true,
+          "nature": "推导",
+          "task_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "direction_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "judgment_mode": "conditional",
+          "decision_id": "dec_B0B3LWGP36_20260803",
+          "goal_version": "goal_B0B3LWGP36",
+          "rule_status": "unconfirmed"
+        },
+        "…… 本数组原有 4 项，样例只留前 3 项 ……"
+      ]
+    },
+    {
+      "stage": "mapping",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "items": [
+        {
+          "mapping_id": "map_GP36_04",
+          "task_id": "t_GP36_attrib",
+          "ad_object_id": "grp_ed5633a86ba55090",
+          "coverage_status": "<词表内取值，由 Agent 判断>",
+          "attribution_limit": "<词表内取值，由 Agent 判断>",
+          "target_fit": "<中文一句话，结论先行，由 Agent 产出>",
+          "result_supports_purpose": null,
+          "evidence_ids": [
+            "ev_GP36_purchgap"
+          ],
+          "is_automatic_error": false,
+          "note": "<中文一句话，结论先行，由 Agent 产出>",
+          "coverage_label": "混合了多个目的",
+          "attribution_label": "共享归因：结果不能全归当前子 ASIN",
+          "gap_label": "证据尚未补齐",
+          "basis_label": "条件判断",
+          "ad_object": {
+            "ad_object_id": "grp_ed5633a86ba55090",
+            "name": "一组-SD-内裤-转化-097",
+            "ad_type": "SD",
+            "campaign": "一组-SD-内裤-转化-097",
+            "attribution_days": 14,
+            "metrics": {
+              "spend": 0,
+              "ad_sales": 0,
+              "acos": null,
+              "roas": null,
+              "clicks": 0,
+              "orders": 0
+            }
+          },
+          "nature": "推导",
+          "task_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "judgment_mode": "conditional",
+          "gap_source": "<词表内取值，由 Agent 判断>",
+          "basis_level": "<词表内取值，由 Agent 判断>"
+        },
+        {
+          "mapping_id": "map_GP36_02",
+          "task_id": "t_GP36_defend",
+          "ad_object_id": "camp_79419e721f3f9826",
+          "coverage_status": "<词表内取值，由 Agent 判断>",
+          "attribution_limit": "<词表内取值，由 Agent 判断>",
+          "target_fit": "<中文一句话，结论先行，由 Agent 产出>",
+          "result_supports_purpose": "<中文一句话，结论先行，由 Agent 产出>",
+          "evidence_ids": [
+            "ev_GP36_keyword",
+            "ev_GP36_competitor",
+            "ev_GP36_inventory"
+          ],
+          "is_automatic_error": false,
+          "note": null,
+          "coverage_label": "已被承担",
+          "attribution_label": "独占归因",
+          "gap_label": "",
+          "basis_label": "自身历史",
+          "ad_object": {
+            "ad_object_id": "camp_79419e721f3f9826",
+            "name": "SDOS_7_In-console_产品名_PAT_品类曝光_vCPM_AST",
+            "ad_type": "SD",
+            "campaign": "SDOS_7_In-console_产品名_PAT_品类曝光_vCPM_AST",
+            "attribution_days": 14,
+            "metrics": {
+              "spend": 15033.49896,
+              "ad_sales": 236425.5,
+              "acos": 0.0635866222552136,
+              "roas": 15.726578398619186,
+              "clicks": 3932,
+              "orders": 6373
+            }
+          },
+          "nature": "推导",
+          "task_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "judgment_mode": "conditional",
+          "gap_source": "<词表内取值，由 Agent 判断>",
+          "basis_level": "<词表内取值，由 Agent 判断>"
+        },
+        {
+          "mapping_id": "map_GP36_03",
+          "task_id": "t_GP36_eff",
+          "ad_object_id": "grp_300ac8077e33c09e",
+          "coverage_status": "<词表内取值，由 Agent 判断>",
+          "attribution_limit": "<词表内取值，由 Agent 判断>",
+          "target_fit": "<中文一句话，结论先行，由 Agent 产出>",
+          "result_supports_purpose": "<中文一句话，结论先行，由 Agent 产出>",
+          "evidence_ids": [
+            "ev_GP36_adperf",
+            "ev_GP36_share"
+          ],
+          "is_automatic_error": false,
+          "note": "<中文一句话，结论先行，由 Agent 产出>",
+          "coverage_label": "混合了多个目的",
+          "attribution_label": "共享归因：结果不能全归当前子 ASIN",
+          "gap_label": "",
+          "basis_label": "自身历史",
+          "ad_object": {
+            "ad_object_id": "grp_300ac8077e33c09e",
+            "name": "002款-4B组-ASIN定投-1",
+            "ad_type": "SP",
+            "campaign": "002-SP-ASIN-4B-ZENG-REGULAR-01",
+            "attribution_days": 7,
+            "metrics": {
+              "spend": 3759.23,
+              "ad_sales": 12499.64999999998,
+              "acos": 0.300746820910986,
+              "roas": 3.3250559290067327,
+              "clicks": 2010,
+              "orders": 379
+            }
+          },
+          "nature": "推导",
+          "task_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "judgment_mode": "conditional",
+          "gap_source": "<词表内取值，由 Agent 判断>",
+          "basis_level": "<词表内取值，由 Agent 判断>"
+        },
+        "…… 本数组原有 4 项，样例只留前 3 项 ……"
+      ]
+    },
+    {
+      "stage": "diagnosis",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "items": [
+        {
+          "diagnosis_id": "d_GP36_inv",
+          "task_id": "t_GP36_inbound",
+          "problem_type": "<词表内取值，由 Agent 判断>",
+          "impacted_goal": "<中文一句话，结论先行，由 Agent 产出>",
+          "priority": "<词表内取值，由 Agent 判断>",
+          "confidence": "<词表内取值，由 Agent 判断>",
+          "evidence_ids": [
+            "ev_GP36_inventory"
+          ],
+          "uncertainty": "<中文一句话，结论先行，由 Agent 产出>",
+          "missing_input": "<中文一句话，结论先行，由 Agent 产出>",
+          "check_direction": "<中文一句话，结论先行，由 Agent 产出>",
+          "basis_type": "<词表内取值，由 Agent 判断>",
+          "causal_claim": false,
+          "what_happened": "<中文一句话，结论先行，由 Agent 产出>",
+          "confidence_label": "高",
+          "basis_label": "条件判断",
+          "mode": "条件性判断",
+          "nature": "推导",
+          "problem_label": "库存承接不足",
+          "task_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "judgment_mode": "conditional"
+        },
+        {
+          "diagnosis_id": "d_GP36_kw",
+          "task_id": "t_GP36_defend",
+          "problem_type": "<词表内取值，由 Agent 判断>",
+          "impacted_goal": "<中文一句话，结论先行，由 Agent 产出>",
+          "priority": "<词表内取值，由 Agent 判断>",
+          "confidence": "<词表内取值，由 Agent 判断>",
+          "evidence_ids": [
+            "ev_GP36_keyword",
+            "ev_GP36_competitor"
+          ],
+          "uncertainty": "<中文一句话，结论先行，由 Agent 产出>",
+          "missing_input": "<中文一句话，结论先行，由 Agent 产出>",
+          "check_direction": "<中文一句话，结论先行，由 Agent 产出>",
+          "basis_type": "<词表内取值，由 Agent 判断>",
+          "causal_claim": false,
+          "what_happened": "<中文一句话，结论先行，由 Agent 产出>",
+          "confidence_label": "中",
+          "basis_label": "条件判断",
+          "mode": "条件性判断",
+          "nature": "推导",
+          "problem_label": "关键词机会存在但覆盖不足",
+          "task_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "judgment_mode": "conditional"
+        },
+        {
+          "diagnosis_id": "d_GP36_attr",
+          "task_id": "t_GP36_attrib",
+          "problem_type": "<词表内取值，由 Agent 判断>",
+          "impacted_goal": "<中文一句话，结论先行，由 Agent 产出>",
+          "priority": "<词表内取值，由 Agent 判断>",
+          "confidence": "<词表内取值，由 Agent 判断>",
+          "evidence_ids": [
+            "ev_GP36_purchgap"
+          ],
+          "uncertainty": "<中文一句话，结论先行，由 Agent 产出>",
+          "missing_input": "<中文一句话，结论先行，由 Agent 产出>",
+          "check_direction": "<中文一句话，结论先行，由 Agent 产出>",
+          "basis_type": "<词表内取值，由 Agent 判断>",
+          "causal_claim": false,
+          "what_happened": "<中文一句话，结论先行，由 Agent 产出>",
+          "confidence_label": "高",
+          "basis_label": "条件判断",
+          "mode": "条件性判断",
+          "nature": "推导",
+          "problem_label": "广告对象与子 ASIN 关系不清",
+          "task_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "judgment_mode": "conditional"
+        },
+        "…… 本数组原有 5 项，样例只留前 3 项 ……"
+      ]
+    },
+    {
+      "stage": "proposal",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "items": [
+        {
+          "recommendation_id": "r_GP36_01",
+          "diagnosis_id": "d_GP36_inv",
+          "ad_purpose": "库存承接约束",
+          "ad_object_id": null,
+          "structure_gap_id": "gap_inventory_coverage_risk",
+          "direction": "<词表内取值，由 Agent 判断>",
+          "rationale": "<中文一句话，结论先行，由 Agent 产出>",
+          "preconditions": [
+            "确认产品目标",
+            "核验库存"
+          ],
+          "risks": [
+            "断货",
+            "流量流失"
+          ],
+          "uncertainty": "<中文一句话，结论先行，由 Agent 产出>",
+          "observation_metrics": [
+            "可售库存",
+            "日销量",
+            "可售天数"
+          ],
+          "review_windows": [
+            "D+3",
+            "D+7"
+          ],
+          "d7_not_required": false,
+          "exact_value": null,
+          "mode": "条件性判断",
+          "exact_values_withheld": true,
+          "nature": "推导",
+          "direction_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "diagnosis_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "judgment_mode": "conditional",
+          "product_goal_version": "goal_B0B3LWGP36",
+          "rule_status": "unconfirmed"
+        },
+        {
+          "recommendation_id": "r_GP36_02",
+          "diagnosis_id": "d_GP36_kw",
+          "ad_purpose": "核心词守位",
+          "ad_object_id": "camp_79419e721f3f9826",
+          "structure_gap_id": null,
+          "direction": "<词表内取值，由 Agent 判断>",
+          "rationale": "<中文一句话，结论先行，由 Agent 产出>",
+          "preconditions": [
+            "确认产品目标",
+            "核验库存"
+          ],
+          "risks": [
+            "效率漂移"
+          ],
+          "uncertainty": "<中文一句话，结论先行，由 Agent 产出>",
+          "observation_metrics": [
+            "关键词位置",
+            "ACoS",
+            "CVR"
+          ],
+          "review_windows": [
+            "D+3",
+            "D+7"
+          ],
+          "d7_not_required": false,
+          "exact_value": null,
+          "mode": "条件性判断",
+          "exact_values_withheld": true,
+          "nature": "推导",
+          "direction_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "diagnosis_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "judgment_mode": "conditional",
+          "product_goal_version": "goal_B0B3LWGP36",
+          "rule_status": "unconfirmed"
+        },
+        {
+          "recommendation_id": "r_GP36_03",
+          "diagnosis_id": "d_GP36_eff",
+          "ad_purpose": "维持现状",
+          "ad_object_id": "grp_300ac8077e33c09e",
+          "structure_gap_id": null,
+          "direction": "<词表内取值，由 Agent 判断>",
+          "rationale": "<中文一句话，结论先行，由 Agent 产出>",
+          "preconditions": [
+            "确认产品目标",
+            "核验库存"
+          ],
+          "risks": [
+            "效率漂移"
+          ],
+          "uncertainty": "<中文一句话，结论先行，由 Agent 产出>",
+          "observation_metrics": [
+            "ACoS",
+            "CVR"
+          ],
+          "review_windows": [
+            "D+3",
+            "D+7"
+          ],
+          "d7_not_required": false,
+          "exact_value": null,
+          "mode": "条件性判断",
+          "exact_values_withheld": true,
+          "nature": "推导",
+          "direction_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "diagnosis_label": "<中文一句话，结论先行，由 Agent 产出>",
+          "judgment_mode": "conditional",
+          "product_goal_version": "goal_B0B3LWGP36",
+          "rule_status": "unconfirmed"
+        },
+        "…… 本数组原有 5 项，样例只留前 3 项 ……"
+      ]
+    }
+  ],
+  "diagnosis_coverage": [
+    {
+      "problem_type": "<词表内取值，由 Agent 判断>",
+      "hit": true,
+      "why_not": null,
+      "problem_label": "产品目标与广告目的不一致"
+    },
+    {
+      "problem_type": "<词表内取值，由 Agent 判断>",
+      "hit": true,
+      "why_not": null,
+      "problem_label": "一个广告组混合多个目的"
+    },
+    {
+      "problem_type": "<词表内取值，由 Agent 判断>",
+      "hit": true,
+      "why_not": null,
+      "problem_label": "广告对象与子 ASIN 关系不清"
+    },
+    {
+      "problem_type": "<词表内取值，由 Agent 判断>",
+      "hit": true,
+      "why_not": null,
+      "problem_label": "关键词机会存在但覆盖不足"
+    },
+    {
+      "problem_type": "<词表内取值，由 Agent 判断>",
+      "hit": true,
+      "why_not": null,
+      "problem_label": "库存承接不足"
+    },
+    {
+      "problem_type": "<词表内取值，由 Agent 判断>",
+      "hit": false,
+      "why_not": "<中文一句话，结论先行，由 Agent 产出>",
+      "problem_label": "必要广告任务缺失"
+    },
+    {
+      "problem_type": "<词表内取值，由 Agent 判断>",
+      "hit": false,
+      "why_not": "<中文一句话，结论先行，由 Agent 产出>",
+      "problem_label": "多个广告组重复承担同一任务"
+    },
+    {
+      "problem_type": "<词表内取值，由 Agent 判断>",
+      "hit": false,
+      "why_not": "<中文一句话，结论先行，由 Agent 产出>",
+      "problem_label": "表现不支撑已确认的目的"
+    },
+    {
+      "problem_type": "<词表内取值，由 Agent 判断>",
+      "hit": false,
+      "why_not": "<中文一句话，结论先行，由 Agent 产出>",
+      "problem_label": "竞品压力存在但无对应任务"
+    },
+    {
+      "problem_type": "<词表内取值，由 Agent 判断>",
+      "hit": false,
+      "why_not": "<中文一句话，结论先行，由 Agent 产出>",
+      "problem_label": "证据或规则不足暂时无法判断"
+    }
+  ],
+  "evidence_index": [
+    "ev_GP36_adperf",
+    "ev_GP36_share",
+    "ev_GP36_purchgap",
+    "…… 本数组原有 10 项，样例只留前 3 项 ……"
+  ]
+}

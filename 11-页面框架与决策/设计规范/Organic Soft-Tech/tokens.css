@@ -1,0 +1,49 @@
+/*
+ * Organic Soft-Tech reference tokens.
+ * Documentation asset: not imported by the application automatically.
+ * Runtime mappings live in app/globals.css.
+ */
+:root {
+  --organic-surface: #fbf9f8;
+  --organic-surface-lowest: #ffffff;
+  --organic-surface-low: #f5f3f3;
+  --organic-surface-container: #efeded;
+  --organic-surface-high: #eae8e7;
+  --organic-surface-highest: #e4e2e2;
+
+  --organic-text: #1b1c1c;
+  --organic-text-muted: #424844;
+  --organic-outline: #737973;
+  --organic-outline-soft: #c2c8c2;
+
+  --organic-primary: #172d21;
+  --organic-primary-container: #2d4336;
+  --organic-primary-soft: #cfe9d6;
+  --organic-primary-soft-dim: #b3cdbb;
+  --organic-mint: #bdefbe;
+  --organic-mint-dim: #a2d3a4;
+
+  --organic-error: #ba1a1a;
+  --organic-error-container: #ffdad6;
+
+  --organic-font-display: "Plus Jakarta Sans", "Microsoft YaHei", "PingFang SC", sans-serif;
+  --organic-font-body: "Be Vietnam Pro", "Microsoft YaHei", "PingFang SC", sans-serif;
+
+  --organic-space-1: 8px;
+  --organic-space-1-5: 12px;
+  --organic-space-2: 16px;
+  --organic-space-3: 24px;
+  --organic-space-4: 32px;
+  --organic-space-6: 48px;
+
+  --organic-radius-sm: 8px;
+  --organic-radius-base: 16px;
+  --organic-radius-md: 24px;
+  --organic-radius-lg: 32px;
+  --organic-radius-xl: 48px;
+  --organic-radius-pill: 9999px;
+
+  --organic-shadow-raised: 0 10px 30px rgba(45, 67, 54, 0.04);
+  --organic-shadow-interactive: 0 18px 42px rgba(45, 67, 54, 0.09);
+  --organic-overlay-blur: 20px;
+}

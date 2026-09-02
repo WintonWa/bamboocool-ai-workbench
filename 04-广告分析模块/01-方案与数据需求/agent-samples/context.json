@@ -1,0 +1,403 @@
+{
+  "context": {
+    "decision_id": "dec_B0B3LWGP36_20260803",
+    "child_asin": "B0B3LWGP36",
+    "parent_asin": "B0GQXK2Q58",
+    "goal_version": "goal_B0B3LWGP36",
+    "decision_at": "2026-08-03",
+    "previous_decision_id": null,
+    "observe_window_start": "2026-07-01",
+    "observe_window_end": "2026-07-31",
+    "data_as_of": "2026-08-03",
+    "rule_status": "unconfirmed",
+    "purpose_confirmed_n": 0,
+    "purpose_pending_n": 3,
+    "scenario": "<词表内取值，由 Agent 判断>",
+    "goal_type": "<词表内取值，由 Agent 判断>",
+    "goal_status": "pending_operator_confirmation",
+    "goal_rationale": "<中文一句话，结论先行，由 Agent 产出>",
+    "is_ext": 1,
+    "product_goal": "<中文一句话，结论先行，由 Agent 产出>",
+    "nature": "模拟",
+    "goal_type_label": "稳定经营",
+    "goal_confirmed_label": "待运营确认"
+  },
+  "versions": [
+    {
+      "decision_id": "dec_B0B3LWGP36_20260803",
+      "decision_at": "2026-08-03",
+      "product_goal": "<中文一句话，结论先行，由 Agent 产出>",
+      "is_current": true
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev_GP36_adperf",
+      "evidence_type": "AD_PERFORMANCE",
+      "evidence_title": "推广该子体的广告表现",
+      "observed_at": "2026-08-03",
+      "valid_as_of": "2026-08-03",
+      "caveat": "SP 与 SD/SB 归因窗口不同不可相加",
+      "jump_to": null,
+      "payload": {
+        "acos": 0.0755,
+        "ad_sales": 248925.15,
+        "object_count": 3,
+        "objects": [
+          {
+            "acos": 0.0635866222552136,
+            "ad_type": "SD",
+            "level": "CAMPAIGN",
+            "name": "SDOS_7_In-console_产品名_PAT_品类曝光_vCPM_AST",
+            "spend": 15033.49896
+          },
+          {
+            "acos": 0.300746820910986,
+            "ad_type": "SP",
+            "level": "AD_GROUP",
+            "name": "002款-4B组-ASIN定投-1",
+            "spend": 3759.23
+          },
+          {
+            "acos": null,
+            "ad_type": "SD",
+            "level": "AD_GROUP",
+            "name": "一组-SD-内裤-转化-097",
+            "spend": 0.0
+          }
+        ],
+        "spend": 18792.73
+      },
+      "board": "ads",
+      "nature": "真实",
+      "kind": "<词表内取值，由 Agent 判断>",
+      "condition": "正常"
+    },
+    {
+      "evidence_id": "ev_GP36_share",
+      "evidence_type": "AD_PLACEMENT",
+      "evidence_title": "搜索词展示份额",
+      "observed_at": "2026-08-03",
+      "valid_as_of": "2026-08-03",
+      "caveat": "份额是相对同类广告的位置，不是绝对量",
+      "jump_to": null,
+      "payload": {
+        "terms": [
+          {
+            "impressions": 118351.0,
+            "rank": 2.0,
+            "share": 0.1198,
+            "term": "b086l4bxzc"
+          },
+          {
+            "impressions": 42883.0,
+            "rank": 1.0,
+            "share": 0.4089,
+            "term": "b0b3lwgp36"
+          },
+          {
+            "impressions": 41527.0,
+            "rank": 1.0,
+            "share": 0.3318,
+            "term": "b09r7ztv5n"
+          },
+          "…… 本数组原有 5 项，样例只留前 3 项 ……"
+        ]
+      },
+      "board": "ads",
+      "nature": "真实",
+      "kind": "<词表内取值，由 Agent 判断>",
+      "condition": "正常"
+    },
+    {
+      "evidence_id": "ev_GP36_purchgap",
+      "evidence_type": "ATTRIBUTION_GAP",
+      "evidence_title": "成交归属但非推广",
+      "observed_at": "2026-08-03",
+      "valid_as_of": "2026-08-03",
+      "caveat": "这些广告推的不是本品，销售额含其他 SKU",
+      "jump_to": null,
+      "payload": {
+        "ad_sales": 965821.08,
+        "objects": 17,
+        "spend": 220086.39896
+      },
+      "board": "ads",
+      "nature": "真实",
+      "kind": "<词表内取值，由 Agent 判断>",
+      "condition": "正常"
+    },
+    "…… 本数组原有 10 项，样例只留前 3 项 ……"
+  ],
+  "constraints": [
+    {
+      "constraint_id": "c_GP36_01",
+      "kind": "<词表内取值，由 Agent 判断>",
+      "domain": "inventory",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "detail": "<中文一句话，结论先行，由 Agent 产出>",
+      "is_satisfied": 0,
+      "evidence_ref": "ev_GP36_inventory",
+      "kind_label": "硬性条件",
+      "nature": "推导"
+    },
+    {
+      "constraint_id": "c_GP36_02",
+      "kind": "<词表内取值，由 Agent 判断>",
+      "domain": "inventory",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "detail": "<中文一句话，结论先行，由 Agent 产出>",
+      "is_satisfied": 0,
+      "evidence_ref": "ev_GP36_inventory",
+      "kind_label": "硬性条件",
+      "nature": "推导"
+    },
+    {
+      "constraint_id": "c_GP36_03",
+      "kind": "<词表内取值，由 Agent 判断>",
+      "domain": "traffic",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "detail": "<中文一句话，结论先行，由 Agent 产出>",
+      "is_satisfied": null,
+      "evidence_ref": "ev_GP36_trend",
+      "kind_label": "需要持续观察",
+      "nature": "推导"
+    },
+    "…… 本数组原有 5 项，样例只留前 3 项 ……"
+  ],
+  "keywords": [
+    {
+      "kw_id": "kw_GP36_01",
+      "keyword": "mens underwear",
+      "monthly_search": 908485,
+      "organic_rank": 18,
+      "organic_rank_prev": 22,
+      "ad_rank": 2,
+      "ad_impression_share": 0.12,
+      "covered_by_ad": true,
+      "position_trend": "<词表内取值，由 Agent 判断>",
+      "limited_by": "inventory",
+      "observed_at": "2026-08-03",
+      "match_level": "<词表内取值，由 Agent 判断>",
+      "demand_side": "<中文一句话，结论先行，由 Agent 产出>",
+      "product_side": "<中文一句话，结论先行，由 Agent 产出>",
+      "basis": "<中文一句话，结论先行，由 Agent 产出>",
+      "trend_label": "位置持稳",
+      "match_label": "高度匹配",
+      "limited_label": "受库存限制",
+      "nature": "模拟"
+    },
+    {
+      "kw_id": "kw_GP36_02",
+      "keyword": "mens boxer briefs",
+      "monthly_search": 304295,
+      "organic_rank": 9,
+      "organic_rank_prev": 7,
+      "ad_rank": 2,
+      "ad_impression_share": 0.12,
+      "covered_by_ad": true,
+      "position_trend": "<词表内取值，由 Agent 判断>",
+      "limited_by": "inventory",
+      "observed_at": "2026-08-03",
+      "match_level": "<词表内取值，由 Agent 判断>",
+      "demand_side": "<中文一句话，结论先行，由 Agent 产出>",
+      "product_side": "<中文一句话，结论先行，由 Agent 产出>",
+      "basis": "<中文一句话，结论先行，由 Agent 产出>",
+      "trend_label": "位置下滑",
+      "match_label": "高度匹配",
+      "limited_label": "受库存限制",
+      "nature": "模拟"
+    },
+    {
+      "kw_id": "kw_GP36_04",
+      "keyword": "cotton boxer briefs men",
+      "monthly_search": 46200,
+      "organic_rank": null,
+      "organic_rank_prev": null,
+      "ad_rank": null,
+      "ad_impression_share": null,
+      "covered_by_ad": false,
+      "position_trend": "<词表内取值，由 Agent 判断>",
+      "limited_by": "none",
+      "observed_at": "2026-08-03",
+      "match_level": "<词表内取值，由 Agent 判断>",
+      "demand_side": "<中文一句话，结论先行，由 Agent 产出>",
+      "product_side": "<中文一句话，结论先行，由 Agent 产出>",
+      "basis": "<中文一句话，结论先行，由 Agent 产出>",
+      "trend_label": "没有覆盖",
+      "match_label": "匹配度低",
+      "limited_label": "",
+      "nature": "模拟"
+    },
+    "…… 本数组原有 4 项，样例只留前 3 项 ……"
+  ],
+  "competitor": [
+    {
+      "pressure_id": "p_GP36_01",
+      "competitor_asin": "B086L4BXZC",
+      "brand": "Hanes",
+      "pressure_type": "<词表内取值，由 Agent 判断>",
+      "pressure_label": "<中文一句话，结论先行，由 Agent 产出>",
+      "detail": "<中文一句话，结论先行，由 Agent 产出>",
+      "observed_at": "2026-08-03",
+      "is_verified": false,
+      "type_label": "价格",
+      "verify_label": "同期变化待验证",
+      "nature": "推导"
+    },
+    {
+      "pressure_id": "p_GP36_02",
+      "competitor_asin": "B086L4BXZC",
+      "brand": "Hanes",
+      "pressure_type": "<词表内取值，由 Agent 判断>",
+      "pressure_label": "<中文一句话，结论先行，由 Agent 产出>",
+      "detail": "<中文一句话，结论先行，由 Agent 产出>",
+      "observed_at": "2026-08-03",
+      "is_verified": true,
+      "type_label": "排名",
+      "verify_label": "已核实",
+      "nature": "推导"
+    },
+    {
+      "pressure_id": "p_GP36_03",
+      "competitor_asin": "B086L4BXZC",
+      "brand": "Hanes",
+      "pressure_type": "<词表内取值，由 Agent 判断>",
+      "pressure_label": "<中文一句话，结论先行，由 Agent 产出>",
+      "detail": "<中文一句话，结论先行，由 Agent 产出>",
+      "observed_at": "2026-08-03",
+      "is_verified": false,
+      "type_label": "关键词入口",
+      "verify_label": "同期变化待验证",
+      "nature": "模拟"
+    }
+  ],
+  "existing_structure": [
+    {
+      "ad_object_id": "camp_79419e721f3f9826",
+      "object_level": "CAMPAIGN",
+      "ad_type": "SD",
+      "campaign_name": "SDOS_7_In-console_产品名_PAT_品类曝光_vCPM_AST",
+      "ad_group_name": null,
+      "target_text": null,
+      "match_type": null,
+      "spend": 15033.49896,
+      "ad_sales": 236425.5,
+      "acos": 0.0635866222552136,
+      "roas": 15.726578398619186,
+      "clicks": 3932.0,
+      "orders": 6373.0,
+      "impressions": 4167589.0,
+      "attribution_days": 14,
+      "purpose": "无法识别",
+      "shared_child_count": 1,
+      "is_shared": false,
+      "level_label": "Campaign",
+      "name": "SDOS_7_In-console_产品名_PAT_品类曝光_vCPM_AST",
+      "purpose_status_label": "无法识别",
+      "nature": "真实",
+      "comparable": true
+    },
+    {
+      "ad_object_id": "grp_300ac8077e33c09e",
+      "object_level": "AD_GROUP",
+      "ad_type": "SP",
+      "campaign_name": "002-SP-ASIN-4B-ZENG-REGULAR-01",
+      "ad_group_name": "002款-4B组-ASIN定投-1",
+      "target_text": null,
+      "match_type": null,
+      "spend": 3759.23,
+      "ad_sales": 12499.64999999998,
+      "acos": 0.300746820910986,
+      "roas": 3.3250559290067327,
+      "clicks": 2010.0,
+      "orders": 379.0,
+      "impressions": 337176.0,
+      "attribution_days": 7,
+      "purpose": "竞品与关联商品拦截",
+      "shared_child_count": 2,
+      "is_shared": true,
+      "level_label": "广告组",
+      "name": "002款-4B组-ASIN定投-1",
+      "purpose_status_label": "待确认",
+      "nature": "真实",
+      "comparable": true
+    },
+    {
+      "ad_object_id": "grp_ed5633a86ba55090",
+      "object_level": "AD_GROUP",
+      "ad_type": "SD",
+      "campaign_name": "一组-SD-内裤-转化-097",
+      "ad_group_name": "一组-SD-内裤-转化-097",
+      "target_text": null,
+      "match_type": null,
+      "spend": 0.0,
+      "ad_sales": 0.0,
+      "acos": null,
+      "roas": null,
+      "clicks": 0.0,
+      "orders": 0.0,
+      "impressions": 0.0,
+      "attribution_days": 14,
+      "purpose": "无法识别",
+      "shared_child_count": 75,
+      "is_shared": true,
+      "level_label": "广告组",
+      "name": "一组-SD-内裤-转化-097",
+      "purpose_status_label": "无法识别",
+      "nature": "真实",
+      "comparable": false
+    }
+  ],
+  "structure_issues": [
+    {
+      "issue_id": "is_GP36_01",
+      "ad_object_id": "grp_300ac8077e33c09e",
+      "issue_type": "<词表内取值，由 Agent 判断>",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "detail": "<中文一句话，结论先行，由 Agent 产出>",
+      "type_label": "共享",
+      "nature": "推导"
+    },
+    {
+      "issue_id": "is_GP36_02",
+      "ad_object_id": "grp_ed5633a86ba55090",
+      "issue_type": "<词表内取值，由 Agent 判断>",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "detail": "<中文一句话，结论先行，由 Agent 产出>",
+      "type_label": "共享",
+      "nature": "推导"
+    },
+    {
+      "issue_id": "is_GP36_03",
+      "ad_object_id": null,
+      "issue_type": "<词表内取值，由 Agent 判断>",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "detail": "<中文一句话，结论先行，由 Agent 产出>",
+      "type_label": "无法解释",
+      "nature": "真实"
+    }
+  ],
+  "history": {
+    "events": [],
+    "reviews": []
+  },
+  "readiness": {
+    "can_run": true,
+    "mode": "条件性判断",
+    "goal_confirmed": false,
+    "rule_confirmed": false,
+    "missing_evidence_n": 0,
+    "stale_evidence": [],
+    "blockers": [],
+    "notes": [
+      "产品目标尚未由运营确认，结论只能停在条件性判断",
+      "阈值与调整边界尚未确认，不给预算、竞价与广告位数值"
+    ],
+    "stale_days_threshold": 14
+  },
+  "context_hash": "3e0bbac369f0b0ac9337066d0a33899c429305d20210d2621d471dfe7c6f7456",
+  "context_id": "dec_B0B3LWGP36_20260803@3e0bbac369f0",
+  "condition": "正常",
+  "is_ext": true
+}

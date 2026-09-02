@@ -1,0 +1,186 @@
+{
+  "as_of": "2026-08-03",
+  "condition": "正常",
+  "groups": [
+    {
+      "key": "replenishment_gap",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "note": "<中文一句话，结论先行，由 Agent 产出>",
+      "rows": [
+        {
+          "child_asin": "B0B3LWGP36",
+          "parent_asin": "B0GQXK2Q58",
+          "lifecycle": "<禁读·见输出点清单第 12 节>",
+          "style_no": "TH22AM-097",
+          "spend": 121397.59,
+          "decision_versions": 1,
+          "latest_decision_at": "2026-08-03",
+          "product_goal": "<中文一句话，结论先行，由 Agent 产出>",
+          "inventory_risk": "<词表内取值，由 Agent 判断>",
+          "evidence_rich": true,
+          "in_spine": true,
+          "condition": "正常",
+          "mode": "条件性判断"
+        }
+      ]
+    },
+    {
+      "key": "aged_inventory_risk",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "note": "<中文一句话，结论先行，由 Agent 产出>",
+      "rows": [
+        {
+          "child_asin": "B0B6ZT7W64",
+          "parent_asin": "B0GQXK2Q58",
+          "lifecycle": "<禁读·见输出点清单第 12 节>",
+          "style_no": "TH22AM-122",
+          "spend": 1896.27,
+          "decision_versions": 1,
+          "latest_decision_at": "2026-08-03",
+          "product_goal": "<中文一句话，结论先行，由 Agent 产出>",
+          "inventory_risk": "<词表内取值，由 Agent 判断>",
+          "evidence_rich": true,
+          "in_spine": true,
+          "condition": "正常",
+          "mode": "条件性判断"
+        }
+      ]
+    },
+    {
+      "key": "overstock",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "note": "<中文一句话，结论先行，由 Agent 产出>",
+      "rows": [
+        {
+          "child_asin": "B0B3M8S4CQ",
+          "parent_asin": "B0GQXK2Q58",
+          "lifecycle": "<禁读·见输出点清单第 12 节>",
+          "style_no": "TH22AM-097",
+          "spend": 23323.27,
+          "decision_versions": 1,
+          "latest_decision_at": "2026-08-03",
+          "product_goal": "<中文一句话，结论先行，由 Agent 产出>",
+          "inventory_risk": "<词表内取值，由 Agent 判断>",
+          "evidence_rich": true,
+          "in_spine": true,
+          "condition": "正常",
+          "mode": "条件性判断"
+        }
+      ]
+    },
+    {
+      "key": "healthy",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "note": "<中文一句话，结论先行，由 Agent 产出>",
+      "rows": [
+        {
+          "child_asin": "B0B3MBYGR5",
+          "parent_asin": "B0GQXK2Q58",
+          "lifecycle": "<禁读·见输出点清单第 12 节>",
+          "style_no": "TH22AM-097",
+          "spend": 26378.87,
+          "decision_versions": 1,
+          "latest_decision_at": "2026-08-03",
+          "product_goal": "<中文一句话，结论先行，由 Agent 产出>",
+          "inventory_risk": "<词表内取值，由 Agent 判断>",
+          "evidence_rich": true,
+          "in_spine": true,
+          "condition": "正常",
+          "mode": "条件性判断"
+        },
+        {
+          "child_asin": "B0CJV56N43",
+          "parent_asin": "B0GQXK2Q58",
+          "lifecycle": "<禁读·见输出点清单第 12 节>",
+          "style_no": "TH23AM-125",
+          "spend": 16402.82,
+          "decision_versions": 1,
+          "latest_decision_at": "2026-08-03",
+          "product_goal": "<中文一句话，结论先行，由 Agent 产出>",
+          "inventory_risk": "<词表内取值，由 Agent 判断>",
+          "evidence_rich": true,
+          "in_spine": true,
+          "condition": "正常",
+          "mode": "条件性判断"
+        }
+      ]
+    },
+    {
+      "key": "thin",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "rows": [
+        {
+          "child_asin": "B088WF1PRW",
+          "parent_asin": "B0DDNK229S",
+          "lifecycle": "<禁读·见输出点清单第 12 节>",
+          "style_no": null,
+          "spend": 115831.51,
+          "decision_versions": 2,
+          "latest_decision_at": "2026-08-03",
+          "product_goal": "<中文一句话，结论先行，由 Agent 产出>",
+          "inventory_risk": null,
+          "evidence_rich": false,
+          "in_spine": false,
+          "condition": "正常",
+          "mode": "条件性判断"
+        }
+      ],
+      "note": "<中文一句话，结论先行，由 Agent 产出>"
+    },
+    {
+      "key": "facts",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "rows": [
+        {
+          "child_asin": "B0CGLWJH26",
+          "parent_asin": "B0D9FLMR6N",
+          "lifecycle": "<禁读·见输出点清单第 12 节>",
+          "style_no": "TH23AM-319",
+          "spend": 70255.22,
+          "decision_versions": 0,
+          "latest_decision_at": null,
+          "product_goal": null,
+          "inventory_risk": "<词表内取值，由 Agent 判断>",
+          "evidence_rich": false,
+          "in_spine": true,
+          "condition": "待确认",
+          "mode": "暂时无法判断"
+        },
+        {
+          "child_asin": "B0CGLWQVWR",
+          "parent_asin": "B0D9FLMR6N",
+          "lifecycle": "<禁读·见输出点清单第 12 节>",
+          "style_no": "TH23AM-319",
+          "spend": 66599.95,
+          "decision_versions": 0,
+          "latest_decision_at": null,
+          "product_goal": null,
+          "inventory_risk": "<词表内取值，由 Agent 判断>",
+          "evidence_rich": false,
+          "in_spine": true,
+          "condition": "待确认",
+          "mode": "暂时无法判断"
+        },
+        {
+          "child_asin": "B0CGLWP2ST",
+          "parent_asin": "B0D9FLMR6N",
+          "lifecycle": "<禁读·见输出点清单第 12 节>",
+          "style_no": "TH23AM-319",
+          "spend": 41168.45,
+          "decision_versions": 0,
+          "latest_decision_at": null,
+          "product_goal": null,
+          "inventory_risk": "<词表内取值，由 Agent 判断>",
+          "evidence_rich": false,
+          "in_spine": true,
+          "condition": "待确认",
+          "mode": "暂时无法判断"
+        },
+        "…… 本数组原有 40 项，样例只留前 3 项 ……"
+      ],
+      "note": "<中文一句话，结论先行，由 Agent 产出>",
+      "truncated": true,
+      "total": 337
+    }
+  ]
+}

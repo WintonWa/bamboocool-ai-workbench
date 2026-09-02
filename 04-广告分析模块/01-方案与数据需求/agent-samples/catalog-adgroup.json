@@ -1,0 +1,508 @@
+{
+  "condition": "正常",
+  "grain": "AD_GROUP",
+  "grain_label": "广告组",
+  "grain_note": {
+    "other_grain_label": "投放对象",
+    "other_spend": 314617.29027999996,
+    "delta": -954.2113200001768,
+    "other_objects": 855,
+    "why": "<中文一句话，结论先行，由 Agent 产出>"
+  },
+  "scope": {
+    "campaign_total": 80,
+    "campaign_live": 44,
+    "campaign_structure_only": 36,
+    "ad_group_total": 54,
+    "target_total": 855,
+    "source_files": 31,
+    "campaign_no_structure": 28,
+    "ad_group_with_month": 49,
+    "by_type_group": {
+      "SP": 40,
+      "SD": 9,
+      "SB": 5
+    },
+    "by_type_target": {
+      "SP": 679,
+      "SB": 167,
+      "SD": 9
+    },
+    "with_daily_group": 43,
+    "with_daily_target": 439,
+    "attribution": {
+      "SB": 14,
+      "SD": 14,
+      "SP": 7
+    }
+  },
+  "taxonomy": [
+    {
+      "type": "PRODUCT_RELATION",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "values": [
+        {
+          "value": "4条装B",
+          "n": 22,
+          "source_label": "命名映射",
+          "confirm_label": "待确认"
+        },
+        {
+          "value": "2 个推广子ASIN",
+          "n": 9,
+          "source_label": "命名映射",
+          "confirm_label": "待确认"
+        },
+        {
+          "value": "3 个推广子ASIN",
+          "n": 9,
+          "source_label": "命名映射",
+          "confirm_label": "待确认"
+        },
+        "…… 本数组原有 22 项，样例只留前 3 项 ……"
+      ],
+      "total": 84
+    },
+    {
+      "type": "TARGET_OBJECT",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "values": [
+        {
+          "value": "关键词投放",
+          "n": 21,
+          "source_label": "命名映射",
+          "confirm_label": "待确认"
+        },
+        {
+          "value": "商品投放",
+          "n": 13,
+          "source_label": "命名映射",
+          "confirm_label": "待确认"
+        },
+        {
+          "value": "受众实验",
+          "n": 4,
+          "source_label": "命名映射",
+          "confirm_label": "待确认"
+        },
+        "…… 本数组原有 9 项，样例只留前 3 项 ……"
+      ],
+      "total": 46
+    },
+    {
+      "type": "AD_PURPOSE",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "values": [
+        {
+          "value": "关键词流量获取",
+          "n": 17,
+          "source_label": "AI 建议",
+          "confirm_label": "待确认"
+        },
+        {
+          "value": "竞品与关联商品拦截",
+          "n": 12,
+          "source_label": "AI 建议",
+          "confirm_label": "待确认"
+        },
+        {
+          "value": "无法识别",
+          "n": 11,
+          "source_label": "AI 建议",
+          "confirm_label": "无法识别"
+        },
+        "…… 本数组原有 8 项，样例只留前 3 项 ……"
+      ],
+      "total": 54
+    },
+    "…… 本数组原有 5 项，样例只留前 3 项 ……"
+  ],
+  "facets": [
+    {
+      "key": "labels",
+      "type": "PRODUCT_RELATION",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "values": [
+        {
+          "value": "4条装B",
+          "n": 22,
+          "on": false
+        },
+        {
+          "value": "2 个推广子ASIN",
+          "n": 9,
+          "on": false
+        },
+        {
+          "value": "3 个推广子ASIN",
+          "n": 9,
+          "on": false
+        },
+        "…… 本数组原有 22 项，样例只留前 3 项 ……"
+      ],
+      "picked": []
+    },
+    {
+      "key": "labels",
+      "type": "AD_PURPOSE",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "values": [
+        {
+          "value": "关键词流量获取",
+          "n": 17,
+          "on": false
+        },
+        {
+          "value": "竞品与关联商品拦截",
+          "n": 12,
+          "on": false
+        },
+        {
+          "value": "无法识别",
+          "n": 11,
+          "on": false
+        },
+        "…… 本数组原有 8 项，样例只留前 3 项 ……"
+      ],
+      "picked": []
+    },
+    {
+      "key": "labels",
+      "type": "AD_ATTRIBUTE",
+      "label": "<中文一句话，结论先行，由 Agent 产出>",
+      "values": [
+        {
+          "value": "SP",
+          "n": 40,
+          "on": false
+        },
+        {
+          "value": "手动投放",
+          "n": 30,
+          "on": false
+        },
+        {
+          "value": "自动投放",
+          "n": 10,
+          "on": false
+        },
+        "…… 本数组原有 15 项，样例只留前 3 项 ……"
+      ],
+      "picked": []
+    },
+    "…… 本数组原有 6 项，样例只留前 3 项 ……"
+  ],
+  "active": [],
+  "state_vocab": [
+    {
+      "key": "full_window",
+      "label": "<中文一句话，结论先行，由 Agent 产出>"
+    },
+    {
+      "key": "partial_window",
+      "label": "<中文一句话，结论先行，由 Agent 产出>"
+    },
+    {
+      "key": "no_daily",
+      "label": "<中文一句话，结论先行，由 Agent 产出>"
+    },
+    "…… 本数组原有 10 项，样例只留前 3 项 ……"
+  ],
+  "aggregate": {
+    "objects": 54,
+    "with_data": 54,
+    "spend": 313663.0789599998,
+    "clicks": 130567.0,
+    "orders": 35122.0,
+    "impressions": 37026027.0,
+    "ctr": 0.0035263572837560993,
+    "blocks": [
+      {
+        "attribution_days": 14,
+        "ad_types": [
+          "SB",
+          "SD"
+        ],
+        "objects": 14,
+        "impressions": 4889120.0,
+        "clicks": 23537.0,
+        "spend": 56184.43896,
+        "orders": 13124.0,
+        "ad_sales": 491805.43999999994,
+        "ctr": 0.0048141587852210625,
+        "cpc": 2.3870688261035817,
+        "cvr": 0.5575901771678634,
+        "acos": 0.11424119050004816,
+        "roas": 8.753410180888988
+      },
+      {
+        "attribution_days": 7,
+        "ad_types": [
+          "SP"
+        ],
+        "objects": 40,
+        "impressions": 32136907.0,
+        "clicks": 107030.0,
+        "spend": 257478.63999999996,
+        "orders": 21998.0,
+        "ad_sales": 743700.75,
+        "ctr": 0.0033304387382394954,
+        "cpc": 2.4056679435672237,
+        "cvr": 0.20553115948799403,
+        "acos": 0.34621269374812375,
+        "roas": 2.888397849235184
+      }
+    ]
+  },
+  "benchmark": [
+    {
+      "category": "Clothing, Shoes & Jewelry > Men's Fashion > Men's Clothing",
+      "own_impressions": 17734654.0,
+      "own_ctr": 0.0158,
+      "peer_ctr_p25": 0.0036,
+      "peer_ctr_median": 0.0044,
+      "peer_ctr_p75": 0.011899999999999999,
+      "own_acos": 0.3892,
+      "peer_acos_median": 0.364,
+      "own_roas": 2.57,
+      "peer_roas_median": 2.75
+    },
+    {
+      "category": "Clothing, Shoes & Jewelry > Men's Fashion > Men's Clothing > Men's Underwear > Men's Trunks Underwear",
+      "own_impressions": 53106.0,
+      "own_ctr": 0.0034000000000000002,
+      "peer_ctr_p25": null,
+      "peer_ctr_median": null,
+      "peer_ctr_p75": null,
+      "own_acos": 2.0224,
+      "peer_acos_median": null,
+      "own_roas": 0.49,
+      "peer_roas_median": null
+    },
+    {
+      "category": "Clothing, Shoes & Jewelry > Men's Fashion",
+      "own_impressions": 17734654.0,
+      "own_ctr": 0.0158,
+      "peer_ctr_p25": 0.0025,
+      "peer_ctr_median": 0.0044,
+      "peer_ctr_p75": 0.012,
+      "own_acos": 0.3892,
+      "peer_acos_median": 0.3482,
+      "own_roas": 2.57,
+      "peer_roas_median": 2.87
+    },
+    "…… 本数组原有 6 项，样例只留前 3 项 ……"
+  ],
+  "anomalies": {
+    "objects_hit": 32,
+    "total": 52,
+    "by_rule": {
+      "缺少广告 ASIN 映射": 7,
+      "CPC 高于演示观察线": 5,
+      "转化率较自身历史下降超过 30%": 5,
+      "日粒度样本不足无法看趋势": 6,
+      "实际覆盖不足完整窗口": 18,
+      "ACoS 较自身历史上升超过 30%": 5,
+      "ACoS 高于演示观察线": 4,
+      "ACoS 显著高于同口径对象中位数": 2
+    },
+    "rows": [
+      {
+        "ad_object_id": "grp_4c01b231ebca9d86",
+        "name": "Ad group - 2026/4/15 16:23:22.205",
+        "anomalies": [
+          {
+            "rule_id": "rule_mapping_missing",
+            "rule_name": "缺少广告 ASIN 映射",
+            "class_label": "数据状态",
+            "observed": null,
+            "threshold": null,
+            "basis": "<中文一句话，结论先行，由 Agent 产出>"
+          }
+        ]
+      },
+      {
+        "ad_object_id": "grp_a6118c141f15d968",
+        "name": "4蓝灰红黑",
+        "anomalies": [
+          {
+            "rule_id": "rule_cpc_gt_300",
+            "rule_name": "CPC 高于演示观察线",
+            "class_label": "绝对阈值",
+            "observed": 3.1557087651501807,
+            "threshold": 3.0,
+            "basis": "<中文一句话，结论先行，由 Agent 产出>"
+          }
+        ]
+      },
+      {
+        "ad_object_id": "grp_e016ad927adcab9e",
+        "name": "SDOS_7_In-console_产品名_PAT_品类曝光_vCPM_AST",
+        "anomalies": [
+          {
+            "rule_id": "rule_cpc_gt_300",
+            "rule_name": "CPC 高于演示观察线",
+            "class_label": "绝对阈值",
+            "observed": 3.823372065106816,
+            "threshold": 3.0,
+            "basis": "<中文一句话，结论先行，由 Agent 产出>"
+          }
+        ]
+      },
+      "…… 本数组原有 32 项，样例只留前 3 项 ……"
+    ],
+    "campaign_total": 13,
+    "campaign_rows": [
+      {
+        "campaign_id": "camp_33fc0f5164dc482b",
+        "campaign": "002-SP-ASIN-4B-ZENG-REGULAR-01",
+        "rule_id": "rule_budget_capped",
+        "rule_name": "预算几乎打满且有明确错失",
+        "class_label": "数据状态",
+        "observed": 1.0,
+        "threshold": 0.98,
+        "basis": "<中文一句话，结论先行，由 Agent 产出>"
+      },
+      {
+        "campaign_id": "camp_3559d91238a37ecd",
+        "campaign": "002-SP-KEYWORD-BR/EX/PH-4B/4C/7A-ZENG-REGULAR",
+        "rule_id": "rule_budget_capped",
+        "rule_name": "预算几乎打满且有明确错失",
+        "class_label": "数据状态",
+        "observed": 0.9887,
+        "threshold": 0.98,
+        "basis": "<中文一句话，结论先行，由 Agent 产出>"
+      },
+      {
+        "campaign_id": "camp_3828019d9f6baf7e",
+        "campaign": "002-SB-商品集-002097-test-newpage-EX",
+        "rule_id": "rule_invalid_click_high",
+        "rule_name": "无效点击率偏高",
+        "class_label": "绝对阈值",
+        "observed": 0.171554252199413,
+        "threshold": 0.15,
+        "basis": "<中文一句话，结论先行，由 Agent 产出>"
+      },
+      "…… 本数组原有 13 项，样例只留前 3 项 ……"
+    ],
+    "campaigns_hit": 11,
+    "campaigns_in_scope": 52
+  },
+  "rules": [
+    {
+      "rule_id": "rule_acos_gt_050",
+      "rule_name": "ACoS 高于演示观察线",
+      "rule_class": "absolute_threshold",
+      "metric_name": "acos",
+      "operator": ">",
+      "threshold": 0.5,
+      "applies_to": "AD_GROUP,TARGET",
+      "rule_version": "demo-v0.2",
+      "class_label": "绝对阈值"
+    },
+    {
+      "rule_id": "rule_cpc_gt_300",
+      "rule_name": "CPC 高于演示观察线",
+      "rule_class": "absolute_threshold",
+      "metric_name": "cpc",
+      "operator": ">",
+      "threshold": 3.0,
+      "applies_to": "AD_GROUP,TARGET",
+      "rule_version": "demo-v0.2",
+      "class_label": "绝对阈值"
+    },
+    {
+      "rule_id": "rule_invalid_click_high",
+      "rule_name": "无效点击率偏高",
+      "rule_class": "absolute_threshold",
+      "metric_name": "invalid_click_rate",
+      "operator": ">",
+      "threshold": 0.1,
+      "applies_to": "CAMPAIGN",
+      "rule_version": "demo-v0.2",
+      "class_label": "绝对阈值"
+    },
+    "…… 本数组原有 10 项，样例只留前 3 项 ……"
+  ],
+  "total": 54,
+  "returned": 54,
+  "rows": [
+    {
+      "ad_object_id": "grp_c3813e28d12909dd",
+      "name": "长平角",
+      "campaign": "002-SP-KEYWORD-BR/EX/PH-4B/4C/7A-ZENG-REGULAR",
+      "ad_type": "SP",
+      "purpose": "关键词流量获取",
+      "state_labels": [
+        "覆盖完整窗口",
+        "共享多个子 ASIN"
+      ],
+      "shared_child_count": 9,
+      "nature": "真实",
+      "impressions": 5013029.0,
+      "clicks": 25792.0,
+      "spend": 75626.78,
+      "orders": 7497.0,
+      "ad_sales": 257116.57,
+      "ctr": 0.005144993176779947,
+      "cpc": 2.9321797456575682,
+      "cvr": 0.29067152605459057,
+      "acos": 0.2941342131314213,
+      "roas": 3.3998085069865462,
+      "acos_change_rate": -0.02329868193948903,
+      "comparable": true
+    },
+    {
+      "ad_object_id": "grp_4c01b231ebca9d86",
+      "name": "Ad group - 2026/4/15 16:23:22.205",
+      "campaign": "002-SB-PRODUCT GROUP-ZENG-REGULAR",
+      "ad_type": "SB",
+      "purpose": "无法识别",
+      "state_labels": [
+        "由投放对象汇总得出",
+        "无日粒度序列",
+        "缺少广告 ASIN 映射"
+      ],
+      "shared_child_count": 0,
+      "nature": "模拟",
+      "impressions": 499546.0,
+      "clicks": 16177.0,
+      "spend": 35819.66,
+      "orders": 5477.0,
+      "ad_sales": 207872.36,
+      "ctr": 0.0323834041309509,
+      "cpc": 2.2142337887123698,
+      "cvr": 0.3385671014403165,
+      "acos": 0.17231564600507737,
+      "roas": 5.803303548944908,
+      "acos_change_rate": null,
+      "comparable": false
+    },
+    {
+      "ad_object_id": "grp_a6118c141f15d968",
+      "name": "4蓝灰红黑",
+      "campaign": "002-SP-KEYWORD-4B/7A-ZENG-REGULAR",
+      "ad_type": "SP",
+      "purpose": "关键词流量获取",
+      "state_labels": [
+        "覆盖完整窗口",
+        "共享多个子 ASIN"
+      ],
+      "shared_child_count": 3,
+      "nature": "真实",
+      "impressions": 2047538.0,
+      "clicks": 5693.0,
+      "spend": 17965.44999999998,
+      "orders": 1564.0,
+      "ad_sales": 52584.09,
+      "ctr": 0.002780412378182969,
+      "cpc": 3.1557087651501807,
+      "cvr": 0.2747233444581064,
+      "acos": 0.341651819019783,
+      "roas": 2.926956463656633,
+      "acos_change_rate": -0.004792690210318806,
+      "comparable": true
+    },
+    "…… 本数组原有 54 项，样例只留前 3 项 ……"
+  ]
+}

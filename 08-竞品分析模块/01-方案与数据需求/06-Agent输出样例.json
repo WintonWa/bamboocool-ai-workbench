@@ -1,0 +1,263 @@
+{
+  "_说明": "三部分。_写入端盖章字段 = 不属于 Agent 输出面的列。_触发请求样例 = 页面发给 Agent 的请求体与五种状态响应。SHAPE-DEMO = 一个**虚构**竞品族的一次完整输出，10 张表全非空，只给形状不给答案。表名与 competitor_demo.sqlite 一致，字段名即列名。",
+  "_写入端盖章字段": {
+    "_说明": "Agent 不要输出这些列，写入端补齐后落库。判据是需不需要跨 run 的全局视野。报告在整份报告里排第几（report.item_seq）单对象重跑拿不到，所以它和 id 里的序号都由写入端定。注意 timeline / open_item 的 item_seq 与 change_seq / pair_seq / reason_seq / impact_seq 是该 run 内的局部序号，这些是 Agent 给的。",
+    "字段": [
+      "run_id",
+      "created_at",
+      "report_id",
+      "item_seq(仅 report 表)",
+      "scope_key",
+      "period_from",
+      "period_to",
+      "ref_run_id",
+      "handoff_id",
+      "frozen_run_id",
+      "prev_run_id",
+      "family_asin / run_date / data_as_of / window_from / window_to / trigger（请求回填）"
+    ],
+    "id 规则": {
+      "run_id": "{family_asin}-{run_date}-{当日第几次}",
+      "report_id": "RPT-{ref_run_id}-{该 run 内第几条}",
+      "handoff_id": "HO-{frozen_run_id}-{KW|AD}"
+    }
+  },
+  "_触发请求样例": {
+    "_说明": "页面点「重新分析」时发出的请求，以及 Agent 该返回的五种状态。周期性工作流入口相同，只是 trigger 取 scheduled/priority、thresholds 用默认值、无 requested_by。详见 05-Agent交底包.md 1.2。",
+    "请求": {
+      "trigger": "manual",
+      "family_asin": "B0SHAPE0001",
+      "window_from": "2026-02-05",
+      "window_to": "2026-08-03",
+      "data_as_of": "2026-08-03",
+      "requested_by": "ops-wangnan",
+      "request_key": "B0SHAPE0001-2026-08-03-manual-1756600000",
+      "thresholds": {
+        "price_drop_pct": 5.0,
+        "gap_shift_pct": 10.0,
+        "rank_shift_pct": 15.0,
+        "kw_rank_shift": 3,
+        "min_duration_days": 7,
+        "family_coverage_pct": 30.0,
+        "stale_days": 14
+      }
+    },
+    "立即响应": {
+      "task_id": "T-B0SHAPE0001-1756600000",
+      "state": "queued"
+    },
+    "轮询响应": [
+      {
+        "task_id": "T-B0SHAPE0001-1756600000",
+        "state": "running"
+      },
+      {
+        "task_id": "T-B0SHAPE0001-1756600000",
+        "state": "done",
+        "run_id": "B0SHAPE0001-2026-08-03-2"
+      },
+      {
+        "task_id": "T-B0SHAPE0001-1756600000",
+        "state": "skipped",
+        "reason": "自 2026-08-03 起无新观察数据，沿用当日已有分析"
+      },
+      {
+        "task_id": "T-B0SHAPE0001-1756600000",
+        "state": "failed",
+        "reason": "价格序列在 2026-07-20 至 2026-08-03 缺失，无法完成价格活动判断"
+      }
+    ]
+  },
+  "SHAPE-DEMO": {
+    "_禁止": "这是形状样例，不是答案。ASIN 与中文全部虚构，不对应任何真实竞品族。Agent 必须从观察层自行判断，不得比照本文件的结论内容（要则 §6 / §11）。带「示例句：」前缀的字段只示范句式与长度感，实际输出不要带这个前缀。",
+    "fact_competitor_analysis_run": [
+      {
+        "run_id": "B0SHAPE0001-2026-08-03-1",
+        "family_asin": "B0SHAPE0001",
+        "run_date": "2026-08-03",
+        "data_as_of": "2026-08-03",
+        "window_from": "2026-02-05",
+        "window_to": "2026-08-03",
+        "trigger": "manual",
+        "model_version": "<模型标识>",
+        "attention_level": "medium",
+        "attention_summary": "示例句：某维度出现持续变化且仍在进行，建议优先查看",
+        "evidence_level": "sufficient",
+        "evidence_reason": "示例句：四类观察在窗口内连续，无断更与来源冲突",
+        "judgment_summary": "示例句：该族的主要变化集中在单一维度，其余维度未见显著偏离",
+        "created_at": "2026-08-03T00:00:00"
+      }
+    ],
+    "fact_competitor_analysis_change": [
+      {
+        "run_id": "B0SHAPE0001-2026-08-03-1",
+        "change_seq": 1,
+        "domain": "price_promo",
+        "object_level": "child",
+        "object_id": "B0SHAPECH1",
+        "label": "示例句：某维度较前一段下降约两成，当前仍在进行",
+        "direction": "down",
+        "magnitude_kind": "pct",
+        "magnitude_value": -20.0,
+        "date_from": "2026-05-01",
+        "date_to": null,
+        "current_state": "仍在进行",
+        "represents_family": 0,
+        "coverage_note": "示例句：命中 1 个子体且非主销变体，该族在售 N 个、自报 M 个变体",
+        "value_origin": "derived",
+        "confidence": "medium",
+        "basis": "示例句：该维度的观察序列在指定区间稳定偏离前一段基线"
+      },
+      {
+        "run_id": "B0SHAPE0001-2026-08-03-1",
+        "change_seq": 2,
+        "domain": "market",
+        "object_level": "family",
+        "object_id": "B0SHAPE0001",
+        "label": "示例句：另一维度同期出现变化，方向与幅度见字段",
+        "direction": "up",
+        "magnitude_kind": "rank",
+        "magnitude_value": -34,
+        "date_from": "2026-05-10",
+        "date_to": null,
+        "current_state": "仍在进行",
+        "represents_family": 1,
+        "coverage_note": null,
+        "value_origin": "derived",
+        "confidence": "medium",
+        "basis": "示例句：该维度的观察序列在指定区间稳定偏离前一段基线"
+      }
+    ],
+    "fact_competitor_analysis_timeline": [
+      {
+        "run_id": "B0SHAPE0001-2026-08-03-1",
+        "track": "price_promo",
+        "item_seq": 1,
+        "label": "示例句：某维度较前一段下降约两成，当前仍在进行",
+        "date_from": "2026-05-01",
+        "date_to": null,
+        "ref_change_seq": 1,
+        "window_before_from": "2026-04-01",
+        "window_before_to": "2026-04-30",
+        "window_after_from": "2026-05-01",
+        "window_after_to": "2026-05-31",
+        "note": "示例句：事件前后各取一个可比窗口"
+      },
+      {
+        "run_id": "B0SHAPE0001-2026-08-03-1",
+        "track": "market",
+        "item_seq": 1,
+        "label": "示例句：另一轨上的区段标签",
+        "date_from": "2026-05-10",
+        "date_to": null,
+        "ref_change_seq": 2,
+        "window_before_from": "2026-04-01",
+        "window_before_to": "2026-04-30",
+        "window_after_from": "2026-05-01",
+        "window_after_to": "2026-05-31",
+        "note": "示例句：事件前后各取一个可比窗口"
+      }
+    ],
+    "fact_competitor_analysis_concurrency": [
+      {
+        "run_id": "B0SHAPE0001-2026-08-03-1",
+        "pair_seq": 1,
+        "change_seq_a": 1,
+        "change_seq_b": 2,
+        "relation": "concurrent",
+        "overlap_from": "2026-05-01",
+        "overlap_to": "2026-06-01",
+        "statement": "示例句：两类变化在同一区间同期出现，仅为同期证据，不判因果",
+        "causal_ready": 0,
+        "missing_evidence": "示例句：还缺某一类对照数据，补上后可排除某个替代解释"
+      }
+    ],
+    "fact_competitor_analysis_attention_reason": [
+      {
+        "run_id": "B0SHAPE0001-2026-08-03-1",
+        "reason_seq": 1,
+        "label": "示例句：某维度较前一段下降约两成，当前仍在进行",
+        "ref_change_seq": 1,
+        "weight_note": "持续性最强"
+      },
+      {
+        "run_id": "B0SHAPE0001-2026-08-03-1",
+        "reason_seq": 2,
+        "label": "示例句：第二条依据，与第一条不重复",
+        "ref_change_seq": 2,
+        "weight_note": "覆盖面最广"
+      }
+    ],
+    "fact_competitor_analysis_impact": [
+      {
+        "run_id": "B0SHAPE0001-2026-08-03-1",
+        "impact_seq": 1,
+        "own_parent_asin": "B0SHAPEOWN",
+        "own_child_asin": "B0SHAPEOC1",
+        "shared_keyword": "<共同竞争词>",
+        "pressure_dimension": "price",
+        "statement": "示例句：竞品侧事实 + 按件单价的可比口径 + 自有承压表现",
+        "ref_change_seq": 1,
+        "confidence": "medium"
+      }
+    ],
+    "fact_competitor_analysis_open_item": [
+      {
+        "run_id": "B0SHAPE0001-2026-08-03-1",
+        "item_seq": 1,
+        "item_kind": "hypothesis",
+        "statement": "示例句：一条待验证假设，只陈述可能性不下结论",
+        "needed_data": "示例句：需要某一类排期或历史记录",
+        "watch_until": "2026-09-30"
+      },
+      {
+        "run_id": "B0SHAPE0001-2026-08-03-1",
+        "item_seq": 2,
+        "item_kind": "watch",
+        "statement": "示例句：一条待观察项",
+        "needed_data": null,
+        "watch_until": "2026-09-30"
+      }
+    ],
+    "fact_competitor_analysis_diff": [
+      {
+        "run_id": "B0SHAPE0001-2026-08-03-1",
+        "prev_run_id": null,
+        "transition": "new",
+        "statement": "示例句：与上一版相比的定性变化。首次真跑时此处应为「无可比上一版」",
+        "changed_domains": "price_promo"
+      }
+    ],
+    "fact_competitor_analysis_report": [
+      {
+        "report_id": "RPT-B0SHAPE0001-2026-08-03-1-01",
+        "scope_key": "<站点 · 类目 · 子类目>",
+        "period_from": "2026-07-07",
+        "period_to": "2026-08-03",
+        "item_seq": 1,
+        "family_asin": "B0SHAPE0001",
+        "ref_run_id": "B0SHAPE0001-2026-08-03-1",
+        "headline": "示例句：某族在某维度出现持续变化，当前仍在进行",
+        "body": "示例句：比较表未展开的那部分——变化的范围、起止与当前状态",
+        "impact_note": "示例句：可能影响的自有对象与共同竞争词",
+        "unconfirmed_note": "示例句：仍需确认的那一项，以及需要什么数据",
+        "created_at": "2026-08-03T00:00:00"
+      }
+    ],
+    "fact_competitor_evidence_handoff": [
+      {
+        "handoff_id": "HO-B0SHAPE0001-2026-08-03-1-AD",
+        "frozen_run_id": "B0SHAPE0001-2026-08-03-1",
+        "target_page": "advertising",
+        "family_asin": "B0SHAPE0001",
+        "own_child_asin": "B0SHAPEOC1",
+        "shared_keyword": "<共同竞争词>",
+        "pressure_dimension": "price",
+        "observable_fact": "示例句：可交给下游的那条可观察事实",
+        "evidence_level": "sufficient",
+        "detail_entry": "B0SHAPECH1 · 2026-05-01 至 2026-08-03 · 示例句：该条事实的短标签",
+        "created_at": "2026-08-03T00:00:00"
+      }
+    ]
+  }
+}

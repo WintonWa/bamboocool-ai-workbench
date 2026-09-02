@@ -1,0 +1,902 @@
+/* 外壳骨架样式。只管全局原则 §4 的八个槽位，不碰任何模块内部表达。
+ *
+ * 模块样式一律写在 [data-module="x"] 之下，且不得出现裸元素选择器 ——
+ * 旧库存版有一句无作用域的 section{...} 和整块 table{...}，两份样式表一拼，
+ * 广告版每个 .card 和每张表都会被重新上妆。这里所有规则都带 .wb- 前缀或 id，
+ * 唯一的例外是下面这条必须存在的全局兜底。
+ */
+
+/* [hidden] 属于 UA 来源，任何作者样式写了 display 都会盖掉它，
+ * 结果 hidden=true 的元素照样有实体几何、糊在页面上吃掉全部点击。必须 !important。 */
+[hidden] {
+  display: none !important;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg0);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wb-mono,
+.wb-num {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- 整体骨架：导航 / 标题状态 / 筛选 / 主体 ---------------------------- */
+
+.wb-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* 槽位 1 全局导航 */
+.wb-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  height: var(--nav-h);
+  padding: 0 var(--s5);
+  background: var(--bg1);
+  box-shadow: var(--card);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.wb-brand {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.wb-tabs {
+  display: flex;
+  gap: var(--s1);
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.wb-tab {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg2);
+  font: inherit;
+  padding: var(--s2) var(--s3);
+  border-radius: var(--r3);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.wb-tab:hover {
+  background: var(--bg2);
+  color: var(--fg);
+}
+
+.wb-tab[aria-current="page"] {
+  background: var(--ink);
+  color: var(--bg1);
+}
+
+.wb-tab[data-degraded="1"] {
+  color: var(--fg3);
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.wb-nav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+/* 槽位 2 页面标题与数据状态 */
+.wb-head {
+  display: flex;
+  justify-content: center;
+  padding: var(--s3) var(--s5);
+  min-width: 0;
+}
+
+/* ---------- 滚动条 ----------
+ * 全站一套，不分模块。轨道不给任何背景色 —— 白轨道压在玻璃面板上是整屏
+ * 唯一一处不属于任何板块的实心色，视觉上会先看到它再看到内容。
+ * 滑块用偏黑的深灰，靠透明边框收窄，两侧留呼吸而不是贴着内容边缘。
+ *
+ * 两套机制只能选一套：Chrome 里只要写了标准属性 scrollbar-width/color，
+ * 它就走标准渲染、整段忽略 ::-webkit-scrollbar —— 而标准属性只能选
+ * auto/thin/none，给不了 px 宽度、圆角和内边距。
+ * 实测踩过：同时写 scrollbar-width:thin 时滑块槽只有 2px，深色滑块细到看不见。
+ * 所以 webkit 走伪元素（拿到完整控制），非 webkit 才用标准属性兜底。 */
+::-webkit-scrollbar {
+  width: var(--sb-size);
+  height: var(--sb-size);
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sb-thumb-hover);
+  background-clip: padding-box;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  :root {
+    scrollbar-width: thin;
+    scrollbar-color: var(--sb-thumb) transparent;
+  }
+}
+
+/* 页面选择器：轻盈版。选中态不再是黑色块，而是一条会滑动的黑线。
+ * 底下那条极淡的横线是轨道，让"线在轨道上滑"这件事读得出来 ——
+ * 只有滑块没有轨道时，线会显得像凭空出现。 */
+.wb-tabs-slide {
+  position: relative;
+  gap: var(--s4);
+  box-shadow: inset 0 -1px 0 var(--bg2);
+  overflow-x: visible;
+}
+
+.wb-tabs-slide .wb-tab {
+  background: transparent;
+  border-radius: 0;
+  color: var(--fg3);
+  padding: var(--s2) 2px calc(var(--s2) + 2px);
+  transition: color 0.16s ease;
+}
+
+.wb-tabs-slide .wb-tab:hover {
+  background: transparent;
+  color: var(--fg2);
+}
+
+.wb-tabs-slide .wb-tab[aria-current="page"] {
+  background: transparent;
+  color: var(--fg);
+  font-weight: 600;
+}
+
+/* 滑块本体。left/width 由 shell.js 从选中按钮的实测位置写入，
+ * 不写死每个 tab 的宽度 —— 页面名长短不一，写死必然错位。 */
+.wb-tabs-ink {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 1px;
+  pointer-events: none;
+  transition: left 0.24s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wb-state {
+  display: flex;
+  gap: var(--s3);
+  color: var(--fg3);
+  font-size: var(--fs-anno);
+  white-space: nowrap;
+}
+
+.wb-state b {
+  color: var(--fg2);
+  font-weight: 500;
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 槽位 3 快速筛选与上下文 */
+.wb-filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  padding: 0 var(--s5) var(--s3);
+  min-width: 0;
+}
+
+.wb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  background: var(--bg2);
+  color: var(--fg2);
+  border-radius: 999px;
+  padding: 3px var(--s2) 3px var(--s3);
+  font-size: 12px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.wb-chip b {
+  color: var(--fg);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.wb-chip button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg3);
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.wb-chip button:hover {
+  color: var(--alert);
+}
+
+/* 主体：左侧模块自有列表区 + 右侧内容。两栏都必须能收缩，
+ * 所以轨道用 minmax(0,1fr) 而不是 1fr —— 默认 min-width:auto 等于内容
+ * min-content 尺寸，会顶爆轨道把右边的列挤出容器。 */
+.wb-main {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  padding: 0 var(--s5) var(--s6);
+  min-height: 0;
+  min-width: 0;
+}
+
+.wb-main[data-rail="1"] {
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  gap: var(--s4);
+}
+
+.wb-rail,
+.wb-body {
+  min-width: 0;
+  min-height: 0;
+}
+
+/* 模块挂载点。模块的全部样式都在 [data-module] 作用域下。 */
+#wb-rail[data-module],
+#wb-body[data-module] {
+  min-width: 0;
+}
+
+/* ---- 数据性质与状态徽标（契约 6.6） ---------------------------------- */
+
+.wb-nature,
+.wb-cond {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  line-height: 1.4;
+  padding: 1px 6px;
+  border-radius: var(--r3);
+  background: var(--bg2);
+  color: var(--fg2);
+  white-space: nowrap;
+}
+
+.wb-nature[data-v="真实"] { color: var(--nature-real); }
+.wb-nature[data-v="推导"] { color: var(--nature-derived); }
+.wb-nature[data-v="模拟"] { color: var(--nature-sim); border: 1px dashed currentColor; padding: 0 5px; }
+.wb-nature[data-v="混合"] { color: var(--nature-mixed); }
+
+.wb-cond[data-v="过期"] { color: var(--warn); }
+.wb-cond[data-v="缺失"] { color: var(--fg3); }
+.wb-cond[data-v="待确认"] { color: var(--calm); }
+.wb-cond[data-v="失败"] { color: var(--alert); }
+
+/* ---- 槽位 6 AI 助手 / 槽位 8 依据侧页 / 抽屉与浮层 -------------------- */
+
+.wb-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 9, 11, 0.28);
+  z-index: 40;
+}
+
+.wb-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(560px, 92vw);
+  background: var(--bg1);
+  box-shadow: var(--pop);
+  z-index: 41;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.wb-drawer[data-side="left"] {
+  right: auto;
+  left: 0;
+}
+
+.wb-drawer-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s4) var(--s5);
+  font-weight: 600;
+}
+
+/* 带 overflow 的 flex 子项必须显式 min-height:0，
+ * 否则 WebKit 里塌成 0 高度、Chromium 里不塌，只在一个引擎验会漏。 */
+.wb-drawer-body {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 0 var(--s5) var(--s5);
+  min-height: 0;
+}
+
+.wb-pop {
+  position: absolute;
+  z-index: 50;
+  max-width: 380px;
+  background: var(--bg1);
+  border-radius: var(--r2);
+  box-shadow: var(--pop);
+  padding: var(--s3) var(--s4);
+  font-size: 12px;
+  color: var(--fg2);
+}
+
+.wb-btn {
+  appearance: none;
+  border: 0;
+  background: var(--bg2);
+  color: var(--fg);
+  font: inherit;
+  padding: var(--s2) var(--s3);
+  border-radius: var(--r3);
+  cursor: pointer;
+}
+
+.wb-btn:hover { background: #ebebed; }
+.wb-btn[data-kind="primary"] { background: var(--ink); color: var(--bg1); }
+.wb-btn[data-kind="primary"]:hover { background: #000; }
+
+.wb-icon-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg3);
+  font: inherit;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--r3);
+}
+
+.wb-icon-btn:hover { background: var(--bg2); color: var(--fg); }
+
+:where(.wb-tab, .wb-btn, .wb-icon-btn, .wb-chip button):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---- 槽位 6 任务面板：毛玻璃、可收起、非模态 ------------------------------ */
+
+/* 收起态：右缘一条竖标签。点它展开，点面板外收起。
+ * 用 click 不用 hover —— hover 驱动的浮层会误弹，而运营是在密集表格上移动鼠标的。 */
+.wb-handle {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  /* 跟着任务面板的纵向偏移走，手柄和面板不脱节 */
+  transform: translateY(calc(-50% + var(--panel-dy)));
+  z-index: 38;
+  appearance: none;
+  border: 1px solid var(--glass-hi);
+  border-right: 0;
+  border-radius: var(--r2) 0 0 var(--r2);
+  padding: var(--s4) 6px;
+  cursor: pointer;
+  font: inherit;
+  color: var(--fg);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-hi);
+  transition: padding-right 0.14s ease;
+}
+
+.wb-handle:hover { padding-right: 10px; }
+
+.wb-handle-txt {
+  writing-mode: vertical-rl;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+}
+
+/* 展开态：右侧、垂直居中、约占 1/3 宽 2/3 高。
+ * clamp 是为了小屏不至于挤成条、大屏不至于长成一面墙。 */
+.wb-task {
+  position: fixed;
+  right: var(--panel-edge);
+  top: 50%;
+  transform: translateY(calc(-50% + var(--panel-dy)));
+  z-index: 39;
+  width: clamp(280px, var(--panel-w), 720px);
+  height: clamp(240px, var(--panel-h), 96vh);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 1px solid var(--glass-hi);
+  border-radius: var(--panel-r, var(--r));
+  color: var(--fg);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  /* 内高光是玻璃感的主要来源，比降低透明度有效得多 */
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-hi);
+  overflow: hidden;
+}
+
+/* 面板内部一律不用不透明底色 —— 第一版空状态放了一张纯白 .wb-placeholder，
+ * 把整块玻璃盖死，截图看上去就是一片白。面板里的"面"必须让玻璃透过去。 */
+#wb-task .wb-placeholder {
+  background: transparent;
+  box-shadow: none;
+  padding: var(--s6) var(--s4);
+}
+
+.wb-task-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s3) var(--s4);
+  border-bottom: 1px solid var(--glass-line);
+  min-width: 0;
+}
+
+.wb-task-title {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.wb-task-scope {
+  color: var(--fg2);
+  font-size: 12px;
+  font-family: var(--mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.wb-task-head .wb-icon-btn { margin-left: auto; }
+
+/* 带 overflow 的 flex 子项必须显式 min-height:0，否则 WebKit 里塌成 0 高。 */
+.wb-task-body {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: var(--s4);
+  min-height: 0;
+}
+
+/* 可运行任务 */
+.wb-task-item {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s2) 0;
+  min-width: 0;
+}
+
+.wb-task-item-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.wb-task-item-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.wb-task-item-sub {
+  color: var(--fg3);
+  font-size: 12px;
+}
+
+.wb-task-sect {
+  color: var(--fg3);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  margin: var(--s4) 0 var(--s2);
+}
+
+.wb-task-sect:first-child { margin-top: 0; }
+
+/* 执行过程：一步一行。状态点 + 动作 + 结果 + 数据来源。
+ * 面向运营不显示 per-step 毫秒 —— 那是 SQLite 读耗时，会把判断读成查询日志。 */
+.wb-step {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: var(--s1) var(--s2);
+  padding: var(--s2) 0;
+  border-top: 1px solid var(--glass-line);
+  min-width: 0;
+}
+
+.wb-step:first-of-type { border-top: 0; }
+
+.wb-step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  background: var(--fg3);
+}
+
+.wb-step[data-status="完成"] .wb-step-dot { background: var(--good); }
+/* 进行中那档用「加载中」—— 契约 02 §6.6 词表里的词，也是 module.py 的
+   _STATUS_WORDS 认得的那个。原先写「进行中」，而白名单外的词会被静默改写成
+   「完成」，于是正在跑的步骤看起来已经跑完了。 */
+.wb-step[data-status="加载中"] .wb-step-dot {
+  background: var(--accent);
+  animation: wb-pulse 1.1s ease-in-out infinite;
+}
+.wb-step[data-status="失败"] .wb-step-dot { background: var(--alert); }
+.wb-step[data-status="跳过"] .wb-step-dot { background: var(--bg2); box-shadow: inset 0 0 0 1px var(--fg3); }
+
+.wb-step-label {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.wb-step-detail {
+  grid-column: 2;
+  color: var(--fg2);
+  font-size: 12px;
+  min-width: 0;
+}
+
+.wb-step-src {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+}
+
+.wb-src {
+  font-size: 11px;
+  color: var(--fg3);
+  background: rgba(17, 17, 19, 0.05);
+  border-radius: var(--r3);
+  padding: 0 6px;
+  white-space: nowrap;
+}
+
+.wb-task-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s3) var(--s4);
+  border-top: 1px solid var(--glass-line);
+  min-width: 0;
+}
+
+/* 运行中的活动指示。只表示「在跑」，不表示进度 —— 真实进度要等 Agent 侧
+   分段落库（13 号文 R1）。prefers-reduced-motion 那段用 * 选择器，已经覆盖它。 */
+.wb-task-live {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+.wb-task-pulse {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: wb-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes wb-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .35; transform: scale(.72); }
+}
+
+.wb-task-note {
+  margin-left: auto;
+  color: var(--fg3);
+  font-size: var(--fs-anno);
+}
+
+/* 各步真实耗时之和。现在不渲染 —— 模型耗时还没被归到步骤，写出来会误导
+   （实测一次运行 107 秒、九步合计 5.7 毫秒）。见 13 号文 R5。 */
+.wb-task-elapsed {
+  margin-left: auto;
+  color: var(--fg3);
+  font-size: var(--fs-anno);
+  font-variant-numeric: tabular-nums;
+}
+
+
+
+/* ---- 左侧对象栏：可收起的滑动窗口 ---------------------------------------
+ * 这条栏是外壳拥有的（#wb-rail），所以做一次五个模块全覆盖，模块零改动。
+ *
+ * 两种模式，用 ?rail=push|overlay 选：
+ *   push    展开时作为栅格列把内容推开，不遮任何数据（默认，无回退风险）
+ *   overlay 和任务面板一样的玻璃浮层，浮在内容上（视觉统一，但会遮左边的数据）
+ */
+
+/* 手柄：始终存在，位置随开合状态变。展开时贴在栏的右缘当抓手，收起时退到屏幕左缘。
+ * 不放在 #wb-rail 内部 —— 模块 mount 会清空那个容器。 */
+.wb-handle-l {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  /* 跟着对象栏的纵向偏移走 */
+  transform: translateY(calc(-50% + var(--rail-dy)));
+  z-index: 40;
+  appearance: none;
+  border: 1px solid var(--glass-hi);
+  border-left: 0;
+  border-radius: 0 var(--r2) var(--r2) 0;
+  padding: var(--s4) 6px;
+  cursor: pointer;
+  font: inherit;
+  color: var(--fg);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--glass-shadow);
+  transition: left 0.18s ease, padding 0.14s ease;
+}
+
+/* 展开态：手柄挪到栏右缘。left 由 shell.js 按栏的实际右边界算，避免和 rail-w 写死耦合 */
+.wb-handle-l[data-state="open"] {
+  border-radius: var(--r2);
+  border-left: 1px solid var(--glass-hi);
+}
+
+.wb-handle-l:hover { padding-left: 10px; }
+
+.wb-handle-l .wb-handle-txt {
+  writing-mode: vertical-rl;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+}
+
+.wb-rail { position: relative; }
+
+/* overlay 模式：脱离栅格，变成左侧玻璃浮层 */
+.wb-main[data-railmode="overlay"] { grid-template-columns: minmax(0, 1fr); }
+
+.wb-main[data-railmode="overlay"] .wb-rail {
+  position: fixed;
+  left: var(--rail-edge);
+  top: 50%;
+  transform: translateY(calc(-50% + var(--rail-dy)));
+  z-index: 39;
+  width: clamp(200px, var(--rail-w), 720px);
+  height: clamp(240px, var(--rail-h), 96vh);
+  overflow: auto;
+  min-height: 0;
+  border: 1px solid var(--glass-hi);
+  border-radius: var(--rail-r, var(--r));
+  /* 用 --rail-* 而不是 --glass-*：对象栏背后是密集数据，需要比任务面板不透明 */
+  background: var(--rail-bg);
+  -webkit-backdrop-filter: var(--rail-filter);
+  backdrop-filter: var(--rail-filter);
+  box-shadow: var(--glass-shadow);
+}
+
+/* overlay 模式下栏内的卡片不能不透明，否则把玻璃盖死 —— 和任务面板同一条规矩 */
+.wb-main[data-railmode="overlay"] .wb-rail [class*="-rail"],
+.wb-main[data-railmode="overlay"] .wb-rail [class*="-card"] {
+  background: transparent;
+  box-shadow: none;
+}
+
+/* ---- 玻璃面板调参工具（?tune=1 才出现，开发用） ---------------------------
+ * 自己刻意不用毛玻璃：调玻璃的工具如果也是玻璃就没法判断。放左侧避开任务面板。 */
+
+.wb-tune {
+  position: fixed;
+  left: var(--s4);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 60;
+  width: 320px;
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--bg1);
+  border-radius: var(--r);
+  box-shadow: var(--pop);
+  overflow: hidden;
+}
+
+.wb-tune-head {
+  display: flex;
+  align-items: center;
+  padding: var(--s3) var(--s4);
+  font-weight: 600;
+  border-bottom: 1px solid var(--bg2);
+}
+
+.wb-tune-x {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg3);
+  font: inherit;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.wb-tune-rows {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: var(--s3) var(--s4);
+  min-height: 0;
+}
+
+.wb-tune-sep {
+  color: var(--fg3);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  margin: var(--s3) 0 var(--s1);
+  padding-top: var(--s2);
+  border-top: 1px solid var(--bg2);
+}
+
+.wb-tune-sep:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.wb-tune-row {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr) 56px;
+  align-items: center;
+  gap: var(--s2);
+  padding: 3px 0;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.wb-tune-name {
+  color: var(--fg2);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.wb-tune-range {
+  width: 100%;
+  min-width: 0;
+  accent-color: var(--accent);
+}
+
+.wb-tune-val {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  text-align: right;
+  color: var(--fg);
+}
+
+.wb-tune-foot {
+  display: flex;
+  gap: var(--s2);
+  padding: var(--s3) var(--s4);
+  border-top: 1px solid var(--bg2);
+}
+
+.wb-tune-btn {
+  appearance: none;
+  border: 0;
+  background: var(--bg2);
+  color: var(--fg);
+  font: inherit;
+  font-size: 12px;
+  padding: var(--s2) var(--s3);
+  border-radius: var(--r3);
+  cursor: pointer;
+}
+
+.wb-tune-btn:hover { background: #ebebed; }
+
+.wb-tune-pre {
+  margin: 0;
+  padding: var(--s3) var(--s4);
+  background: var(--bg3);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 30vh;
+  overflow: auto;
+  color: var(--fg2);
+}
+
+/* ---- 状态占位：加载 / 空 / 模块故障 ---------------------------------- */
+
+.wb-placeholder {
+  background: var(--bg1);
+  border-radius: var(--r);
+  box-shadow: var(--card);
+  padding: var(--s6) var(--s5);
+  color: var(--fg2);
+  text-align: center;
+}
+
+.wb-placeholder h2 {
+  margin: 0 0 var(--s2);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.wb-placeholder p {
+  margin: 0;
+  color: var(--fg3);
+  font-size: 12px;
+}
+
+.wb-placeholder[data-kind="error"] h2 { color: var(--alert); }
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 1080px) {
+  .wb-main[data-rail="1"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .wb-rail { display: none; }
+}

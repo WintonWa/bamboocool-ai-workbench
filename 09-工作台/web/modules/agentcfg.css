@@ -1,0 +1,659 @@
+/* Agent 配置 · 模块样式
+ *
+ * 版式参考 Kiro 的 Agent 列表：卡片网格、头像、状态徽标、分隔线、
+ * 2×2 带小标签的字段区、末尾虚线新建卡。
+ *
+ * 与 Kiro 的一处刻意不同：不用等宽字族。视觉基准要则第二节全站只用系统无衬线，
+ * 需要数字对齐用 tabular-nums；门禁 G22 守这条。
+ *
+ * 契约 8.3：全部挂在 [data-module="agentcfg"] 下，不用 id 选择器。
+ */
+
+[data-module="agentcfg"] {
+  min-width: 0;
+}
+
+[data-module="agentcfg"] .agc-wrap {
+  display: grid;
+  gap: 20px;
+  padding-bottom: 40px;
+}
+
+[data-module="agentcfg"] .agc-loading {
+  color: var(--fg3);
+  font-size: var(--fs-body);
+}
+
+/* ---------- 页头 ---------- */
+
+[data-module="agentcfg"] .agc-top {
+  display: grid;
+  gap: var(--s2);
+  justify-items: start;
+}
+
+[data-module="agentcfg"] .agc-h1 {
+  font-size: var(--fs-title);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  /* 输出记录页的标题后面跟一个 ⓘ，所以是行级排版；只有文字时与原来无差别 */
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+}
+
+[data-module="agentcfg"] .agc-lede {
+  margin: 0;
+  color: var(--fg2);
+  font-size: var(--fs-sub);
+  line-height: 1.6;
+}
+
+[data-module="agentcfg"] .agc-sum {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s4);
+  color: var(--fg3);
+  font-size: var(--fs-meta);
+}
+
+[data-module="agentcfg"] .agc-sum b {
+  color: var(--fg);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 卡片网格 ---------- */
+
+[data-module="agentcfg"] .agc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+[data-module="agentcfg"] .agc-card {
+  display: grid;
+  gap: var(--s3);
+  padding: 16px;
+  border-radius: var(--r2);
+  background: var(--bg1);
+  box-shadow: var(--card);
+  cursor: pointer;
+  transition: box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+[data-module="agentcfg"] .agc-card:hover {
+  box-shadow: 0 2px 6px rgba(9, 9, 11, 0.08), 0 8px 24px rgba(9, 9, 11, 0.06);
+  transform: translateY(-1px);
+}
+
+/* 分析方式还没拍定的，左缘一条淡标记。不用颜色块 —— 避免和业务状态色混读。 */
+[data-module="agentcfg"] .agc-card[data-status="待声明"] {
+  box-shadow: var(--card), inset 3px 0 0 var(--bg2);
+}
+
+[data-module="agentcfg"] .agc-card-top,
+[data-module="agentcfg"] .agc-dhead {
+  display: flex;
+  gap: var(--s3);
+  align-items: flex-start;
+  min-width: 0;
+}
+
+[data-module="agentcfg"] .agc-ava {
+  border-radius: var(--r3);
+  flex: 0 0 auto;
+  display: block;
+  image-rendering: pixelated;
+}
+
+[data-module="agentcfg"] .agc-idbox {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+[data-module="agentcfg"] .agc-nameline {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex-wrap: wrap;
+}
+
+[data-module="agentcfg"] .agc-name {
+  font-size: var(--fs-sub);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+[data-module="agentcfg"] .agc-dname {
+  font-size: var(--fs-value);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+[data-module="agentcfg"] .agc-badge {
+  font-size: var(--fs-axis);
+  color: var(--fg2);
+  background: var(--bg2);
+  border-radius: var(--r3);
+  padding: 1px var(--s2);
+  white-space: nowrap;
+}
+
+[data-module="agentcfg"] .agc-desc {
+  margin: 0;
+  color: var(--fg3);
+  font-size: var(--fs-meta);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+[data-module="agentcfg"] .agc-rule {
+  height: 1px;
+  background: var(--bg2);
+}
+
+/* ---------- 2×2 字段区 ---------- */
+
+[data-module="agentcfg"] .agc-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s3) var(--s4);
+  min-width: 0;
+}
+
+[data-module="agentcfg"] .agc-fields-4 {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+[data-module="agentcfg"] .agc-f {
+  min-width: 0;
+}
+
+[data-module="agentcfg"] .agc-f-k {
+  color: var(--fg3);
+  font-size: var(--fs-axis);
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+[data-module="agentcfg"] .agc-f-v {
+  font-size: var(--fs-meta);
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-module="agentcfg"] .agc-f-sfx {
+  margin-left: var(--s2);
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+}
+
+[data-module="agentcfg"] .agc-f-sfx[data-kind="warn"] {
+  color: var(--warn, var(--fg2));
+}
+
+[data-module="agentcfg"] .agc-f-sfx[data-kind="on"] {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+/* ---------- 新建卡 ---------- */
+
+[data-module="agentcfg"] .agc-new {
+  appearance: none;
+  font: inherit;
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  background: transparent;
+  border: 1px dashed var(--fg3);
+  border-radius: var(--r2);
+  min-height: 148px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--s2);
+  cursor: pointer;
+}
+
+[data-module="agentcfg"] .agc-new:hover {
+  color: var(--fg);
+  border-color: var(--fg2);
+  background: var(--bg1);
+}
+
+[data-module="agentcfg"] .agc-new-plus {
+  font-size: var(--fs-value);
+  line-height: 1;
+}
+
+/* ---------- 详情 ---------- */
+
+[data-module="agentcfg"] .agc-back {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg3);
+  font: inherit;
+  font-size: var(--fs-meta);
+  padding: 0;
+  cursor: pointer;
+  justify-self: start;
+}
+
+[data-module="agentcfg"] .agc-back:hover {
+  color: var(--fg);
+}
+
+[data-module="agentcfg"] .agc-block {
+  display: grid;
+  gap: 4px;
+}
+
+[data-module="agentcfg"] .agc-ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 2px;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+}
+
+[data-module="agentcfg"] .agc-empty {
+  color: var(--fg3);
+  font-size: var(--fs-body);
+  font-style: italic;
+}
+
+[data-module="agentcfg"] .agc-note {
+  margin: 0;
+  color: var(--fg2);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+[data-module="agentcfg"] .agc-bad {
+  color: var(--warn, var(--fg));
+  font-size: var(--fs-body);
+}
+
+/* ---------- 门槛 ---------- */
+
+[data-module="agentcfg"] .agc-thr {
+  display: grid;
+  gap: 2px;
+  padding-top: var(--s3);
+  box-shadow: inset 0 1px 0 var(--bg2);
+}
+
+[data-module="agentcfg"] .agc-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px 104px 104px;
+  align-items: center;
+  gap: var(--s3);
+  padding: 5px 0;
+  font-size: var(--fs-body);
+}
+
+[data-module="agentcfg"] .agc-row[data-changed="1"] .agc-lbl {
+  font-weight: 600;
+}
+
+[data-module="agentcfg"] .agc-lbl {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+}
+
+[data-module="agentcfg"] .agc-mod,
+[data-module="agentcfg"] .agc-range,
+[data-module="agentcfg"] .agc-dflt {
+  color: var(--fg3);
+  font-size: var(--fs-axis);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="agentcfg"] .agc-in {
+  font: inherit;
+  font-size: var(--fs-body);
+  font-variant-numeric: tabular-nums;
+  padding: 3px var(--s2);
+  border: 1px solid var(--bg2);
+  border-radius: var(--r3);
+  background: var(--bg1);
+  color: var(--fg);
+  min-width: 0;
+  width: 100%;
+}
+
+[data-module="agentcfg"] .agc-in[type="checkbox"] {
+  width: auto;
+}
+
+[data-module="agentcfg"] .agc-hint {
+  color: var(--fg3);
+  font-size: var(--fs-axis);
+  line-height: 1.5;
+  padding: 0 0 4px;
+}
+
+[data-module="agentcfg"] .agc-acts {
+  display: flex;
+  gap: var(--s2);
+  padding-top: var(--s3);
+}
+
+[data-module="agentcfg"] .agc-btn {
+  appearance: none;
+  border: 0;
+  background: var(--bg2);
+  color: var(--fg);
+  font: inherit;
+  font-size: var(--fs-meta);
+  padding: var(--s2) var(--s3);
+  border-radius: var(--r3);
+  cursor: pointer;
+}
+
+[data-module="agentcfg"] .agc-btn:hover {
+  background: var(--bg0);
+}
+
+/* 侧页里的说明与可粘贴文本 */
+[data-module="agentcfg"] .agc-howto {
+  display: grid;
+  gap: var(--s3);
+  font-size: var(--fs-body);
+  line-height: 1.7;
+}
+
+[data-module="agentcfg"] .agc-pre {
+  margin: 0;
+  padding: var(--s3);
+  background: var(--bg0);
+  border-radius: var(--r3);
+  font-size: var(--fs-axis);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+
+/* ======================================================================
+ * 第二页 · Agent 输出记录
+ *
+ * 一条时间线：左边一列时刻（tabular-nums 对齐），右边这次运行是谁、判了什么。
+ * 与第一页的卡片网格形态刻意分开 —— 同一个模块里两块东西长得像，看的人一定会认错。
+ *
+ * 等宽字体在这里格外容易手滑：run_id、模型版本、时间戳本能想用 --mono，
+ * 视觉基准要则第二节明令禁止（门禁 G22 守这条），数字列对齐一律靠
+ * font-variant-numeric: tabular-nums 配 --sans。
+ * ====================================================================== */
+
+/* 页头那个 ⓘ。字号用阶梯最小档（--fs-axis 的用途里就写了图标字形 ⓘ）。 */
+[data-module="agentcfg"] .agc-info {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg3);
+  font: inherit;
+  font-size: var(--fs-axis);
+  line-height: 1;
+  padding: 2px;
+  cursor: pointer;
+}
+
+[data-module="agentcfg"] .agc-info:hover {
+  color: var(--fg);
+}
+
+/* ⓘ 浮层里的口径。浮层挂在模块容器外，靠内容节点自带 data-module 带过作用域。 */
+[data-module="agentcfg"].agc-cal {
+  display: grid;
+  gap: var(--s2);
+}
+
+[data-module="agentcfg"].agc-cal p {
+  margin: 0;
+  font-size: var(--fs-anno);
+  line-height: 1.6;
+  color: var(--fg2);
+}
+
+/* ---------- Agent 筛选 ---------- */
+
+[data-module="agentcfg"] .agc-pick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+[data-module="agentcfg"] .agc-chip {
+  appearance: none;
+  border: 1px solid var(--bg2);
+  background: var(--bg1);
+  color: var(--fg2);
+  font: inherit;
+  font-size: var(--fs-meta);
+  padding: 3px var(--s3);
+  border-radius: var(--r3);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s2);
+}
+
+[data-module="agentcfg"] .agc-chip b {
+  color: var(--fg3);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="agentcfg"] .agc-chip:hover {
+  border-color: var(--fg3);
+  color: var(--fg);
+}
+
+[data-module="agentcfg"] .agc-chip[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg1);
+}
+
+[data-module="agentcfg"] .agc-chip[aria-pressed="true"] b {
+  color: var(--bg2);
+}
+
+/* ---------- 时间线 ---------- */
+
+[data-module="agentcfg"] .agc-arch {
+  display: grid;
+  gap: 0;
+}
+
+[data-module="agentcfg"] .agc-day {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  padding: var(--s4) 0 var(--s2);
+  color: var(--fg2);
+}
+
+[data-module="agentcfg"] .agc-day-d {
+  font-size: var(--fs-sub);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+[data-module="agentcfg"] .agc-day-w,
+[data-module="agentcfg"] .agc-day-n {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="agentcfg"] .agc-day-n {
+  margin-left: auto;
+}
+
+/* 每一条运行。三列：时刻 / 内容 / 详情入口。
+ * 中列用 minmax(0,1fr) 而不是 1fr —— 1fr 的最小尺寸是内容宽度，
+ * 长摘要会把右边那列顶出容器，而且省略号永远不触发。 */
+[data-module="agentcfg"] .agc-run {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr) auto;
+  gap: var(--s3);
+  align-items: start;
+  padding: var(--s3) 0;
+  cursor: pointer;
+  box-shadow: inset 0 -1px 0 var(--bg2);
+}
+
+[data-module="agentcfg"] .agc-run:hover {
+  background: var(--bg3);
+}
+
+[data-module="agentcfg"] .agc-run:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+[data-module="agentcfg"] .agc-run-t {
+  font-size: var(--fs-meta);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg2);
+  padding-top: 1px;
+}
+
+[data-module="agentcfg"] .agc-run-main {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+[data-module="agentcfg"] .agc-run-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+[data-module="agentcfg"] .agc-run-agent {
+  font-size: var(--fs-body);
+  font-weight: 600;
+}
+
+[data-module="agentcfg"] .agc-run-obj {
+  font-size: var(--fs-meta);
+  color: var(--fg2);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="agentcfg"] .agc-tag {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  display: inline-flex;
+  gap: var(--s1);
+  align-items: baseline;
+}
+
+[data-module="agentcfg"] .agc-tag b {
+  color: var(--fg2);
+  font-weight: 600;
+}
+
+/* 摘要是 Agent 写的整句话，长短差很多，压两行。 */
+[data-module="agentcfg"] .agc-run-sum {
+  margin: 0;
+  font-size: var(--fs-meta);
+  line-height: 1.55;
+  color: var(--fg2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+[data-module="agentcfg"] .agc-run-sum[data-kind="warn"] {
+  color: var(--warn);
+}
+
+[data-module="agentcfg"] .agc-run-foot {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 「详情」在悬停或键盘聚焦时才显形。整页三十多条，每条都常驻一个同样的词，
+ * 眯眼看过去最抢眼的会变成右边那一列重复的字，而不是时刻与 Agent 名。
+ * 用 opacity 而不是 display —— 位置照旧占住，出现时不会把这一行挤动。
+ * 行本身是 role=link 且可聚焦，所以这不是唯一的可点提示。 */
+[data-module="agentcfg"] .agc-run-open {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  padding-top: 2px;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+[data-module="agentcfg"] .agc-run:hover .agc-run-open,
+[data-module="agentcfg"] .agc-run:focus-visible .agc-run-open {
+  opacity: 1;
+  color: var(--fg);
+}
+
+/* 失败的那几条要看得出来，但只靠颜色不行，徽标里本来就有"失败"两个字。 */
+[data-module="agentcfg"] .agc-badge[data-status="失败"] {
+  color: var(--warn);
+}
+
+/* ---------- 抽屉里的一次运行 ---------- */
+
+[data-module="agentcfg"].agc-runbox {
+  display: grid;
+  gap: var(--s4);
+}
+
+[data-module="agentcfg"] .agc-runsum {
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--fg);
+}
+
+[data-module="agentcfg"] .agc-runsum[data-kind="warn"] {
+  color: var(--warn);
+}
+
+[data-module="agentcfg"] .agc-dl {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: var(--s2) var(--s3);
+  align-items: baseline;
+}
+
+[data-module="agentcfg"] .agc-dl-k {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  letter-spacing: 0.04em;
+}
+
+[data-module="agentcfg"] .agc-dl-v {
+  min-width: 0;
+  font-size: var(--fs-meta);
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}

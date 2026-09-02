@@ -1,0 +1,171 @@
+/* 接入范例 · 模块样式（契约 5.3 的参考实现）
+ *
+ * 全部规则包在 [data-module="sample"] 之下。
+ * 零 #id 选择器、零裸元素选择器、零新增 token —— 门禁 G2 / G3 就打在这三条上。
+ * 元素类型选择器只允许出现在作用域内部（如下面的 table / th / td），
+ * 这样它们不会漏出去改别的模块的表格。
+ */
+
+[data-module="sample"] .smp-card {
+  background: var(--bg1);
+  border-radius: var(--r);
+  box-shadow: var(--card);
+  padding: var(--s5);
+  margin-bottom: var(--s4);
+  min-width: 0;
+}
+
+[data-module="sample"] .smp-lead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  margin-bottom: var(--s4);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+[data-module="sample"] .smp-big {
+  font-size: var(--fs-num);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+[data-module="sample"] .smp-lead-unit {
+  color: var(--fg2);
+}
+
+[data-module="sample"] .smp-sub {
+  color: var(--fg3);
+  font-size: var(--fs-anno);
+  margin: 0;
+}
+
+[data-module="sample"] .smp-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+[data-module="sample"] .smp-table th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--fg3);
+  font-size: var(--fs-anno);
+  padding: var(--s2) var(--s3);
+  white-space: nowrap;
+}
+
+[data-module="sample"] .smp-table td {
+  padding: var(--s2) var(--s3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+[data-module="sample"] .smp-table tbody tr:nth-child(odd) {
+  background: var(--bg3);
+}
+
+[data-module="sample"] .smp-row {
+  cursor: pointer;
+}
+
+[data-module="sample"] .smp-row:hover {
+  background: var(--bg2);
+}
+
+[data-module="sample"] .smp-row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+[data-module="sample"] .smp-id {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+[data-module="sample"] .smp-asin {
+  font-size: var(--fs-value);
+  letter-spacing: 0.02em;
+}
+
+[data-module="sample"] .smp-kv {
+  display: grid;
+  grid-template-columns: minmax(0, 160px) minmax(0, 1fr);
+  gap: var(--s1) var(--s4);
+  margin: var(--s4) 0 0;
+}
+
+[data-module="sample"] .smp-kv dt {
+  color: var(--fg3);
+  font-size: var(--fs-anno);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+[data-module="sample"] .smp-kv dd {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+[data-module="sample"] .smp-rail {
+  background: var(--bg1);
+  border-radius: var(--r);
+  box-shadow: var(--card);
+  padding: var(--s4);
+  min-width: 0;
+}
+
+[data-module="sample"] .smp-search {
+  width: 100%;
+  font: inherit;
+  padding: var(--s2) var(--s3);
+  border-radius: var(--r3);
+  border: 1px solid var(--bg2);
+  background: var(--bg3);
+  color: var(--fg);
+  min-width: 0;
+}
+
+[data-module="sample"] .smp-rail-label {
+  color: var(--fg3);
+  font-size: var(--fs-anno);
+  margin: var(--s4) 0 var(--s2);
+}
+
+[data-module="sample"] .smp-parents {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+[data-module="sample"] .smp-parent {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--fg2);
+  font: inherit;
+  text-align: left;
+  padding: var(--s2) var(--s3);
+  border-radius: var(--r3);
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+[data-module="sample"] .smp-parent:hover {
+  background: var(--bg2);
+  color: var(--fg);
+}

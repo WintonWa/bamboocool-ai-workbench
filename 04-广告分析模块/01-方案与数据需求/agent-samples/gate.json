@@ -1,0 +1,37 @@
+{
+  "condition": "正常",
+  "checked": 6,
+  "failed": [],
+  "detail": {
+    "B0B3LWGP36": {
+      "status": "PASS",
+      "known": 10,
+      "dangling": []
+    },
+    "B0B3MBYGR5": {
+      "status": "PASS",
+      "known": 10,
+      "dangling": []
+    },
+    "B0B3M8S4CQ": {
+      "status": "PASS",
+      "known": 10,
+      "dangling": []
+    },
+    "B0CJV56N43": {
+      "status": "PASS",
+      "known": 10,
+      "dangling": []
+    },
+    "B0B6ZT7W64": {
+      "status": "PASS",
+      "known": 10,
+      "dangling": []
+    },
+    "B088WF1PRW": {
+      "status": "PASS",
+      "known": 6,
+      "dangling": []
+    }
+  }
+}

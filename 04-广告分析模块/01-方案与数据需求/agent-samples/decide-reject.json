@@ -1,0 +1,12 @@
+{
+  "condition": "正常",
+  "persisted": false,
+  "recommendation_id": "r_GP36_01",
+  "decision_label": "拒绝",
+  "original": {
+    "方向": "暂缓",
+    "广告目的": "库存承接约束"
+  },
+  "handoff_label": "已拒绝",
+  "handoff": null
+}

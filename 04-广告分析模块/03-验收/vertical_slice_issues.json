@@ -1,0 +1,44 @@
+{
+  "dataset": "/Users/linsen/BAM/04-广告分析模块/02-数据构建/v0.1.0-slice",
+  "contract_id": "bamboocool-advertising-acceptance-v1",
+  "contract_version": "1.0.0",
+  "evaluated_at": "2026-08-29",
+  "overall_status": "PASS",
+  "open_issue_count": 0,
+  "resolved_issues": [
+    {
+      "issue_id": "AD-SLICE-001",
+      "capability_id": "AD-03,AD-05,AD-06,AD-07,AD-08,AD-09,AD-10,AD-11",
+      "priority": "P0",
+      "previous_status": "open",
+      "status": "retest_pass",
+      "resolution": "scenario_registry 的 13 个冻结场景均已包含非空 steps 和 expected_results；步骤序号连续，引用的 query_id、decision_id、event_id、feedback_id 和其他 linked_record_ids 均可解析。验收 Agent 未采用构建器 assertion_status，按步骤独立复演 13/13 场景，实际状态和可观察结果全部相符。"
+    },
+    {
+      "issue_id": "AD-SLICE-002",
+      "capability_id": "AD-02",
+      "priority": "P0",
+      "previous_status": "open",
+      "status": "retest_pass",
+      "resolution": "bridge_ad_object_product 已同时包含 promoted_asin、positive_spend_asin、purchased_asin、target_asin、matched_asin。新增 target_asin=B086L79Q6X 直接连接商品推广_投放_报告.xlsx Excel 第 11 行及 grp_37192cb0b75a711d；SOURCE_ROLE_BOUNDARY 场景明确链接五类样例，非 promoted 角色均未使用 advertising_asin 来源角色。"
+    },
+    {
+      "issue_id": "AD-SLICE-003",
+      "capability_id": "AD-01",
+      "priority": "P0",
+      "previous_status": "open",
+      "status": "retest_pass",
+      "resolution": "manifest.json 顶层和逻辑 dataset_manifest 均已声明 dataset_stage、selected_parent_asins、expected_child_count、expected_ad_group_name_key_count、amazon_fact_window_start、amazon_fact_window_end、timezone、currency、seed，值与冻结契约一致。"
+    }
+  ],
+  "non_blocking_caveats": [
+    {
+      "caveat_id": "AD-SLICE-C01",
+      "description": "SQLite 包含非冻结逻辑产物 source_file；acceptance_export.json 未重复导出该表。冻结的 20 个逻辑产物在 SQLite 与验收 JSON 间逐行一致，不影响当前切片验收。"
+    },
+    {
+      "caveat_id": "AD-SLICE-C02",
+      "description": "本结论仅放行纵向切片后的批量构建，不等同于 release 验收。当前切片实际覆盖 39 个子 ASIN、28 个广告组；完整 521 子、54 名称键广告组仍须在 release 模式重新验收。"
+    }
+  ]
+}

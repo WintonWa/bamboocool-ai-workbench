@@ -1,0 +1,1361 @@
+{
+  "_说明": "六个路由的真实响应**信封形状**。长数组截断到前 2 项。重新生成：/usr/bin/python3 02-数据构建/export_agent_package.py",
+  "_产出侧已抹值": "凡是 Agent 该判断的字段，值一律换成 <…由 Agent 判断>。这是刻意的：按《08-Agent需求与数据契约要则》§11-2，契约文档里出现完整的中文结论句就等于钉了答案。看形状用这份，看该输出什么看 05-Agent输出面交底.md 第 2 节。",
+  "_抹掉的字段数": 37,
+  "_基址": "http://127.0.0.1:18820/api/keyword/",
+  "_参数": "全部 kw.* 参数以 query 传，由外壳夹紧后放进 c.params",
+  "路由": {
+    "meta": {
+      "_呈现": "模块自描述：口径、窗口、各表计数、分布",
+      "响应": {
+        "id": "keyword",
+        "as_of": "2026-08-03",
+        "condition": "正常",
+        "scope_label": "US · BAMBOO COOL 男士内衣",
+        "judgment_object": "市场关键词 / 关键词 × 子ASIN / 关键词 × 子ASIN × 当前目标",
+        "dataset_version": "0.1.0",
+        "product_spine": "342 子 ASIN 脊椎，本模块命中 30 个",
+        "library_terms": 1991,
+        "monitored_terms": 300,
+        "focus_children": 30,
+        "counts": {
+          "term": 1991,
+          "market_snapshot": 77400,
+          "head_asin": 42378,
+          "pair": 901,
+          "position_daily": 163982,
+          "traffic_daily": 121031,
+          "market_event": 148,
+          "coverage_event": 973,
+          "evidence": 562,
+          "audit_record": 90,
+          "daily_report": 14
+        },
+        "window": {
+          "week": [
+            "2026-02-09",
+            "2026-08-03"
+          ],
+          "month": [
+            "2025-08-31",
+            "2026-07-31"
+          ],
+          "position": [
+            "2026-02-03",
+            "2026-08-03"
+          ],
+          "collect_depth": 144
+        },
+        "freshness": [
+          {
+            "name": "市场快照（周）",
+            "updated": "2026-08-03"
+          },
+          {
+            "name": "市场快照（月）",
+            "updated": "2026-07-31"
+          },
+          "…… 此数组原有 3 项，样例只留前 2 项"
+        ],
+        "distributions": {
+          "library_status": [
+            {
+              "code": "valid",
+              "label": "<字符串·由 Agent 判断>",
+              "n": 1591
+            },
+            {
+              "code": "pending",
+              "label": "<字符串·由 Agent 判断>",
+              "n": 250
+            },
+            "…… 此数组原有 4 项，样例只留前 2 项"
+          ],
+          "monitored_role": [
+            {
+              "code": "explore",
+              "label": "<字符串·由 Agent 判断>",
+              "n": 125
+            },
+            {
+              "code": "core",
+              "label": "<字符串·由 Agent 判断>",
+              "n": 65
+            },
+            "…… 此数组原有 5 项，样例只留前 2 项"
+          ],
+          "brand_role": [
+            {
+              "code": "generic",
+              "label": "<字符串·由 Agent 判断>",
+              "n": 1655
+            },
+            {
+              "code": "competitor_brand",
+              "label": "<字符串·由 Agent 判断>",
+              "n": 304
+            },
+            "…… 此数组原有 3 项，样例只留前 2 项"
+          ],
+          "position_state": [
+            {
+              "code": "beyond_depth",
+              "n": 15375,
+              "label": "<字符串·由 Agent 判断>"
+            },
+            {
+              "code": "collect_failed",
+              "n": 1832,
+              "label": "<字符串·由 Agent 判断>"
+            },
+            "…… 此数组原有 5 项，样例只留前 2 项"
+          ],
+          "coverage_state": [
+            {
+              "code": "ad_only",
+              "n": 20958,
+              "label": "<字符串·由 Agent 判断>"
+            },
+            {
+              "code": "both",
+              "n": 44456,
+              "label": "<字符串·由 Agent 判断>"
+            },
+            "…… 此数组原有 5 项，样例只留前 2 项"
+          ],
+          "evidence_type": "<数组·由 Agent 判断>",
+          "not_comparable_rows": 6319
+        },
+        "demand_dimensions": [
+          {
+            "value": "功能词",
+            "label": "<字符串·由 Agent 判断>",
+            "group_count": 13
+          },
+          {
+            "value": "材质词",
+            "label": "<字符串·由 Agent 判断>",
+            "group_count": 8
+          },
+          "…… 此数组原有 19 项，样例只留前 2 项"
+        ],
+        "not_comparable_rows": 6319,
+        "params": [
+          {
+            "key": "kw.compare",
+            "label": "<字符串·由 Agent 判断>",
+            "kind": "enum",
+            "value": "day",
+            "default": "day",
+            "group": "窗口",
+            "note": "日报环比与变化聚合的窗口",
+            "choices": [
+              {
+                "value": "day",
+                "label": "<字符串·由 Agent 判断>"
+              },
+              {
+                "value": "week",
+                "label": "<字符串·由 Agent 判断>"
+              },
+              "…… 此数组原有 3 项，样例只留前 2 项"
+            ]
+          },
+          {
+            "key": "kw.weak_rank",
+            "label": "<字符串·由 Agent 判断>",
+            "kind": "num",
+            "value": 20,
+            "default": 20,
+            "group": "位置",
+            "note": "第几位之后算位置偏弱；只影响分档，不改变证据结论",
+            "lo": 3,
+            "hi": 100,
+            "step": 1
+          },
+          "…… 此数组原有 10 项，样例只留前 2 项"
+        ],
+        "agent_result": {
+          "condition": "缺失",
+          "run_id": null,
+          "using_current": false,
+          "message": "没有已发布的关键词 Agent 结果"
+        },
+        "vocab": {
+          "nature": [
+            "真实",
+            "推导",
+            "…… 此数组原有 4 项，样例只留前 2 项"
+          ],
+          "status": [
+            "正常",
+            "加载中",
+            "…… 此数组原有 7 项，样例只留前 2 项"
+          ]
+        },
+        "spine_check": {
+          "pair_children": 30,
+          "pair_missing": 0,
+          "goal_children": 342,
+          "goal_missing": 0,
+          "spine_size": 342,
+          "passed": true
+        },
+        "unconfirmed": [
+          "共享词库的纳入、移除与人工确认规则",
+          "日报的默认比较周期",
+          "…… 此数组原有 8 项，样例只留前 2 项"
+        ]
+      }
+    },
+    "overview": {
+      "_呈现": "页面一 关键词动态与机会总览",
+      "响应": {
+        "as_of": "2026-08-03",
+        "judgment_object": "需求词组 / 自有核心词 / 关键词 × 子ASIN",
+        "judgment_source": {
+          "source": "scaffold",
+          "label": "<字符串·由 Agent 判断>",
+          "detail": "本页判断层内容来自构造脚本，用于页面联调；接入 Agent 后由 Agent 产出替换",
+          "run": null,
+          "missing_run_column": [
+            "fact_keyword_audit_record",
+            "fact_keyword_coverage_event",
+            "…… 此数组原有 5 项，样例只留前 2 项"
+          ]
+        },
+        "scope": {
+          "site": "US",
+          "product_line": "BAMBOO COOL 男士内衣",
+          "library_terms": 1991,
+          "monitored_terms": 300,
+          "focus_children": 30,
+          "compare_period": "day",
+          "week_window": [
+            "2026-02-09",
+            "2026-08-03"
+          ],
+          "position_window": [
+            "2026-02-03",
+            "2026-08-03"
+          ],
+          "children_with_relations": 30,
+          "children_with_goal": 342,
+          "children_with_absorb": 342,
+          "children_with_evidence": 30,
+          "terms_with_relations": 300,
+          "not_comparable_terms": 35,
+          "second_source_terms": 871,
+          "insufficient_terms": 20
+        },
+        "blocked_reasons": [
+          "35 个词本期口径变更，涨跌不计入比较",
+          "20 个词历史样本不足，只报当期事实"
+        ],
+        "reports": [
+          {
+            "report_date": "2026-08-03",
+            "site": "US",
+            "product_line": "BAMBOO COOL 男士内衣",
+            "compare_period": "对比前一日",
+            "traffic_proxy_metric": "监控词带来的自然 Sessions（代理指标）",
+            "traffic_proxy_value": "<整数·由 Agent 判断>",
+            "traffic_proxy_delta": "<小数·由 Agent 判断>",
+            "q1_traffic_result": "<字符串·由 Agent 判断>",
+            "q2_main_movers": "<字符串·由 Agent 判断>",
+            "q3_core_coverage_change": "<字符串·由 Agent 判断>",
+            "q4_new_signals": "<字符串·由 Agent 判断>",
+            "q5_priority_next": "<字符串·由 Agent 判断>",
+            "priority_evidence_ids": "<数组·由 Agent 判断>",
+            "coverage_event_ids": "<数组·由 Agent 判断>",
+            "compare_lag_days": 1,
+            "compare_base_date": "2026-08-02",
+            "compare_base_value": 1079,
+            "compare_note": null
+          },
+          {
+            "report_date": "2026-08-02",
+            "site": "US",
+            "product_line": "BAMBOO COOL 男士内衣",
+            "compare_period": "对比前一日",
+            "traffic_proxy_metric": "监控词带来的自然 Sessions（代理指标）",
+            "traffic_proxy_value": "<整数·由 Agent 判断>",
+            "traffic_proxy_delta": "<小数·由 Agent 判断>",
+            "q1_traffic_result": "<字符串·由 Agent 判断>",
+            "q2_main_movers": "<字符串·由 Agent 判断>",
+            "q3_core_coverage_change": "<字符串·由 Agent 判断>",
+            "q4_new_signals": "<字符串·由 Agent 判断>",
+            "q5_priority_next": "<字符串·由 Agent 判断>",
+            "priority_evidence_ids": "<数组·由 Agent 判断>",
+            "coverage_event_ids": "<数组·由 Agent 判断>",
+            "compare_lag_days": 1,
+            "compare_base_date": "2026-08-01",
+            "compare_base_value": 3772,
+            "compare_note": null
+          },
+          "…… 此数组原有 14 项，样例只留前 2 项"
+        ],
+        "group_changes": {
+          "groups": [
+            {
+              "group_name": "其他通用",
+              "demand_dimension": "其他通用",
+              "term_count": 11,
+              "up": 6,
+              "down": 4,
+              "competition": 1,
+              "unclear": 0,
+              "continuous": 11,
+              "single_period": 0,
+              "net": 2,
+              "search_moved": 1699934,
+              "samples": [
+                {
+                  "keyword": "mens underwear",
+                  "label": "<字符串·由 Agent 判断>",
+                  "event_type_label": "<字符串·由 Agent 判断>",
+                  "continuity_label": "<字符串·由 Agent 判断>"
+                },
+                {
+                  "keyword": "men's underwear",
+                  "label": "<字符串·由 Agent 判断>",
+                  "event_type_label": "<字符串·由 Agent 判断>",
+                  "continuity_label": "<字符串·由 Agent 判断>"
+                },
+                "…… 此数组原有 3 项，样例只留前 2 项"
+              ]
+            },
+            {
+              "group_name": "款式词·boxer briefs",
+              "demand_dimension": "款式词",
+              "term_count": 37,
+              "up": 9,
+              "down": 11,
+              "competition": 3,
+              "unclear": 23,
+              "continuous": 23,
+              "single_period": 5,
+              "net": -2,
+              "search_moved": 1166124,
+              "samples": [
+                {
+                  "keyword": "mens boxer briefs",
+                  "label": "<字符串·由 Agent 判断>",
+                  "event_type_label": "<字符串·由 Agent 判断>",
+                  "continuity_label": "<字符串·由 Agent 判断>"
+                },
+                {
+                  "keyword": "boxer briefs for men pack",
+                  "label": "<字符串·由 Agent 判断>",
+                  "event_type_label": "<字符串·由 Agent 判断>",
+                  "continuity_label": "<字符串·由 Agent 判断>"
+                },
+                "…… 此数组原有 3 项，样例只留前 2 项"
+              ]
+            },
+            "…… 此数组原有 22 项，样例只留前 2 项"
+          ],
+          "totals": {
+            "up": 47,
+            "down": 41,
+            "competition": 13,
+            "unclear": 71,
+            "continuous": 101,
+            "single_period": 21,
+            "groups_moved": 22
+          },
+          "dedup_applied": true,
+          "top3_share": 0.7558
+        },
+        "core_changes": {
+          "core_events": 352,
+          "all_events": 973,
+          "significant": 95,
+          "rank_shift_threshold": 3,
+          "by_type": [
+            {
+              "name": "新增广告覆盖",
+              "n": 136
+            },
+            {
+              "name": "自然位下降",
+              "n": 60
+            },
+            "…… 此数组原有 7 项，样例只留前 2 项"
+          ],
+          "by_push_role": [
+            {
+              "name": "主推",
+              "n": 181
+            },
+            {
+              "name": "辅助",
+              "n": 171
+            }
+          ],
+          "gained": 162,
+          "lost": 68,
+          "children_touched": 30,
+          "top_declines": [
+            {
+              "event_id": "ce_000126",
+              "keyword": "32 cool mens underwear",
+              "keyword_id": "kw_00862",
+              "child_asin": "B0B3M8S4CQ",
+              "event_type": "<字符串·由 Agent 判断>",
+              "event_type_label": "<字符串·由 Agent 判断>",
+              "from_date": "2026-02-03",
+              "to_date": "2026-08-03",
+              "from_rank": 25,
+              "to_rank": 68,
+              "is_core_keyword": 1,
+              "continuity": "<字符串·由 Agent 判断>",
+              "label": "<字符串·由 Agent 判断>",
+              "operator_role_label": "核心词",
+              "push_role_label": "主推",
+              "product_goal_label": "品牌防守",
+              "monthly_search_volume": 14037
+            },
+            {
+              "event_id": "ce_000388",
+              "keyword": "bamboo cool underwear",
+              "keyword_id": "kw_01640",
+              "child_asin": "B0C3V5VHK2",
+              "event_type": "<字符串·由 Agent 判断>",
+              "event_type_label": "<字符串·由 Agent 判断>",
+              "from_date": "2026-02-03",
+              "to_date": "2026-08-03",
+              "from_rank": 23,
+              "to_rank": 60,
+              "is_core_keyword": 1,
+              "continuity": "<字符串·由 Agent 判断>",
+              "label": "<字符串·由 Agent 判断>",
+              "operator_role_label": "核心词",
+              "push_role_label": "主推",
+              "product_goal_label": "品牌防守",
+              "monthly_search_volume": 5269
+            },
+            "…… 此数组原有 10 项，样例只留前 2 项"
+          ],
+          "recent": [
+            {
+              "event_id": "ce_000002",
+              "keyword": "bamboo briefs men",
+              "keyword_id": "kw_00804",
+              "child_asin": "B0B3LM36WB",
+              "event_type": "<字符串·由 Agent 判断>",
+              "event_type_label": "<字符串·由 Agent 判断>",
+              "from_date": "2026-05-01",
+              "to_date": "2026-08-03",
+              "from_rank": 98,
+              "to_rank": 81,
+              "is_core_keyword": 1,
+              "continuity": "<字符串·由 Agent 判断>",
+              "label": "<字符串·由 Agent 判断>",
+              "operator_role_label": "核心词",
+              "push_role_label": "辅助",
+              "product_goal_label": "稳定守位",
+              "monthly_search_volume": 3542
+            },
+            {
+              "event_id": "ce_000029",
+              "keyword": "32 cool mens underwear",
+              "keyword_id": "kw_00862",
+              "child_asin": "B0B3LWGP36",
+              "event_type": "<字符串·由 Agent 判断>",
+              "event_type_label": "<字符串·由 Agent 判断>",
+              "from_date": "2026-02-03",
+              "to_date": "2026-08-03",
+              "from_rank": 1,
+              "to_rank": 10,
+              "is_core_keyword": 1,
+              "continuity": "<字符串·由 Agent 判断>",
+              "label": "<字符串·由 Agent 判断>",
+              "operator_role_label": "核心词",
+              "push_role_label": "主推",
+              "product_goal_label": "品牌防守",
+              "monthly_search_volume": 14037
+            },
+            "…… 此数组原有 16 项，样例只留前 2 项"
+          ],
+          "sampled_children": 10,
+          "condition": "正常"
+        },
+        "priority": "<对象·由 Agent 判断>",
+        "condition": "正常",
+        "agent_result": {
+          "condition": "缺失",
+          "run_id": null,
+          "using_current": false,
+          "message": "没有已发布的关键词 Agent 结果"
+        }
+      }
+    },
+    "terms?limit=3": {
+      "_呈现": "页面二 列表态 市场关键词库",
+      "响应": {
+        "as_of": "2026-08-03",
+        "judgment_object": "市场关键词（未绑定子体时只出市场事实）",
+        "judgment_source": {
+          "source": "scaffold",
+          "label": "<字符串·由 Agent 判断>",
+          "detail": "本页判断层内容来自构造脚本，用于页面联调；接入 Agent 后由 Agent 产出替换",
+          "run": null,
+          "missing_run_column": [
+            "fact_keyword_audit_record",
+            "fact_keyword_coverage_event",
+            "…… 此数组原有 5 项，样例只留前 2 项"
+          ]
+        },
+        "summary": {
+          "total": 1991,
+          "monitored": 300,
+          "alias_groups": 112,
+          "alias_rows": 118,
+          "variant_families": 109,
+          "brands": 80,
+          "competitor_brands": 79,
+          "first_seen": "2026-02-02",
+          "last_updated": "2026-08-03",
+          "role_confirmed": 1021
+        },
+        "library_status": [
+          {
+            "code": "valid",
+            "label": "<字符串·由 Agent 判断>",
+            "n": 1591
+          },
+          {
+            "code": "pending",
+            "label": "<字符串·由 Agent 判断>",
+            "n": 250
+          },
+          "…… 此数组原有 4 项，样例只留前 2 项"
+        ],
+        "monitored_role": [
+          {
+            "code": "explore",
+            "label": "<字符串·由 Agent 判断>",
+            "n": 125
+          },
+          {
+            "code": "core",
+            "label": "<字符串·由 Agent 判断>",
+            "n": 65
+          },
+          "…… 此数组原有 5 项，样例只留前 2 项"
+        ],
+        "brand_role": [
+          {
+            "code": "generic",
+            "label": "<字符串·由 Agent 判断>",
+            "n": 1655
+          },
+          {
+            "code": "competitor_brand",
+            "label": "<字符串·由 Agent 判断>",
+            "n": 304
+          },
+          "…… 此数组原有 3 项，样例只留前 2 项"
+        ],
+        "groups": [
+          {
+            "group_id": "kg_009",
+            "group_name": "其他通用",
+            "demand_dimension": "其他通用",
+            "member_count": 202,
+            "term_count": 202,
+            "monitored_count": 14,
+            "search_weighted": 2398055.0,
+            "search_raw": 2398055,
+            "purchase_weighted": 76477.0,
+            "search_volume": 2398055,
+            "double_count": 0
+          },
+          {
+            "group_id": "kg_027",
+            "group_name": "款式词·boxer briefs",
+            "demand_dimension": "款式词",
+            "member_count": 467,
+            "term_count": 467,
+            "monitored_count": 71,
+            "search_weighted": 1985743.332009,
+            "search_raw": 2273487,
+            "purchase_weighted": 127327.666553,
+            "search_volume": 1985743,
+            "double_count": 287743
+          },
+          "…… 此数组原有 59 项，样例只留前 2 项"
+        ],
+        "dedup_applied": true,
+        "total_matched": 1991,
+        "shown": 3,
+        "terms": [
+          {
+            "keyword_id": "kw_00001",
+            "keyword": "mens underwear",
+            "keyword_cn": "男式内衣",
+            "library_status_label": "有效词",
+            "is_monitored": 1,
+            "operator_role": "core",
+            "operator_role_label": "核心词",
+            "brand_role_label": "非品牌词",
+            "matched_brand": null,
+            "primary_category": "其他通用",
+            "relevance": 100.0,
+            "raw_variant_count": 1,
+            "monthly_search_volume": 908485,
+            "monthly_purchase_volume": 14899,
+            "purchase_rate": 0.0164,
+            "aba_month_rank": 282,
+            "product_count": 27426,
+            "demand_supply_ratio": 33.12,
+            "ad_competitor_count": 548,
+            "ppc_bid": 3.04,
+            "click_share_top3": 0.2119,
+            "avg_price": 34.59,
+            "rating": 4.5,
+            "change_shape_label": "<字符串·由 Agent 判断>",
+            "comparable_flag": 1,
+            "comparable_block_reason": null,
+            "alt_product_count": 27411,
+            "alt_ad_competitor_count": 495,
+            "alt_click_share_top3": 0.325,
+            "conflict_fields": [
+              "在售商品数",
+              "广告竞品数",
+              "…… 此数组原有 3 项，样例只留前 2 项"
+            ],
+            "has_conflict": true
+          },
+          {
+            "keyword_id": "kw_00010",
+            "keyword": "underwear",
+            "keyword_cn": "内衣裤",
+            "library_status_label": "有效词",
+            "is_monitored": 1,
+            "operator_role": "pending_validation",
+            "operator_role_label": "待验证词",
+            "brand_role_label": "非品牌词",
+            "matched_brand": null,
+            "primary_category": "其他通用",
+            "relevance": 63.4,
+            "raw_variant_count": 1,
+            "monthly_search_volume": 448536,
+            "monthly_purchase_volume": 2332,
+            "purchase_rate": 0.0052,
+            "aba_month_rank": 904,
+            "product_count": 56733,
+            "demand_supply_ratio": 7.91,
+            "ad_competitor_count": 1748,
+            "ppc_bid": 1.31,
+            "click_share_top3": 0.291,
+            "avg_price": 14.96,
+            "rating": 4.4,
+            "change_shape_label": "<字符串·由 Agent 判断>",
+            "comparable_flag": 1,
+            "comparable_block_reason": null,
+            "alt_product_count": 57492,
+            "alt_ad_competitor_count": 1945,
+            "alt_click_share_top3": 0.3402,
+            "conflict_fields": [
+              "在售商品数",
+              "广告竞品数",
+              "…… 此数组原有 3 项，样例只留前 2 项"
+            ],
+            "has_conflict": true
+          },
+          "…… 此数组原有 3 项，样例只留前 2 项"
+        ],
+        "conflict_terms": 3,
+        "condition": "正常",
+        "agent_result": {
+          "condition": "缺失",
+          "run_id": null,
+          "using_current": false,
+          "message": "没有已发布的关键词 Agent 结果"
+        }
+      }
+    },
+    "term/kw_00001": {
+      "_呈现": "页面二 详情态 单词深研（mens underwear）",
+      "响应": {
+        "keyword_id": "kw_00001",
+        "as_of": "2026-08-03",
+        "judgment_object": "关键词 × 子ASIN × 当前产品目标",
+        "judgment_source": {
+          "source": "scaffold",
+          "label": "<字符串·由 Agent 判断>",
+          "detail": "本页判断层内容来自构造脚本，用于页面联调；接入 Agent 后由 Agent 产出替换",
+          "run": null,
+          "missing_run_column": [
+            "fact_keyword_audit_record",
+            "fact_keyword_coverage_event",
+            "…… 此数组原有 5 项，样例只留前 2 项"
+          ]
+        },
+        "identity": {
+          "keyword_id": "kw_00001",
+          "keyword": "mens underwear",
+          "keyword_raw": "mens underwear",
+          "keyword_cn": "男式内衣",
+          "alias_key": "mens underwear",
+          "site": "US",
+          "product_line": "BAMBOO COOL 男士内衣",
+          "library_status_label": "有效词",
+          "is_monitored": 1,
+          "selection_bucket": "core_big",
+          "primary_category": "其他通用",
+          "all_category_tags": "[\"其他通用\"]",
+          "category_tags_alt": "[\"人群\", \"属性\"]",
+          "matched_brand": null,
+          "brand_role_label": "非品牌词",
+          "operator_role": "core",
+          "operator_role_label": "核心词",
+          "operator_role_confirmed": 0,
+          "operator_role_seed_word": null,
+          "ac_recommended": 1,
+          "relevance": 100.0,
+          "category_path": "Clothing, Shoes & Jewelry",
+          "traffic_word_type": "品牌广告词/SP广告词",
+          "raw_variant_count": 1,
+          "first_seen_date": "2026-02-02",
+          "last_updated_date": "2026-08-03",
+          "source_files": "[\"关键词2.xlsx\", \"关键词3.xlsx\"]",
+          "value_origin": "<字符串·由 Agent 判断>"
+        },
+        "nature": "真实",
+        "aliases": [
+          {
+            "alias_text": "men's underware",
+            "alias_type_label": "拼写变体",
+            "normalization_rule": "去撇号+underware→underwear"
+          },
+          {
+            "alias_text": "men's underwear",
+            "alias_type_label": "拼写变体",
+            "normalization_rule": "去撇号+underware→underwear"
+          },
+          "…… 此数组原有 5 项，样例只留前 2 项"
+        ],
+        "groups": [
+          {
+            "group_name": "其他通用",
+            "demand_dimension": "其他通用",
+            "dedup_weight": 1.0,
+            "member_count": 202
+          }
+        ],
+        "attributes": [
+          {
+            "attribute_dimension": "其他通用",
+            "source_file": "关键词3.xlsx",
+            "is_primary": 1
+          },
+          {
+            "attribute_dimension": "人群",
+            "source_file": "关键词2.xlsx",
+            "is_primary": 0
+          },
+          "…… 此数组原有 3 项，样例只留前 2 项"
+        ],
+        "series": {
+          "week": [
+            {
+              "period_end": "2026-02-09",
+              "aba_week_rank": 89,
+              "product_count": 27251,
+              "ad_competitor_count": 545,
+              "demand_supply_ratio": 81.12,
+              "ppc_bid": 3.0206,
+              "click_share_top3": 0.5156,
+              "state": "有数据",
+              "comparable": 0,
+              "nature": "模拟"
+            },
+            {
+              "period_end": "2026-02-16",
+              "aba_week_rank": 93,
+              "product_count": 27776,
+              "ad_competitor_count": 555,
+              "demand_supply_ratio": 76.66,
+              "ppc_bid": 3.0788,
+              "click_share_top3": 0.4966,
+              "state": "有数据",
+              "comparable": 1,
+              "nature": "模拟"
+            },
+            "…… 此数组原有 26 项，样例只留前 2 项"
+          ],
+          "month": [
+            {
+              "period_end": "2025-08-31",
+              "monthly_search_volume": 1319330,
+              "monthly_purchase_volume": 18547,
+              "purchase_rate": 0.0141,
+              "aba_month_rank": 194,
+              "state": "有数据",
+              "comparable": 0,
+              "nature": "模拟"
+            },
+            {
+              "period_end": "2025-09-30",
+              "monthly_search_volume": 1256105,
+              "monthly_purchase_volume": 17907,
+              "purchase_rate": 0.0143,
+              "aba_month_rank": 204,
+              "state": "有数据",
+              "comparable": 1,
+              "nature": "模拟"
+            },
+            "…… 此数组原有 12 项，样例只留前 2 项"
+          ],
+          "week_measure": "第三方工具周度估算·口径A",
+          "month_measure": "第三方工具月度估算 + ABA 月排名",
+          "not_comparable": []
+        },
+        "compare": [
+          {
+            "metric": "月搜索量",
+            "primary": 908485,
+            "second": 908485,
+            "conflict": false
+          },
+          {
+            "metric": "月购买量",
+            "primary": 14899,
+            "second": 14899,
+            "conflict": false
+          },
+          "…… 此数组原有 9 项，样例只留前 2 项"
+        ],
+        "second_source_note": "第二来源仅有当期一格，且与关键词3 口径不同，不做跨来源比较",
+        "conflict_count": 5,
+        "head_asins": [
+          {
+            "period_end": "2026-08-03",
+            "rank_slot": 1,
+            "asin": "B088WF1PRW",
+            "click_share": 0.0765,
+            "conversion_share": 0.0046,
+            "is_own_asin": 0,
+            "value_origin": "<字符串·由 Agent 判断>"
+          },
+          {
+            "period_end": "2026-08-03",
+            "rank_slot": 2,
+            "asin": "B0BVM5S1JR",
+            "click_share": 0.0686,
+            "conversion_share": 0.0007,
+            "is_own_asin": 1,
+            "value_origin": "<字符串·由 Agent 判断>"
+          },
+          "…… 此数组原有 10 项，样例只留前 2 项"
+        ],
+        "head_replaced": false,
+        "head_slot1_history": [
+          [
+            "2026-02-09",
+            "B088WF1PRW"
+          ],
+          [
+            "2026-02-16",
+            "B088WF1PRW"
+          ],
+          "…… 此数组原有 26 项，样例只留前 2 项"
+        ],
+        "own_in_head": 2,
+        "market_events": [
+          {
+            "event_type_label": "<字符串·由 Agent 判断>",
+            "period_type": "month",
+            "from_period_end": "2025-08-31",
+            "to_period_end": "2026-07-31",
+            "from_value": 1319330,
+            "to_value": 908485,
+            "change_ratio": "<小数·由 Agent 判断>",
+            "continuity_label": "<字符串·由 Agent 判断>",
+            "label": "<字符串·由 Agent 判断>"
+          }
+        ],
+        "relations": [
+          {
+            "pair_id": "kp_00160",
+            "child_asin": "B0BTCJRP7B",
+            "anchor_band_label": null,
+            "pair_shape_label": "<字符串·由 Agent 判断>",
+            "monitor_from": "2026-05-01",
+            "parent_asin": "B0CT5B6GJC",
+            "style_no": "TH22AM-133",
+            "colorway": "073#黑色-2,105#新藏青-1",
+            "size": "XXL",
+            "product_goal_label": "稳定守位",
+            "push_role_label": "辅助",
+            "absorb_state_label": "不可承接扩量",
+            "organic_rank": 73,
+            "organic_state": "covered",
+            "ad_rank": 9,
+            "ad_state": "covered",
+            "coverage_state": "both",
+            "organic_state_label": "有排名",
+            "weak": true
+          },
+          {
+            "pair_id": "kp_00279",
+            "child_asin": "B0BVM5S1JR",
+            "anchor_band_label": "客户头部前三",
+            "pair_shape_label": "<字符串·由 Agent 判断>",
+            "monitor_from": "2026-02-03",
+            "parent_asin": "B0GQXK2Q58",
+            "style_no": "TH22AM-097",
+            "colorway": "073#黑色*1+114#深灰蓝*1+117#杜鹃红*1+104#绅士蓝*1+066#紫色*1+100#鸽子灰*1+102#银灰色*1",
+            "size": "M",
+            "product_goal_label": "稳定守位",
+            "push_role_label": "辅助",
+            "absorb_state_label": "不可承接扩量",
+            "organic_rank": 2,
+            "organic_state": "covered",
+            "ad_rank": 13,
+            "ad_state": "covered",
+            "coverage_state": "both",
+            "organic_state_label": "有排名",
+            "weak": false
+          },
+          "…… 此数组原有 3 项，样例只留前 2 项"
+        ],
+        "evidence": [],
+        "condition": "正常",
+        "agent_result": {
+          "condition": "缺失",
+          "run_id": null,
+          "using_current": false,
+          "message": "没有已发布的关键词 Agent 结果"
+        }
+      }
+    },
+    "children": {
+      "_呈现": "页面三 子体清单",
+      "响应": {
+        "as_of": "2026-08-03",
+        "condition": "正常",
+        "total": 30,
+        "rows": [
+          {
+            "child_asin": "B0B3LWGP36",
+            "parent_asin": "B0GQXK2Q58",
+            "style_no": "TH22AM-097",
+            "colorway": "色纺深花灰12-1,色纺黑花灰11-1,色纺金棕16-1,色纺黄18-1,色纺艳蓝17-1,色纺墨绿色14-1,色纺深紫15-1",
+            "size": "L",
+            "combination": "7D",
+            "product_lifecycle": "成熟期",
+            "category_rank": "Men's Boxer Briefs：9",
+            "rating": 4.6,
+            "pair_count": 66,
+            "anchor_count": 66,
+            "product_goal_label": "品牌防守",
+            "push_role_label": "主推",
+            "absorb_state_label": "不可承接扩量"
+          },
+          {
+            "child_asin": "B0CGLWQVWR",
+            "parent_asin": "B0D9FLMR6N",
+            "style_no": "TH23AM-319",
+            "colorway": "色纺军绿416#-1,211#暗蓝-1,色纺红400#-1,231#深灰-1,232#丈蓝-1,206#深海蓝-1,200#黑色-1",
+            "size": "L",
+            "combination": "7B",
+            "product_lifecycle": "成熟期",
+            "category_rank": "Men's Boxer Shorts：9",
+            "rating": 4.7,
+            "pair_count": 42,
+            "anchor_count": 27,
+            "product_goal_label": "品牌防守",
+            "push_role_label": "主推",
+            "absorb_state_label": "不可承接扩量"
+          },
+          "…… 此数组原有 30 项，样例只留前 2 项"
+        ],
+        "judgment_object": "子 ASIN 是关键词盘点的最小判断对象",
+        "agent_result": {
+          "condition": "缺失",
+          "run_id": null,
+          "using_current": false,
+          "message": "没有已发布的关键词 Agent 结果"
+        }
+      }
+    },
+    "child/B0CBPXNC1M": {
+      "_呈现": "页面三 盘点（五态齐全的演示对象）",
+      "响应": {
+        "child_asin": "B0CBPXNC1M",
+        "as_of": "2026-08-03",
+        "judgment_object": "关键词 × 子ASIN × 当前产品目标",
+        "judgment_source": {
+          "source": "scaffold",
+          "label": "<字符串·由 Agent 判断>",
+          "detail": "本页判断层内容来自构造脚本，用于页面联调；接入 Agent 后由 Agent 产出替换",
+          "run": null,
+          "missing_run_column": [
+            "fact_keyword_audit_record",
+            "fact_keyword_coverage_event",
+            "…… 此数组原有 5 项，样例只留前 2 项"
+          ]
+        },
+        "context": {
+          "child_asin": "B0CBPXNC1M",
+          "parent_asin": "B0DXVDSFX8",
+          "product_name": "TH22AM-536男士长平角",
+          "style_no": "TH22AM-536",
+          "colorway": "306#深灰蓝-1,302#青灰色-1,307#灰绿色-1,309#蓝灰色-1",
+          "size": "M",
+          "combination": "4F",
+          "category_rank": "Men's Boxer Shorts：69",
+          "rating": 4.5,
+          "lifecycle": "成熟期",
+          "product_goal_label": "稳定守位",
+          "push_role_label": "辅助",
+          "goal_effective_from": "2026-01-01",
+          "goal_history": [],
+          "absorb_state_label": "需先补货再扩量",
+          "absorb_detail": "需先补货再扩量；建议补货 312 件；最晚下单日 2026-05-17 已过 78 天；按当前节奏预计少卖 202 件",
+          "latest_order_date": "2026-05-17",
+          "days_to_latest_order": -78,
+          "pair_count": 28,
+          "anchored_count": 0,
+          "nature": "模拟",
+          "condition": "正常",
+          "blocked_reasons": []
+        },
+        "coverage": {
+          "summary": {
+            "related": 28,
+            "organic_covered": 18,
+            "ad_covered": 14,
+            "both_covered": 11,
+            "ad_only": 3,
+            "organic_only": 7,
+            "not_covered": 3,
+            "weak_position": 17,
+            "weak_rank_threshold": 20
+          },
+          "dedup_applied": true,
+          "groups": [
+            {
+              "group_name": "款式词·boxer briefs",
+              "demand_dimension": "款式词",
+              "monitored_in_group": 55.0,
+              "related_here": 7.0,
+              "organic_covered": 6.0,
+              "ad_covered": 3.5,
+              "both_covered": 3.5,
+              "unconfirmed": 0.0,
+              "gap": 48.0,
+              "group_reach": 0.1273,
+              "organic_rate": 0.8571,
+              "search_volume": 41426
+            },
+            {
+              "group_name": "款式",
+              "demand_dimension": "款式",
+              "monitored_in_group": 42.0,
+              "related_here": 1.0,
+              "organic_covered": 0.0,
+              "ad_covered": 1.0,
+              "both_covered": 0.0,
+              "unconfirmed": 0.0,
+              "gap": 41.0,
+              "group_reach": 0.0238,
+              "organic_rate": 0.0,
+              "search_volume": 4700
+            },
+            "…… 此数组原有 15 项，样例只留前 2 项"
+          ],
+          "condition": "正常"
+        },
+        "positions": {
+          "date_from": "2026-02-03",
+          "date_to": "2026-08-03",
+          "collect_depth": 144,
+          "collect_fail_days": [
+            "2026-03-17",
+            "2026-05-06",
+            "…… 此数组原有 3 项，样例只留前 2 项"
+          ],
+          "daily": [
+            {
+              "date": "2026-02-03",
+              "covered": 18,
+              "not_covered": 6,
+              "beyond_depth": 4,
+              "collect_failed": 0,
+              "not_monitored": 0,
+              "avg_organic_rank": 78.2,
+              "is_collect_fail_day": false
+            },
+            {
+              "date": "2026-02-04",
+              "covered": 17,
+              "not_covered": 6,
+              "beyond_depth": 5,
+              "collect_failed": 0,
+              "not_monitored": 0,
+              "avg_organic_rank": 74.6,
+              "is_collect_fail_day": false
+            },
+            "…… 此数组原有 182 项，样例只留前 2 项"
+          ],
+          "tracks": [
+            {
+              "pair_id": "kp_00508",
+              "keyword": "cotton underwear for men",
+              "operator_role_label": "核心词",
+              "is_core": true,
+              "anchor_band_label": null,
+              "monitor_from": "2026-02-03",
+              "current_organic": 74,
+              "current_ad": 17,
+              "current_state_label": "有排名",
+              "best_rank": 71,
+              "worst_rank": 77,
+              "down_streak_days": 7,
+              "is_continuous_decline": true,
+              "points": [
+                {
+                  "date": "2026-02-03",
+                  "organic": 73,
+                  "ad": null,
+                  "state": "covered"
+                },
+                {
+                  "date": "2026-02-06",
+                  "organic": 72,
+                  "ad": null,
+                  "state": "covered"
+                },
+                "…… 此数组原有 65 项，样例只留前 2 项"
+              ]
+            },
+            {
+              "pair_id": "kp_00504",
+              "keyword": "box hero bamboo boxers",
+              "operator_role_label": "核心词",
+              "is_core": true,
+              "anchor_band_label": null,
+              "monitor_from": "2026-02-03",
+              "current_organic": 105,
+              "current_ad": 4,
+              "current_state_label": "有排名",
+              "best_rank": 101,
+              "worst_rank": 109,
+              "down_streak_days": 5,
+              "is_continuous_decline": false,
+              "points": [
+                {
+                  "date": "2026-02-03",
+                  "organic": null,
+                  "ad": null,
+                  "state": "not_covered"
+                },
+                {
+                  "date": "2026-02-06",
+                  "organic": null,
+                  "ad": null,
+                  "state": "not_covered"
+                },
+                "…… 此数组原有 65 项，样例只留前 2 项"
+              ]
+            },
+            "…… 此数组原有 28 项，样例只留前 2 项"
+          ],
+          "state_legend": [
+            {
+              "code_label": "有排名"
+            },
+            {
+              "code_label": "确认未覆盖"
+            },
+            "…… 此数组原有 5 项，样例只留前 2 项"
+          ],
+          "event_counts": [
+            {
+              "name": "新增广告覆盖",
+              "n": 14
+            },
+            {
+              "name": "自然位上涨",
+              "n": 4
+            },
+            "…… 此数组原有 6 项，样例只留前 2 项"
+          ],
+          "events": [
+            {
+              "event_id": "ce_000530",
+              "keyword": "big mens underwear",
+              "event_type_label": "<字符串·由 Agent 判断>",
+              "from_date": "2026-02-03",
+              "to_date": "2026-08-03",
+              "from_rank": 140,
+              "to_rank": 99,
+              "is_core_keyword": 0,
+              "continuity": "<字符串·由 Agent 判断>",
+              "label": "<字符串·由 Agent 判断>"
+            },
+            {
+              "event_id": "ce_000531",
+              "keyword": "bixers",
+              "event_type_label": "<字符串·由 Agent 判断>",
+              "from_date": "2026-02-03",
+              "to_date": "2026-08-03",
+              "from_rank": 52,
+              "to_rank": 57,
+              "is_core_keyword": 0,
+              "continuity": "<字符串·由 Agent 判断>",
+              "label": "<字符串·由 Agent 判断>"
+            },
+            "…… 此数组原有 32 项，样例只留前 2 项"
+          ],
+          "significant_events": 8,
+          "rank_shift_threshold": 3,
+          "market_events": [
+            {
+              "event_id": "me_00045",
+              "keyword": "men underwear brief",
+              "event_type_label": "<字符串·由 Agent 判断>",
+              "label": "<字符串·由 Agent 判断>",
+              "continuity_label": "<字符串·由 Agent 判断>",
+              "to_period_end": "2026-07-31",
+              "change_ratio": "<小数·由 Agent 判断>"
+            },
+            {
+              "event_id": "me_00047",
+              "keyword": "cotton underwear for men",
+              "event_type_label": "<字符串·由 Agent 判断>",
+              "label": "<字符串·由 Agent 判断>",
+              "continuity_label": "<字符串·由 Agent 判断>",
+              "to_period_end": "2026-07-31",
+              "change_ratio": "<小数·由 Agent 判断>"
+            },
+            "…… 此数组原有 12 项，样例只留前 2 项"
+          ],
+          "condition": "正常"
+        },
+        "evidence": {
+          "total": 23,
+          "type_counts": [
+            {
+              "name": "产品覆盖缺口",
+              "n": 7
+            },
+            {
+              "name": "场景与长尾信号",
+              "n": 7
+            },
+            "…… 此数组原有 5 项，样例只留前 2 项"
+          ],
+          "weights": {
+            "w_demand": 0.3,
+            "w_change": 0.3,
+            "w_push": 0.2,
+            "w_evidence": 0.2
+          },
+          "items": [
+            {
+              "evidence_id": "ev_00319",
+              "keyword": "bixers",
+              "evidence_type_label": "<字符串·由 Agent 判断>",
+              "priority": "<整数·由 Agent 判断>",
+              "conclusion": "<字符串·由 Agent 判断>",
+              "main_basis": "<字符串·由 Agent 判断>",
+              "product_goal_label": "稳定守位",
+              "push_role_label": "辅助",
+              "inventory_limit_label": "需先补货再扩量",
+              "evidence_completeness_label": "<字符串·由 Agent 判断>",
+              "next_verification_label": "<字符串·由 Agent 判断>",
+              "competitor_verification_label": "<字符串·由 Agent 判断>",
+              "ref_market_event_ids": "<数组·由 Agent 判断>",
+              "ref_coverage_event_ids": "<数组·由 Agent 判断>",
+              "ref_position_date": "2026-08-03",
+              "rank_score": 0.8
+            },
+            {
+              "evidence_id": "ev_00327",
+              "keyword": "men underwear brief",
+              "evidence_type_label": "<字符串·由 Agent 判断>",
+              "priority": "<整数·由 Agent 判断>",
+              "conclusion": "<字符串·由 Agent 判断>",
+              "main_basis": "<字符串·由 Agent 判断>",
+              "product_goal_label": "稳定守位",
+              "push_role_label": "辅助",
+              "inventory_limit_label": "需先补货再扩量",
+              "evidence_completeness_label": "<字符串·由 Agent 判断>",
+              "next_verification_label": "<字符串·由 Agent 判断>",
+              "competitor_verification_label": "<字符串·由 Agent 判断>",
+              "ref_market_event_ids": "<数组·由 Agent 判断>",
+              "ref_coverage_event_ids": "<数组·由 Agent 判断>",
+              "ref_position_date": "2026-08-03",
+              "rank_score": 0.8
+            },
+            "…… 此数组原有 23 项，样例只留前 2 项"
+          ],
+          "condition": "正常"
+        },
+        "audits": {
+          "runs": [
+            {
+              "record_id": "ar_0052",
+              "run_date": "2026-06-15",
+              "is_latest": 0,
+              "library_scope": "US / BAMBOO COOL 男士内衣 / 监控词 300",
+              "pair_count": 28,
+              "organic_covered_count": 17,
+              "ad_covered_count": 14,
+              "both_covered_count": 10,
+              "unconfirmed_count": 4,
+              "best_organic_rank": 32,
+              "median_organic_rank": 75,
+              "product_goal_label": "稳定守位",
+              "push_role_label": "辅助",
+              "absorb_state_label": "需先补货再扩量",
+              "evidence_count": "<整数·由 Agent 判断>",
+              "evidence_type_counts": "<对象·由 Agent 判断>",
+              "rule_version": "<字符串·由 Agent 判断>"
+            },
+            {
+              "record_id": "ar_0053",
+              "run_date": "2026-07-13",
+              "is_latest": 0,
+              "library_scope": "US / BAMBOO COOL 男士内衣 / 监控词 300",
+              "pair_count": 28,
+              "organic_covered_count": 18,
+              "ad_covered_count": 14,
+              "both_covered_count": 11,
+              "unconfirmed_count": 4,
+              "best_organic_rank": 17,
+              "median_organic_rank": 76,
+              "product_goal_label": "稳定守位",
+              "push_role_label": "辅助",
+              "absorb_state_label": "需先补货再扩量",
+              "evidence_count": "<整数·由 Agent 判断>",
+              "evidence_type_counts": "<对象·由 Agent 判断>",
+              "rule_version": "<字符串·由 Agent 判断>",
+              "delta": {
+                "organic_covered": 1,
+                "ad_covered": 0,
+                "median_organic_rank": 1,
+                "unconfirmed": 0
+              }
+            },
+            "…… 此数组原有 3 项，样例只留前 2 项"
+          ],
+          "condition": "正常"
+        },
+        "condition": "正常",
+        "agent_result": {
+          "condition": "缺失",
+          "run_id": null,
+          "using_current": false,
+          "message": "没有已发布的关键词 Agent 结果"
+        }
+      }
+    }
+  }
+}

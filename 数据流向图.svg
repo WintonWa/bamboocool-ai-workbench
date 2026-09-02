@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="900" viewBox="0 0 1180 900" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <!-- 配色取自项目自己的 tokens.css：ink #18181b / accent #2563eb / alert #c9372c
+       / warn #a8620d / good #3a7d43 / calm #6b4fa8
+
+       2026-09-02 修订三处（上一版的错）：
+       1. 上一版两条「只读」箭头分别画在库存与竞品正下方，看上去像
+          「工作台只读库存、Agent 只读竞品」。实际两侧都读全部四个包 ——
+          改成一条读取总线，四个包汇入，再分两路到两个进程。
+       2. 竞品那条箭头从 y=440 起而框底在 y=360，中间 80px 空白脱空。
+       3. 「反代」标签偏离它标注的那条线 90px。 -->
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#52525b"/>
+    </marker>
+    <marker id="aw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a8620d"/>
+    </marker>
+    <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <rect width="1180" height="900" fill="#fafafa"/>
+
+  <text x="40" y="44" font-size="24" font-weight="700" fill="#18181b">Bamboocool 工作台 · 数据流向</text>
+  <text x="40" y="70" font-size="13" fill="#71717a">/Users/linsen/BAM　·　基准日 AS_OF = 2026-08-03　·　2026-09-02 核实</text>
+
+  <g font-size="12" fill="#52525b">
+    <line x1="830" y1="40" x2="872" y2="40" stroke="#52525b" stroke-width="1.6" marker-end="url(#a)"/>
+    <text x="880" y="44">只读</text>
+    <line x1="940" y1="40" x2="982" y2="40" stroke="#a8620d" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#aw)"/>
+    <text x="990" y="44">写入</text>
+    <line x1="1050" y1="40" x2="1092" y2="40" stroke="#2563eb" stroke-width="1.6" marker-end="url(#ab)"/>
+    <text x="1100" y="44">构建</text>
+  </g>
+
+  <!-- ① 客户原始 -->
+  <rect x="40" y="98" width="1100" height="62" rx="6" fill="#fff" stroke="#3a7d43" stroke-width="1.6"/>
+  <text x="60" y="124" font-size="15" font-weight="600" fill="#18181b">① 客户原始数据　数据源/AI广告对接数据-总20260803/</text>
+  <text x="60" y="146" font-size="12.5" fill="#3a7d43">全部数据包的唯一真源（14 类）。同级那个无后缀的「AI广告对接数据」是严格子集，缺六项，已移出到 BAM-归档/数据源-残缺子集/</text>
+
+  <g stroke="#2563eb" stroke-width="1.5" marker-end="url(#ab)">
+    <line x1="167" y1="160" x2="167" y2="212"/>
+    <line x1="442" y1="160" x2="442" y2="212"/>
+    <line x1="717" y1="160" x2="717" y2="212"/>
+    <line x1="1002" y1="160" x2="1002" y2="212"/>
+  </g>
+  <text x="196" y="190" font-size="11.5" fill="#2563eb">四条互不相交的构建链（各模块 02-数据构建/ 下的脚本）</text>
+
+  <!-- ② 四个只读事实包 -->
+  <text x="40" y="238" font-size="15" font-weight="600" fill="#18181b">② 只读事实包　路径唯一声明处：09-工作台/core/paths.py</text>
+
+  <g font-size="12.5">
+    <rect x="40" y="252" width="255" height="108" rx="6" fill="#fff" stroke="#18181b" stroke-width="2"/>
+    <text x="56" y="274" font-size="13.5" font-weight="600" fill="#18181b">产品库存 v0.3.0　466MB</text>
+    <text x="56" y="294" fill="#52525b">43 表 / 199 万行 / 342 子体</text>
+    <text x="56" y="312" fill="#52525b">730 天历史 + 90 天预测</text>
+    <text x="56" y="332" font-size="11.5" fill="#a8620d">★ 全树根节点，三个下游模块</text>
+    <text x="56" y="348" font-size="11.5" fill="#a8620d">　 都靠它取产品身份</text>
+    <rect x="40" y="368" width="255" height="46" rx="6" fill="#fff" stroke="#a8620d" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="56" y="386" font-size="12" font-weight="600" fill="#a8620d">＋ v0.2.2　11MB</text>
+    <text x="56" y="404" font-size="11.5" fill="#52525b">四个质量汇总块只在这里 · 不是旧版</text>
+
+    <rect x="315" y="252" width="255" height="108" rx="6" fill="#fff" stroke="#18181b" stroke-width="1.4"/>
+    <text x="331" y="274" font-size="13.5" font-weight="600" fill="#18181b">广告 v0.2.0　20MB</text>
+    <text x="331" y="294" fill="#52525b">34 表 / 6.1 万行</text>
+    <rect x="315" y="368" width="255" height="46" rx="6" fill="#fff" stroke="#a8620d" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="331" y="386" font-size="12" font-weight="600" fill="#a8620d">＋ page2-ext</text>
+    <text x="331" y="404" font-size="11.5" fill="#52525b">页面二决策链 · 路径不在 paths.py</text>
+
+    <rect x="590" y="252" width="255" height="108" rx="6" fill="#fff" stroke="#18181b" stroke-width="1.4"/>
+    <text x="606" y="274" font-size="13.5" font-weight="600" fill="#18181b">关键词 v0.1.0　103MB</text>
+    <text x="606" y="294" fill="#52525b">24 表 / 42.4 万行</text>
+
+    <rect x="865" y="252" width="275" height="108" rx="6" fill="#fff" stroke="#18181b" stroke-width="1.4"/>
+    <text x="881" y="274" font-size="13.5" font-weight="600" fill="#18181b">竞品 v0.1.0　8MB</text>
+    <text x="881" y="294" fill="#52525b">23 表 / 4.7 万行</text>
+  </g>
+
+  <!-- 读取总线：四个包全部汇入，再分两路。上一版画成两条独立箭头，
+       等于说「工作台只读库存、Agent 只读竞品」，是错的。 -->
+  <g stroke="#52525b" stroke-width="1.4">
+    <line x1="167" y1="414" x2="167" y2="442"/>
+    <line x1="442" y1="414" x2="442" y2="442"/>
+    <line x1="717" y1="360" x2="717" y2="442"/>
+    <line x1="1002" y1="360" x2="1002" y2="442"/>
+    <line x1="167" y1="442" x2="1002" y2="442"/>
+  </g>
+  <text x="470" y="434" font-size="12" fill="#52525b">两侧都以 mode=ro 打开全部四个包（工作台侧直接读，Agent 侧经 scripts/*_facts.py 事实桥）</text>
+
+  <g stroke="#52525b" stroke-width="1.8" marker-end="url(#a)">
+    <line x1="300" y1="442" x2="300" y2="496"/>
+    <line x1="880" y1="442" x2="880" y2="496"/>
+  </g>
+
+  <!-- ③ / ④ 两个进程 -->
+  <rect x="40" y="500" width="520" height="122" rx="6" fill="#fff" stroke="#18181b" stroke-width="2"/>
+  <text x="60" y="526" font-size="15" font-weight="600" fill="#18181b">③ 09-工作台　18820</text>
+  <text x="60" y="548" font-size="12.5" fill="#52525b">Python 3.9 stdlib 零依赖 · 只绑 127.0.0.1 · 无鉴权</text>
+  <text x="60" y="568" font-size="12.5" fill="#52525b">7 个模块自注册（registry 扫 modules/*/module.py）</text>
+  <text x="60" y="592" font-size="12.5" font-weight="600" fill="#c9372c">永不写库（core/db.py 加 PRAGMA query_only）</text>
+  <text x="60" y="611" font-size="11.5" fill="#71717a">算术全在这一侧：覆盖天数 / 断货日 / 缺口量 / 补货建议 / 五类风险</text>
+
+  <rect x="620" y="500" width="520" height="122" rx="6" fill="#fff" stroke="#6b4fa8" stroke-width="2"/>
+  <text x="640" y="526" font-size="15" font-weight="600" fill="#6b4fa8">④ 06-Pi-Agent交互Demo　18812</text>
+  <text x="640" y="548" font-size="12.5" fill="#52525b">node + TS · 真调 deepseek/deepseek-v4-flash</text>
+  <text x="640" y="568" font-size="12.5" fill="#52525b">用 resolve(PROJECT_ROOT, "..", "09-工作台") 定位工作台</text>
+  <text x="640" y="592" font-size="12.5" font-weight="600" fill="#a8620d">唯一的写方</text>
+  <text x="640" y="611" font-size="11.5" fill="#71717a">只出判断：影响幅度 + 中文依据 + 逐日 p10/p50/p90</text>
+
+  <!-- 反代：标签紧贴它标注的那条线 -->
+  <line x1="562" y1="536" x2="616" y2="536" stroke="#52525b" stroke-width="1.6" marker-end="url(#a)"/>
+  <text x="512" y="524" font-size="11.5" fill="#52525b">/api/agent/* 反代</text>
+
+  <path d="M 880 622 L 880 668" stroke="#a8620d" stroke-width="1.8" stroke-dasharray="5 4" fill="none" marker-end="url(#aw)"/>
+  <text x="890" y="650" font-size="12" font-weight="600" fill="#a8620d">写</text>
+
+  <!-- ⑤ Agent 产出 -->
+  <rect x="40" y="676" width="1100" height="116" rx="6" fill="#fff" stroke="#a8620d" stroke-width="1.6"/>
+  <text x="60" y="700" font-size="15" font-weight="600" fill="#18181b">⑤ Agent 产出　09-工作台/modules/&lt;模块&gt;/derived/</text>
+  <text x="60" y="720" font-size="11.5" fill="#71717a">Agent 把结果放进工作台的地盘，工作台只读回来渲染 —— 所以两个项目目录的相对位置不能动</text>
+  <g font-size="12">
+    <text x="60" y="744" fill="#3a7d43">✓ forecast_agent.sqlite　需求预测 900 行逐日 + 20 run</text>
+    <text x="60" y="764" fill="#3a7d43">✓ verdict_agent.sqlite　盘点结论 3 run</text>
+    <text x="60" y="782" fill="#52525b">　 chart_cache.sqlite　图表缓存 36MB（工作台自建，非 Agent）</text>
+    <text x="600" y="744" fill="#3a7d43">✓ ads_agent_state.sqlite　广告决策 22 run</text>
+    <text x="600" y="764" fill="#3a7d43">✓ competitor_agent_state_v2.sqlite　竞品 8 run</text>
+    <text x="600" y="782" fill="#c9372c">✗ keyword_agent_current / _state.sqlite　代码引用三处、磁盘上不存在</text>
+  </g>
+
+  <path d="M 300 676 L 300 626" stroke="#52525b" stroke-width="1.6" fill="none" marker-end="url(#a)"/>
+  <text x="310" y="654" font-size="12" fill="#52525b">读回渲染</text>
+
+  <!-- ⑥ 页面 -->
+  <rect x="40" y="812" width="520" height="58" rx="6" fill="#18181b"/>
+  <text x="60" y="836" font-size="14.5" font-weight="600" fill="#fff">⑥ 页面　11 个业务页 + 2 个 Agent 管理页 + 2 页接入范例</text>
+  <text x="60" y="857" font-size="11.5" fill="#d4d4d8">总览 1 / 库存 3 / 关键词 3 / 竞品 2 / 广告 2　＝ pages 声明合计 15 页</text>
+  <path d="M 170 792 L 170 810" stroke="#52525b" stroke-width="1.6" fill="none" marker-end="url(#a)"/>
+
+  <text x="620" y="836" font-size="12.5" fill="#71717a">方案层口径是六模块十三页；差的两页是「执行与复盘」模块（未建）。</text>
+  <text x="620" y="857" font-size="12.5" fill="#71717a">Agent 配置那两页方案层无对应，是客户版 v0.2 才写进交付物的。</text>
+</svg>

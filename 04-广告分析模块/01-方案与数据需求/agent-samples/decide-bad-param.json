@@ -1,0 +1,4 @@
+{
+  "condition": "失败",
+  "message": "决定必须是 accept / modify / reject / defer（也接受接受、修改、拒绝、暂缓）"
+}

@@ -1,0 +1,749 @@
+/* 运营总览 · 模块样式
+ *
+ * 契约 5.3：全部规则挂在 [data-module="overview"] 下，零 id 选择器、
+ * 零裸元素选择器、不新增任何 token（色值、圆角、间距、字号全从 tokens.css 取）。
+ *
+ * 视觉基准（00-通用方法与规范/06-视觉基准要则.md）：
+ *   字号只用九档 --fs-*，这里一个 px 字面量都没有；
+ *   不用等宽字族 —— 数字列对齐靠 font-variant-numeric: tabular-nums；
+ *   板块标题一律 --fs-title（24），与关键词、竞品两页齐平；
+ *   一句话结论归 --fs-sub（16），不因为它重要就升到 22 ——
+ *   22 留给指标值，页面里最大的东西应该是数字。
+ *
+ * 颜色只做两件事：把顶部分段带的「要转出去处理的量 / 只需观察的量」分开，
+ * 以及把构成图里的补集桶（无风险）做成空心。**不做装饰、不表达严重度** ——
+ * 严重度是库存模块的判断，在总览再上一套颜色等于第二种说法。
+ * 所以构成图的每一行都自带中文名 + 绝对数 + 占比，不靠颜色说话。
+ */
+
+[data-module="overview"] {
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s6);
+  min-width: 0;
+}
+
+/* ---- 板块外框与标题 ---------------------------------------------------- */
+
+[data-module="overview"] .ovw-sec {
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  min-width: 0;
+  padding-bottom: var(--s2);
+  margin-bottom: var(--s4);
+  border-bottom: 1px solid var(--bg2);
+}
+
+[data-module="overview"] .ovw-sec-title {
+  font-size: var(--fs-title);
+  font-weight: 600;
+  color: var(--fg);
+  min-width: 0;
+}
+
+/* 结论来源与基准日：短标签，不是句子。 */
+[data-module="overview"] .ovw-src {
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+  margin-left: auto;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="overview"] .ovw-i {
+  font-size: var(--fs-axis);
+  line-height: 1;
+  color: var(--fg3);
+  background: none;
+  border: 0;
+  padding: 0 var(--s1);
+  cursor: pointer;
+}
+
+[data-module="overview"] .ovw-i:hover {
+  color: var(--fg);
+}
+
+/* 「结论来源」标签在标题右侧靠齐，ⓘ 紧跟其后，所以后者不能再吃掉 auto */
+[data-module="overview"] .ovw-src + .ovw-i {
+  margin-left: 0;
+}
+
+/* ---- 1 今天该看什么 --------------------------------------------------- */
+
+/* 头条要是整页最靠前的那一层：页底是 --bg0，所以这块用白面 + 卡片阴影
+   往前站，再加一道墨色竖线定位。用 --bg2 试过 —— 它和 --bg0 只差 3，
+   眯眼看整块消失，视线反而落到下面那堆柱子上。 */
+[data-module="overview"] .ovw-lede-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  padding: var(--s4) var(--s5);
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-left: 3px solid var(--ink);
+  border-radius: var(--r2);
+  box-shadow: var(--card);
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-lede-row {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  align-items: baseline;
+  column-gap: var(--s3);
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-lede-no {
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  color: var(--fg3);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="overview"] .ovw-lede-text {
+  font-size: var(--fs-sub);
+  line-height: 1.6;
+  color: var(--fg);
+  margin: 0;
+  min-width: 0;
+}
+
+/* 句里的数字加重并走等距数字。**不换字号**：同一行里混两个字号会让基线看起来
+   在抖。加重 + tabular-nums 已经足够把它们从汉字里挑出来。 */
+[data-module="overview"] .ovw-lede-n {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* 「—— 」之后那半句是要人动手的部分，也就是这一行真正的结论。
+   用墨色加重，和前面陈述事实的部分分开；破折号本身压成浅色，
+   让它读起来像一道分界而不是一段内容。 */
+[data-module="overview"] .ovw-lede-sep {
+  color: var(--fg3);
+}
+
+[data-module="overview"] .ovw-lede-punch {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+[data-module="overview"] .ovw-go {
+  font-size: var(--fs-meta);
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+[data-module="overview"] .ovw-go:hover {
+  text-decoration: underline;
+}
+
+/* ---- 2 模块结论卡 ----------------------------------------------------- */
+
+/* auto-fit + minmax：宽屏四张一行，窄屏自己折。轨道下限给 0 的那一半，
+   子项再显式 min-width:0 —— 少了这一条，卡里的长中文会把轨道顶爆，
+   后面的卡被挤出容器（前两个模块踩过）。 */
+[data-module="overview"] .ovw-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: var(--s4);
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  min-width: 0;
+  padding: var(--s4);
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--r2);
+  box-shadow: var(--card);
+}
+
+[data-module="overview"] .ovw-card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-card-name {
+  font-size: var(--fs-sub);
+  font-weight: 600;
+  color: var(--fg);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-module="overview"] .ovw-card-head .wb-cond,
+[data-module="overview"] .ovw-card-head .ovw-chip-ok {
+  margin-left: auto;
+}
+
+[data-module="overview"] .ovw-chip-ok {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  border: 1px solid var(--bg2);
+  border-radius: var(--r3);
+  padding: 0 var(--s1);
+  white-space: nowrap;
+}
+
+[data-module="overview"] .ovw-card-val {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s1);
+  min-width: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="overview"] .ovw-card-val b {
+  font-size: var(--fs-value);
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+
+[data-module="overview"] .ovw-card-den {
+  font-size: var(--fs-sub);
+  color: var(--fg3);
+}
+
+[data-module="overview"] .ovw-card-vlabel {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-card-line {
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  color: var(--fg2);
+  margin: var(--s1) 0 0;
+  min-width: 0;
+}
+
+/* 竞品那张卡引的是竞品模块自己给出的当期头条，来源写在右下角 */
+[data-module="overview"] .ovw-quote {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  min-width: 0;
+  padding: var(--s2) var(--s3);
+  background: var(--bg3);
+  border-left: 2px solid var(--calm);
+  border-radius: var(--r3);
+}
+
+[data-module="overview"] .ovw-quote-text {
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--fg);
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-quote-from {
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+  align-self: flex-end;
+}
+
+/* 明细块沉到卡片底部：四张卡等高但内容不等长，把空白留在结论句之后，
+   而不是留在「打开…」上方 —— 后者会看成卡片没做完。 */
+[data-module="overview"] .ovw-kv {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  column-gap: var(--s3);
+  row-gap: var(--s1);
+  align-items: baseline;
+  margin-top: auto;
+  padding-top: var(--s3);
+  border-top: 1px solid var(--bg2);
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-kv-k {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-module="overview"] .ovw-kv-v {
+  font-size: var(--fs-meta);
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-module="overview"] .ovw-card .ovw-go {
+  padding-top: var(--s3);
+}
+
+/* ---- 3 构成图 --------------------------------------------------------- */
+
+[data-module="overview"] .ovw-strip {
+  display: flex;
+  min-width: 0;
+  height: var(--s3);
+  border: 1px solid var(--bg2);
+  border-radius: var(--r3);
+  overflow: hidden;
+}
+
+[data-module="overview"] .ovw-strip-seg {
+  min-width: 0;
+  display: block;
+}
+
+/* 相邻段落之间留一道纸色发丝线，否则深色两段会连成一片 */
+[data-module="overview"] .ovw-strip-seg + .ovw-strip-seg {
+  box-shadow: inset 1px 0 0 var(--bg1);
+}
+
+[data-module="overview"] .ovw-strip-seg[data-tone="ink"],
+[data-module="overview"] .ovw-dot[data-tone="ink"] {
+  background: var(--ink);
+}
+
+[data-module="overview"] .ovw-strip-seg[data-tone="mid"],
+[data-module="overview"] .ovw-dot[data-tone="mid"] {
+  background: var(--fg3);
+}
+
+[data-module="overview"] .ovw-strip-seg[data-tone="pale"],
+[data-module="overview"] .ovw-dot[data-tone="pale"] {
+  background: var(--bg2);
+}
+
+/* 语义色。ink / mid / pale 表深浅（分开相邻段落），下面四个表含义：
+   alert 要立刻处理、warn 要关注、good 正常、calm 分类性信息。
+   四个色值全部取自 tokens.css 现有的调色板，本模块不新增颜色。
+   这一层挂在同一组 [data-tone] 上，所以圆点、分段带、条内分段、
+   徽标共用一套写法 —— 加第五种颜色只需在这里加一条。 */
+[data-module="overview"] .ovw-strip-seg[data-tone="alert"],
+[data-module="overview"] .ovw-bar-part[data-tone="alert"],
+[data-module="overview"] .ovw-dot[data-tone="alert"] {
+  background: var(--alert);
+}
+
+[data-module="overview"] .ovw-strip-seg[data-tone="warn"],
+[data-module="overview"] .ovw-bar-part[data-tone="warn"],
+[data-module="overview"] .ovw-dot[data-tone="warn"] {
+  background: var(--warn);
+}
+
+[data-module="overview"] .ovw-strip-seg[data-tone="good"],
+[data-module="overview"] .ovw-bar-part[data-tone="good"],
+[data-module="overview"] .ovw-dot[data-tone="good"] {
+  background: var(--good);
+}
+
+[data-module="overview"] .ovw-strip-seg[data-tone="calm"],
+[data-module="overview"] .ovw-bar-part[data-tone="calm"],
+[data-module="overview"] .ovw-dot[data-tone="calm"] {
+  background: var(--calm);
+}
+
+[data-module="overview"] .ovw-bar-part[data-tone="pale"] {
+  background: var(--bg3);
+}
+
+[data-module="overview"] .ovw-bar-part[data-tone="mid"] {
+  background: var(--fg3);
+}
+
+/* 圆点的描边跟着填充色走。第一版描边恒为 --fg3，浅色点在灰底上等于看不见。 */
+[data-module="overview"] .ovw-dot[data-tone="alert"] { border-color: var(--alert); }
+[data-module="overview"] .ovw-dot[data-tone="warn"] { border-color: var(--warn); }
+[data-module="overview"] .ovw-dot[data-tone="good"] { border-color: var(--good); }
+[data-module="overview"] .ovw-dot[data-tone="calm"] { border-color: var(--calm); }
+
+/* 状态词的颜色。形状由外壳给，这里只染色，且只在本模块作用域内。
+ *
+ * **规矩照库存页：异常态染文字，正常态只给一个圆点。**
+ * 第一版把「正常」也做成绿色描边，四张卡加口径表四行一共八个绿框 ——
+ * 绿色成了全页最抢眼的颜色之一，而它信息量最低（一切正常）。
+ * 颜色的预算要留给真正需要动手的那几处。 */
+[data-module="overview"] .ovw-chip-ok[data-tone],
+[data-module="overview"] .wb-cond[data-tone] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+}
+
+[data-module="overview"] .ovw-chip-ok[data-tone]::before,
+[data-module="overview"] .wb-cond[data-tone]::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: 0 0 4px;
+}
+
+/* 正常：圆点用绿色，文字与边框保持安静 */
+[data-module="overview"] [data-tone="good"].ovw-chip-ok,
+[data-module="overview"] [data-tone="good"].wb-cond {
+  color: var(--fg3);
+}
+
+[data-module="overview"] [data-tone="good"].ovw-chip-ok::before,
+[data-module="overview"] [data-tone="good"].wb-cond::before {
+  background: var(--good);
+}
+
+/* 需要动手或需要确认的状态：文字也染色 */
+[data-module="overview"] [data-tone="alert"].ovw-chip-ok,
+[data-module="overview"] [data-tone="alert"].wb-cond { color: var(--alert); border-color: var(--alert); }
+[data-module="overview"] [data-tone="warn"].ovw-chip-ok,
+[data-module="overview"] [data-tone="warn"].wb-cond { color: var(--warn); border-color: var(--warn); }
+[data-module="overview"] [data-tone="calm"].ovw-chip-ok,
+[data-module="overview"] [data-tone="calm"].wb-cond { color: var(--calm); border-color: var(--calm); }
+
+/* 分类徽标。照广告页 .ads-chip 的形状：小圆点 + 中文词 + 数量，
+   点的颜色用 currentColor，所以只需给整块上色。 */
+[data-module="overview"] .ovw-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin-top: var(--s3);
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-chip {
+  font-size: var(--fs-axis);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  padding: 2px var(--s2);
+  border-radius: 20px;
+  background: var(--bg2);
+  color: var(--fg3);
+  white-space: nowrap;
+}
+
+[data-module="overview"] .ovw-chip::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: 0 0 4px;
+}
+
+[data-module="overview"] .ovw-chip b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="overview"] .ovw-chip[data-tone="alert"] { color: var(--alert); }
+[data-module="overview"] .ovw-chip[data-tone="warn"] { color: var(--warn); }
+[data-module="overview"] .ovw-chip[data-tone="good"] { color: var(--good); }
+[data-module="overview"] .ovw-chip[data-tone="calm"] { color: var(--calm); }
+
+[data-module="overview"] .ovw-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s5);
+  margin-top: var(--s3);
+  min-width: 0;
+  font-size: var(--fs-meta);
+  color: var(--fg2);
+}
+
+[data-module="overview"] .ovw-legend-it {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+/* 描边用 --fg3 而不是 --bg2：浅色那一段的色块本身就是 --bg2，
+   描边同色等于整个圆点在页底上消失，图例里就只剩文字没有色块。 */
+[data-module="overview"] .ovw-dot {
+  width: var(--s2);
+  height: var(--s2);
+  border-radius: var(--r3);
+  border: 1px solid var(--fg3);
+  flex: 0 0 auto;
+}
+
+[data-module="overview"] .ovw-legend-it b {
+  font-weight: 600;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="overview"] .ovw-legend-pct {
+  color: var(--fg3);
+  font-size: var(--fs-anno);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 名称列按最长中文名自动定宽，四列一次成型，所有行天然对齐 */
+[data-module="overview"] .ovw-bars {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) max-content max-content;
+  column-gap: var(--s3);
+  row-gap: var(--s2);
+  align-items: center;
+  margin-top: var(--s5);
+  min-width: 0;
+}
+
+/* 带影响件数的那张图多一列。列数由 data-cols 定，不靠猜 —— 少写这一条
+   第五个格子会掉到下一行的第一列，整张表错位。 */
+[data-module="overview"] .ovw-bars[data-cols="5"] {
+  grid-template-columns: max-content minmax(0, 1fr) max-content max-content max-content;
+}
+
+[data-module="overview"] .ovw-bar-qty {
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* 分段含义那一行，比主图例更轻 */
+[data-module="overview"] .ovw-legend-sub {
+  gap: var(--s2) var(--s4);
+  margin-top: var(--s2);
+}
+
+[data-module="overview"] .ovw-legend-cap {
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+}
+
+/* 三个分布并排。窄屏自动折行，不设断点 —— 断点会和外壳的栏宽打架。 */
+[data-module="overview"] .ovw-dists {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--s3) var(--s5);
+  margin-top: var(--s5);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--bg2);
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-dist-t {
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+  margin-bottom: var(--s2);
+}
+
+[data-module="overview"] .ovw-dist-r {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-dist-k {
+  font-size: var(--fs-meta);
+  color: var(--fg2);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-module="overview"] .ovw-dist-n {
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+
+[data-module="overview"] .ovw-bar-k {
+  font-size: var(--fs-body);
+  color: var(--fg2);
+  white-space: nowrap;
+}
+
+/* 柱子刻意做薄、做平、做中灰。第一版是 12px 高、7px 圆角、--ink 填充，
+   十三行叠起来是整页最黑最重的一团 —— 眯眼时视线先落在柱子上，
+   而这一页最该先被看到的是上面那三句话。柱子是明细，不该抢主位。 */
+[data-module="overview"] .ovw-bar-track {
+  display: block;
+  min-width: 0;
+  height: var(--s2);
+  background: var(--bg2);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+[data-module="overview"] .ovw-bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--fg3);
+  border-radius: 0;
+}
+
+/* 分段条。整条的长度仍表示该类的量，条内分段表示库存模块判的严重度 ——
+   所以宽度百分比是「段 / 该类」，不是「段 / 总数」，否则条会缩短，
+   长度和右边那个绝对数就对不上了。 */
+[data-module="overview"] .ovw-bar-fill[data-split="1"] {
+  display: flex;
+  background: none;
+}
+
+[data-module="overview"] .ovw-bar-part {
+  min-width: 0;
+  display: block;
+  height: 100%;
+}
+
+/* 相邻两段之间留一道纸色发丝线，和上面那条分段带同一处理 */
+[data-module="overview"] .ovw-bar-part + .ovw-bar-part {
+  box-shadow: inset 1px 0 0 var(--bg1);
+}
+
+/* 补集桶（无风险）做成空心：计入总数，但不是要动手的量 */
+[data-module="overview"] .ovw-bar-fill[data-rest="1"] {
+  background: var(--bg1);
+  box-shadow: inset 0 0 0 1px var(--fg3);
+}
+
+[data-module="overview"] .ovw-bar-n {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-module="overview"] .ovw-bar-pct {
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---- 4 齐备度与口径 --------------------------------------------------- */
+
+/* 白面：行线是 --bg2 / --bg3，压在页底 --bg0 上比页底还浅，等于没有线。
+   列间距改成单元格右内边距，这样行线是连着的一条，不被列缝切断。 */
+[data-module="overview"] .ovw-tbl {
+  display: grid;
+  grid-template-columns: max-content max-content minmax(0, 1fr) max-content;
+  align-items: center;
+  min-width: 0;
+  padding: 0 var(--s4);
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  border-radius: var(--r2);
+  box-shadow: var(--card);
+}
+
+[data-module="overview"] .ovw-th {
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+  padding: var(--s3) var(--s5) var(--s2) 0;
+  border-bottom: 1px solid var(--bg2);
+  white-space: nowrap;
+}
+
+[data-module="overview"] .ovw-td {
+  font-size: var(--fs-body);
+  color: var(--fg);
+  padding: var(--s3) var(--s5) var(--s3) 0;
+  border-bottom: 1px solid var(--bg2);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 最后一列不留右内边距，最后一行不留底线 */
+[data-module="overview"] .ovw-th:nth-child(4n),
+[data-module="overview"] .ovw-td:nth-child(4n) {
+  padding-right: 0;
+  text-align: right;
+}
+
+[data-module="overview"] .ovw-td:nth-last-child(-n + 4) {
+  border-bottom: 0;
+}
+
+[data-module="overview"] .ovw-td-n {
+  color: var(--fg2);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="overview"] .ovw-sub {
+  font-size: var(--fs-sub);
+  font-weight: 600;
+  color: var(--fg);
+  margin: var(--s5) 0 var(--s3);
+}
+
+[data-module="overview"] .ovw-gaps {
+  display: grid;
+  grid-template-columns: max-content max-content minmax(0, 1fr);
+  column-gap: var(--s4);
+  row-gap: var(--s2);
+  align-items: baseline;
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-gap-k {
+  font-size: var(--fs-body);
+  color: var(--fg);
+  white-space: nowrap;
+}
+
+[data-module="overview"] .ovw-gap-c {
+  min-width: 0;
+}
+
+[data-module="overview"] .ovw-gap-v {
+  font-size: var(--fs-meta);
+  line-height: 1.55;
+  color: var(--fg3);
+  min-width: 0;
+}
+
+/* ---- ⓘ 浮层内容 ------------------------------------------------------ */
+
+/* .ovw-pop 自己就是那个 [data-module="overview"] 节点，所以只能给它的
+   子节点写规则 —— 见 overview.js 里 info() 上方那段注释。 */
+[data-module="overview"] .ovw-pop-t {
+  display: block;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: var(--s2);
+}
+
+[data-module="overview"] .ovw-pop-p {
+  font-size: var(--fs-meta);
+  line-height: 1.6;
+  color: var(--fg2);
+  margin: 0 0 var(--s2);
+}
+
+[data-module="overview"] .ovw-pop-p:last-child {
+  margin-bottom: 0;
+}

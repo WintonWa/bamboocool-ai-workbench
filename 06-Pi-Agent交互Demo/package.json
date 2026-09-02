@@ -1,0 +1,28 @@
+{
+  "name": "bamboocool-pi-agent-demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "build:data": "python3 scripts/build_v030.py",
+    "dev": "node --watch src/server.ts",
+    "start": "node src/server.ts",
+    "test:data": "python3 tests/test_v030_data.py",
+    "test": "npm run test:data && node --test tests/*.test.ts && node --check web/app.js",
+    "smoke": "node tests/live-smoke.ts",
+    "demo:inventory-verdict": "node scripts/run_inventory_verdict_demo.ts",
+    "demo:demand-forecast": "node scripts/run_demand_forecast_demo.ts",
+    "demo:ads-agent": "node scripts/run_ads_agent_demo.ts",
+    "demo:keyword-agent": "node scripts/run_keyword_agent_demo.ts",
+    "demo:competitor-agent:v1": "node scripts/run_competitor_agent_demo.ts",
+    "demo:competitor-agent": "node scripts/run_competitor_agent_v2.ts",
+    "cycle:competitor-agent": "node scripts/run_competitor_cycle.ts"
+  },
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "0.84.2",
+    "typebox": "1.3.7"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "dataset": "/Users/linsen/BAM/04-广告分析模块/02-数据构建/v0.1.0",
+  "contract_id": "bamboocool-advertising-acceptance-v1",
+  "contract_version": "1.0.0",
+  "evaluated_at": "2026-08-29",
+  "mode": "release",
+  "automatic_status": "PASS",
+  "independent_overall_status": "PASS",
+  "open_issue_count": 0,
+  "resolved_issues": [
+    {
+      "issue_id": "AD-RELEASE-001",
+      "capability_id": "AD-02",
+      "priority": "P0",
+      "previous_status": "open",
+      "status": "retest_pass",
+      "title": "完整范围遗漏子 ASIN 粒度正广告花费事实",
+      "resolution": "新增 fact_product_ad_spend。独立逐行回算月报 产品表现-ASIN：520/520 子体事实完全一致，其中 431 个 observed_positive、89 个 observed_zero；另有 5 条独立 PARENT_ASIN 正花费汇总。B0CCTCLTYS 是唯一月报无子体明细的范围子体，单独保存为 blocked + no_child_spend_fact + spend=null。表结构没有 ad_object_id，bridge 仍为 554 条且没有月报来源关系，因此没有用正花费伪造 Campaign/广告组映射。",
+      "retest_evidence": {
+        "direct_child_facts": 520,
+        "positive_child_facts": 431,
+        "zero_child_facts": 89,
+        "direct_parent_facts": 5,
+        "positive_parent_facts": 5,
+        "blocked_child_facts": 1,
+        "blocked_child_asin": "B0CCTCLTYS",
+        "child_raw_row_mismatches": 0,
+        "parent_raw_row_mismatches": 0,
+        "has_ad_object_id_column": false,
+        "bridge_monthly_source_relations": 0,
+        "fact_lineage_records": 526,
+        "fact_lineage_valid_source_file_links": 526,
+        "by_parent_positive_children": {
+          "B0DDNK229S": 101,
+          "B0GQXK2Q58": 92,
+          "B0CJV3G988": 95,
+          "B0D9FLMR6N": 85,
+          "B0CCLWDJNV": 58
+        }
+      }
+    },
+    {
+      "issue_id": "AD-RELEASE-002",
+      "capability_id": "AD-04",
+      "priority": "P0",
+      "previous_status": "open",
+      "status": "retest_pass",
+      "title": "8 条广告组事实的实际覆盖日期被错误填满整月",
+      "resolution": "对 739 条 fact_ad_performance 从六份 Amazon 原报表独立重聚合。展示、点击、花费、订单、广告销售及 CTR/CPC/CVR/ACoS/ROAS 全部零差异；coverage_start/end 739/739 等于参与原始行的 min(开始日期)/max(结束日期)。实际部分覆盖共 218 条，全部标记 partial_source_coverage；原 8 条广告组事实均已修正，并在页面一 comparison_eligible=0、rank_by_acos=null。",
+      "retest_evidence": {
+        "facts_recalculated": 739,
+        "metric_mismatches": 0,
+        "coverage_mismatches": 0,
+        "partial_source_coverage_facts": 218,
+        "partial_status_mismatches": 0,
+        "original_eight_corrected": 8,
+        "page1_partial_group_results": 8,
+        "page1_partial_comparison_or_rank_violations": 0
+      }
+    }
+  ],
+  "final_regression": {
+    "automatic_contract": "63/63 PASS; AD-01..AD-11 and VS-00..VS-03 PASS",
+    "parents_children": "5 parents / 521 unique children; 103/92/134/96/96",
+    "ad_groups": "54 source-name-key groups: SP40/SB5/SD9",
+    "promoted_scope": "115 unique promoted ASINs; only B0DDNK229S/B0GQXK2Q58/B0CJV3G988",
+    "targets_and_facts": "679 SP targets / 739 direct facts",
+    "sb_mapping": "5/5 SB groups pending_mapping",
+    "five_source_roles": "all present and not upgraded across roles",
+    "fact_window_attribution": "739/739 inside 2026-07; SP7/SB14/SD14",
+    "sqlite_acceptance_same_source": "21/21 tables exact",
+    "schema_same_source": "22/22 schema.json tables exact; schema.sql has all 22 tables and 10 indexes",
+    "frontend_same_source": "744/744 nested records exact",
+    "manifest_hash": "9 required fields present; 10/10 artifact hashes and byte counts exact",
+    "lineage": "3327/3327 non-scenario records link to valid source_file_id (100%)",
+    "foreign_keys": "0 violations",
+    "quality_report": "16/16 checks PASS",
+    "scenarios": "13/13 executable and independently replayable"
+  },
+  "remaining_caveats": []
+}

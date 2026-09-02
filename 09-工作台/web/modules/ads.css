@@ -1,0 +1,1025 @@
+/* 广告分析模块样式（契约 5.3）
+ *
+ * 全部规则在 [data-module="ads"] 之下；零 #id 选择器、零裸元素选择器、
+ * 零新增 token——只用 tokens.css 已有的变量。
+ *
+ * 两条踩过的工程规矩写在这里免得再犯：
+ *   grid 轨道用 minmax(0,1fr) 而非 1fr，子项显式 min-width:0，
+ *   否则 nowrap 的长文本会顶爆轨道、把后面的列挤出容器；
+ *   关键词表七列轨道至少 420px，塞进窄列会把第一列压爆成竖排单字，
+ *   所以它必须占整行。
+ */
+
+[data-module="ads"] .ads-card {
+  background: var(--bg1);
+  border-radius: var(--r);
+  box-shadow: var(--card);
+  padding: var(--s4) var(--s5);
+  margin-bottom: var(--s4);
+}
+[data-module="ads"] .ads-secthead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  margin-bottom: var(--s3);
+}
+[data-module="ads"] .ads-h2 {
+  margin: 0;
+  font-size: var(--fs-title);
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+[data-module="ads"] .ads-h3 {
+  margin: 0 0 var(--s2);
+  font-size: var(--fs-sub);
+  font-weight: 700;
+}
+[data-module="ads"] .ads-mut { color: var(--fg3); font-size: var(--fs-axis); }
+[data-module="ads"] .ads-mono {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-subhead {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  font-weight: 600;
+  margin: var(--s3) 0 var(--s1);
+}
+[data-module="ads"] .ads-hint { font-size: var(--fs-anno); color: var(--fg3); }
+
+/* ------------------------------------------------------------- 侧栏选择器 */
+[data-module="ads"] .ads-railhead {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  margin: var(--s3) 0 var(--s1);
+}
+[data-module="ads"] .ads-railtitle {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  font-weight: 600;
+}
+[data-module="ads"] .ads-pick {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 72px;
+  gap: var(--s2);
+  align-items: center;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r3);
+  cursor: pointer;
+  font-size: var(--fs-anno);
+}
+[data-module="ads"] .ads-pick > * { min-width: 0; }
+[data-module="ads"] .ads-pick:nth-child(odd) { background: var(--bg3); }
+[data-module="ads"] .ads-pick:hover { background: var(--bg2); }
+[data-module="ads"] .ads-pick.ads-on {
+  background: var(--bg2);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+[data-module="ads"] .ads-pickname {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-anno);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-picknote {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-picknum {
+  font-family: var(--sans);
+  font-size: var(--fs-axis);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------- 板块1 上下文条 */
+[data-module="ads"] .ads-ctxbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s5);
+  flex-wrap: wrap;
+}
+[data-module="ads"] .ads-ctxmain { min-width: 0; flex: 1 1 auto; }
+[data-module="ads"] .ads-ctxhead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  flex-wrap: wrap;
+  margin-bottom: var(--s2);
+}
+[data-module="ads"] .ads-asin {
+  font-family: var(--sans);
+  font-size: var(--fs-value);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-goal { font-size: var(--fs-meta); color: var(--fg2); }
+[data-module="ads"] .ads-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+}
+[data-module="ads"] .ads-chip {
+  font-size: var(--fs-axis);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  padding: 2px var(--s2);
+  border-radius: 20px;
+  background: var(--bg2);
+  color: var(--fg2);
+}
+[data-module="ads"] .ads-chip::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: 0 0 4px;
+}
+[data-module="ads"] .ads-chip-good { color: var(--good); }
+[data-module="ads"] .ads-chip-warn { color: var(--warn); }
+[data-module="ads"] .ads-chip-alert { color: var(--alert); }
+[data-module="ads"] .ads-chip-calm { color: var(--calm); }
+[data-module="ads"] .ads-ctxrun {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--s1);
+  flex: 0 0 auto;
+}
+[data-module="ads"] .ads-vers { font-size: var(--fs-axis); color: var(--fg3); }
+[data-module="ads"] .ads-note {
+  text-align: right;
+  max-width: 280px;
+}
+[data-module="ads"] .ads-run {
+  appearance: none;
+  border: 0;
+  background: var(--ink);
+  color: var(--bg1);
+  font: inherit;
+  font-size: var(--fs-meta);
+  border-radius: var(--r3);
+  padding: var(--s2) var(--s4);
+  min-width: 120px;
+  cursor: pointer;
+}
+[data-module="ads"] .ads-run:hover { background: var(--accent); }
+[data-module="ads"] .ads-run-off {
+  background: var(--bg2);
+  color: var(--fg3);
+  cursor: not-allowed;
+}
+[data-module="ads"] .ads-btn {
+  appearance: none;
+  border: 0;
+  background: var(--bg2);
+  color: var(--fg);
+  font: inherit;
+  font-size: var(--fs-axis);
+  border-radius: var(--r3);
+  padding: var(--s1) var(--s2);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-btn:hover { background: var(--accent); color: var(--bg1); }
+[data-module="ads"] .ads-ib {
+  appearance: none;
+  border: 0;
+  background: var(--bg2);
+  color: var(--fg3);
+  width: 15px;
+  height: 15px;
+  line-height: 1;
+  border-radius: 50%;
+  font-size: var(--fs-axis);
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 15px;
+}
+[data-module="ads"] .ads-ib:hover { background: var(--accent); color: var(--bg1); }
+
+/* ------------------------------------------------------- 板块2/3 判断依据 */
+[data-module="ads"] .ads-evgrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s4);
+}
+[data-module="ads"] .ads-evwide { grid-column: 1 / -1; }
+[data-module="ads"] .ads-evcol { min-width: 0; }
+[data-module="ads"] .ads-evrow {
+  background: var(--bg3);
+  border-radius: var(--r2);
+  padding: var(--s2) var(--s3);
+  margin-bottom: var(--s2);
+  font-size: var(--fs-anno);
+  color: var(--fg2);
+  box-shadow: inset 0 0 0 1px var(--bg2);
+  scroll-margin-top: 72px;
+}
+[data-module="ads"] .ads-flash {
+  box-shadow: inset 0 0 0 2px var(--accent);
+  background: var(--bg2);
+}
+[data-module="ads"] .ads-evhead {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-bottom: var(--s1);
+  flex-wrap: wrap;
+}
+[data-module="ads"] .ads-evhead > b {
+  font-size: var(--fs-anno);
+  color: var(--fg);
+  font-weight: 600;
+}
+[data-module="ads"] .ads-kv {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2px var(--s3);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-kv > dt { color: var(--fg3); }
+[data-module="ads"] .ads-kv > dd {
+  margin: 0;
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+[data-module="ads"] .ads-cav {
+  margin-top: var(--s1);
+  color: var(--fg3);
+  font-size: var(--fs-axis);
+}
+[data-module="ads"] .ads-refs { margin-top: var(--s1); }
+[data-module="ads"] .ads-ref {
+  appearance: none;
+  border: 0;
+  background: var(--bg2);
+  color: var(--fg2);
+  font: inherit;
+  font-size: var(--fs-axis);
+  border-radius: 20px;
+  padding: 1px var(--s2);
+  margin: 0 var(--s1) var(--s1) 0;
+  cursor: pointer;
+}
+[data-module="ads"] .ads-ref:hover { background: var(--accent); color: var(--bg1); }
+
+/* 关键词表：七列必须整行，塞进窄列会把第一列压爆成竖排 */
+[data-module="ads"] .ads-kwtable {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: var(--s2);
+}
+[data-module="ads"] .ads-kwrow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 72px 68px 52px 56px 68px 68px;
+  gap: var(--s2);
+  align-items: center;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r3);
+  font-size: var(--fs-axis);
+}
+[data-module="ads"] .ads-kwrow > * {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+[data-module="ads"] .ads-kwrow:nth-child(even) { background: var(--bg3); }
+[data-module="ads"] .ads-kwhead { color: var(--fg3); font-weight: 600; }
+[data-module="ads"] .ads-kwname {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}
+[data-module="ads"] .ads-kwname > b { font-size: var(--fs-anno); font-weight: 600; }
+[data-module="ads"] .ads-kwcell { color: var(--fg2); }
+[data-module="ads"] .ads-kwnum {
+  font-family: var(--sans);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+/* 对比表与基准阶梯里的数字列也要等宽，否则上下行小数点对不齐 */
+[data-module="ads"] .ads-cmprow > *,
+[data-module="ads"] .ads-bmkrow > *,
+[data-module="ads"] .ads-lblrow > * {
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-match { font-size: var(--fs-axis); font-weight: 600; cursor: pointer; }
+[data-module="ads"] .ads-match-high { color: var(--good); }
+[data-module="ads"] .ads-match-medium { color: var(--warn); }
+[data-module="ads"] .ads-match-low { color: var(--fg3); }
+[data-module="ads"] .ads-match-mismatch { color: var(--alert); }
+[data-module="ads"] .ads-trend { font-size: var(--fs-axis); }
+[data-module="ads"] .ads-trend-holding { color: var(--good); }
+[data-module="ads"] .ads-trend-gaining { color: var(--good); }
+[data-module="ads"] .ads-trend-losing { color: var(--warn); }
+[data-module="ads"] .ads-trend-absent { color: var(--alert); }
+
+/* ------------------------------------------------- 板块4/6/7/8 Agent 输出 */
+[data-module="ads"] .ads-idle {
+  background: var(--bg3);
+  box-shadow: inset 0 0 0 1px var(--bg2);
+}
+[data-module="ads"] .ads-idle .ads-h2 { color: var(--fg3); }
+[data-module="ads"] .ads-stagetag {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+}
+[data-module="ads"] .ads-stagetag::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: 0 0 4px;
+}
+[data-module="ads"] .ads-done { color: var(--good); }
+[data-module="ads"] .ads-ai {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px;
+  gap: var(--s4);
+  padding: var(--s3);
+  border-radius: var(--r2);
+  background: var(--bg3);
+  box-shadow: inset 0 0 0 1px var(--bg2);
+  margin-bottom: var(--s2);
+}
+[data-module="ads"] .ads-aimain { min-width: 0; }
+[data-module="ads"] .ads-aiside {
+  min-width: 0;
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+[data-module="ads"] .ads-aihead {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  margin-bottom: var(--s1);
+}
+[data-module="ads"] .ads-aihead > b { font-size: var(--fs-meta); font-weight: 600; }
+[data-module="ads"] .ads-line { font-size: var(--fs-anno); color: var(--fg2); margin: 2px 0; }
+[data-module="ads"] .ads-line > em {
+  font-style: normal;
+  color: var(--fg3);
+  margin-right: var(--s1);
+}
+[data-module="ads"] .ads-what {
+  font-size: var(--fs-meta);
+  color: var(--fg);
+  margin: var(--s1) 0;
+  line-height: 1.5;
+}
+[data-module="ads"] .ads-pri {
+  font-size: var(--fs-axis);
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+}
+[data-module="ads"] .ads-pri::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: 0 0 5px;
+}
+[data-module="ads"] .ads-pri-P0 { color: var(--alert); }
+[data-module="ads"] .ads-pri-P1 { color: var(--warn); }
+[data-module="ads"] .ads-pri-P2 { color: var(--fg3); }
+[data-module="ads"] .ads-pri-P3 { color: var(--fg3); }
+[data-module="ads"] .ads-dir { font-size: var(--fs-axis); font-weight: 600; color: var(--calm); }
+[data-module="ads"] .ads-cov { font-size: var(--fs-axis); font-weight: 600; }
+[data-module="ads"] .ads-cov-covered { color: var(--good); }
+[data-module="ads"] .ads-cov-mixed { color: var(--warn); }
+[data-module="ads"] .ads-cov-missing { color: var(--alert); }
+[data-module="ads"] .ads-cov-duplicate { color: var(--warn); }
+[data-module="ads"] .ads-gap { font-size: var(--fs-axis); font-weight: 600; color: var(--warn); }
+[data-module="ads"] .ads-mode { font-size: var(--fs-axis); font-family: var(--sans); font-variant-numeric: tabular-nums; }
+[data-module="ads"] .ads-withheld { font-size: var(--fs-axis); color: var(--fg3); }
+[data-module="ads"] .ads-decide {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-top: var(--s2);
+  flex-wrap: wrap;
+}
+[data-module="ads"] .ads-decided {
+  font-size: var(--fs-axis);
+  color: var(--good);
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-handoff {
+  margin-top: var(--s2);
+  background: var(--bg1);
+  border-radius: var(--r3);
+  padding: var(--s2) var(--s3);
+  font-size: var(--fs-axis);
+  color: var(--fg2);
+  box-shadow: inset 0 0 0 1px var(--bg2);
+}
+[data-module="ads"] .ads-cov { font-size: var(--fs-axis); }
+[data-module="ads"] .ads-covlist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin-top: var(--s1);
+}
+[data-module="ads"] .ads-covitem {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  background: var(--bg3);
+  border-radius: 20px;
+  padding: 2px var(--s2);
+}
+
+/* --------------------------------------------------------- 板块5 结构表 */
+[data-module="ads"] .ads-tablewrap {
+  overflow: auto;
+  max-height: 400px;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+[data-module="ads"] .ads-table {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 900px;
+}
+[data-module="ads"] .ads-trow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 52px 128px 56px 88px 96px 60px 56px 64px 56px;
+  gap: var(--s2);
+  align-items: center;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r3);
+  font-size: var(--fs-anno);
+  scroll-margin-top: 72px;
+}
+[data-module="ads"] .ads-trow > * {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-trow:nth-child(even) { background: var(--bg3); }
+[data-module="ads"] .ads-thead {
+  color: var(--fg3);
+  font-size: var(--fs-axis);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background: var(--bg1);
+  z-index: 2;
+}
+[data-module="ads"] .ads-td { color: var(--fg2); }
+[data-module="ads"] .ads-td > b { display: block; font-weight: 600; color: var(--fg); }
+[data-module="ads"] .ads-td > em {
+  display: block;
+  font-style: normal;
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+}
+[data-module="ads"] .ads-tnum {
+  font-family: var(--sans);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-tag {
+  font-size: var(--fs-axis);
+  color: var(--calm);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+}
+[data-module="ads"] .ads-tag::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: 0 0 4px;
+}
+[data-module="ads"] .ads-issues { margin-top: var(--s3); }
+[data-module="ads"] .ads-issue {
+  background: var(--bg3);
+  border-radius: var(--r2);
+  padding: var(--s2) var(--s3);
+  margin-bottom: var(--s1);
+  box-shadow: inset 0 0 0 1px var(--bg2);
+  font-size: var(--fs-anno);
+}
+
+/* ================================================ 页面一 分类与数据查看 */
+
+[data-module="ads"] .ads-scope {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s5);
+  flex-wrap: wrap;
+}
+[data-module="ads"] .ads-scopemain { min-width: 0; flex: 1 1 auto; }
+[data-module="ads"] .ads-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s5);
+  margin-bottom: var(--s2);
+}
+[data-module="ads"] .ads-sc { display: flex; flex-direction: column; }
+[data-module="ads"] .ads-sc > b {
+  font-family: var(--sans);
+  font-size: var(--fs-value);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-sc > span { font-size: var(--fs-axis); color: var(--fg3); }
+[data-module="ads"] .ads-attrib {
+  background: var(--bg2);
+  border-radius: var(--r2);
+  padding: var(--s2) var(--s3);
+  font-size: var(--fs-axis);
+  color: var(--fg2);
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+/* 板块4 结果概览：一个 hero 独大，2-4 个 support 降级 */
+[data-module="ads"] .ads-herotop {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s6);
+  flex-wrap: wrap;
+}
+[data-module="ads"] .ads-herolead { min-width: 210px; }
+[data-module="ads"] .ads-big {
+  font-size: var(--fs-num);
+  font-weight: 600;
+  letter-spacing: -.03em;
+  line-height: 1.05;
+  margin: var(--s1) 0;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-lead { font-size: var(--fs-num); }
+[data-module="ads"] .ads-herosupport {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3) var(--s6);
+  padding-top: var(--s2);
+}
+[data-module="ads"] .ads-hs { display: flex; flex-direction: column; }
+[data-module="ads"] .ads-hs > b {
+  font-family: var(--sans);
+  font-size: var(--fs-value);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-hs > span { font-size: var(--fs-axis); color: var(--fg3); }
+[data-module="ads"] .ads-hs > em {
+  font-style: normal;
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-blocks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--s2);
+  margin-top: var(--s4);
+}
+[data-module="ads"] .ads-blk {
+  background: var(--bg2);
+  border-radius: var(--r2);
+  padding: var(--s2) var(--s3);
+}
+[data-module="ads"] .ads-blkhead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  margin-bottom: var(--s1);
+}
+[data-module="ads"] .ads-blkhead > b { font-size: var(--fs-anno); }
+[data-module="ads"] .ads-statrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s4);
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+}
+[data-module="ads"] .ads-statrow b {
+  font-family: var(--sans);
+  font-size: var(--fs-anno);
+  color: var(--fg);
+  font-weight: 600;
+  margin-left: var(--s1);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 类目基准阶梯：6 行是 6 层嵌套类目 */
+[data-module="ads"] .ads-bmk {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--s2);
+}
+[data-module="ads"] .ads-bmkrow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(3, 150px);
+  gap: var(--s3);
+  padding: var(--s1) 0;
+  font-size: var(--fs-axis);
+}
+[data-module="ads"] .ads-bmkrow > * {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-bmkrow:nth-child(even) { background: var(--bg3); }
+[data-module="ads"] .ads-cmprow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px 100px 62px 56px 92px;
+  gap: var(--s2);
+  padding: var(--s1) var(--s2);
+  font-size: var(--fs-axis);
+  border-radius: var(--r3);
+  align-items: center;
+}
+[data-module="ads"] .ads-cmprow > * {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-cmprow:nth-child(even) { background: var(--bg3); }
+[data-module="ads"] .ads-lblrow {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) 84px 68px 132px;
+  gap: var(--s2);
+  padding: var(--s1) var(--s2);
+  font-size: var(--fs-axis);
+  border-radius: var(--r3);
+}
+[data-module="ads"] .ads-lblrow > * {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-lblrow:nth-child(even) { background: var(--bg3); }
+
+/* 板块3 筛选面板。勾选行三列定宽：勾 / 名字（可省略）/ 候选数。
+   名字列必须 minmax(0,1fr) 否则长 Campaign 名会顶爆轨道把计数挤出侧栏。 */
+[data-module="ads"] .ads-grainhint {
+  margin: calc(var(--s1) * -1) 0 var(--s2);
+}
+[data-module="ads"] .ads-search { margin-bottom: var(--s2); }
+[data-module="ads"] .ads-sinput {
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: var(--s1) var(--s2);
+  font: inherit;
+  font-size: var(--fs-anno);
+  color: var(--fg);
+  background: var(--bg2);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r3);
+}
+[data-module="ads"] .ads-sinput:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+[data-module="ads"] .ads-cfilter { margin-bottom: var(--s1); }
+[data-module="ads"] .ads-actbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin-bottom: var(--s3);
+}
+[data-module="ads"] .ads-actchip {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 2px var(--s2);
+  font-size: var(--fs-axis);
+  color: var(--fg);
+  background: var(--bg3);
+  border: 1px solid var(--accent);
+  border-radius: var(--r3);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-clr {
+  padding: 2px var(--s2);
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  background: none;
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r3);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-fopt {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  gap: var(--s2);
+  align-items: center;
+  width: 100%;
+  padding: 3px var(--s1);
+  font-size: var(--fs-axis);
+  text-align: left;
+  color: var(--fg2);
+  background: none;
+  border: 0;
+  border-radius: var(--r3);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-fopt:hover { background: var(--bg3); }
+[data-module="ads"] .ads-fopt.ads-on { color: var(--fg); }
+[data-module="ads"] .ads-fbox {
+  width: 14px;
+  height: 14px;
+  line-height: 13px;
+  text-align: center;
+  font-size: var(--fs-axis);
+  border: 1px solid var(--glass-line);
+  border-radius: 3px;
+}
+[data-module="ads"] .ads-fopt.ads-on .ads-fbox {
+  color: var(--bg1);
+  background: var(--fg);
+  border-color: var(--fg);
+}
+[data-module="ads"] .ads-fname {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-fn {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg3);
+}
+[data-module="ads"] .ads-fopt.ads-zero { cursor: default; opacity: 0.42; }
+[data-module="ads"] .ads-fopt.ads-off { display: none; }
+[data-module="ads"] .ads-more {
+  padding: 2px var(--s1);
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* 浮层跟抽屉一样在模块作用域外，靠内容侧打标记把作用域带过去。
+   外壳给的是 white-space: normal 的纯文本浮层，\n 会被当空格吃掉。 */
+[data-module="ads"].ads-popbody {
+  white-space: pre-line;
+  max-width: 380px;
+  line-height: 1.55;
+}
+
+/* 抽屉内容不在外壳的模块作用域里，是模块自己补的标记。
+   抽屉窄，长表要限高内滚，否则标签历史几十条会把面板撑到一千多像素。 */
+[data-module="ads"] .ads-drawer .ads-evrow { margin-bottom: var(--s3); }
+[data-module="ads"] .ads-drawer .ads-bmk {
+  max-height: 260px;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+[data-module="ads"] .ads-drawer .ads-lblrow {
+  grid-template-columns: 72px minmax(0, 1fr) 68px 56px 96px;
+}
+[data-module="ads"] .ads-drawer .ads-cmprow {
+  grid-template-columns: minmax(0, 1fr) 62px 52px 60px 56px 52px;
+}
+
+/* 板块5 异常规则命中比例条。名字列封顶，条也封顶——
+   9/8/7 这种小数值配半屏长的条没有信息量。 */
+[data-module="ads"] .ads-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--s3);
+}
+[data-module="ads"] .ads-rr {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) 40px 200px minmax(0, 1fr);
+  gap: var(--s3);
+  align-items: center;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r3);
+  font-size: var(--fs-anno);
+}
+[data-module="ads"] .ads-rr > * { min-width: 0; }
+[data-module="ads"] .ads-rr:nth-child(odd) { background: var(--bg3); }
+[data-module="ads"] .ads-rn {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-rc {
+  font-family: var(--sans);
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-hb {
+  height: 4px;
+  background: var(--bg2);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+[data-module="ads"] .ads-hb > i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: block;
+  border-radius: 2px;
+  background: var(--ink);
+}
+[data-module="ads"] .ads-camprows {
+  margin-top: var(--s3);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--bg2);
+}
+[data-module="ads"] .ads-cr {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) 108px 160px 52px minmax(0, 1fr);
+  gap: var(--s3);
+  align-items: center;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r3);
+  font-size: var(--fs-anno);
+}
+[data-module="ads"] .ads-cr > * { min-width: 0; }
+[data-module="ads"] .ads-cr:nth-child(odd) { background: var(--bg3); }
+[data-module="ads"] .ads-cn {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-axis);
+  color: var(--fg2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-crule {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-cr .ads-rc { cursor: pointer; }
+[data-module="ads"] .ads-cr .ads-rc:hover { color: var(--accent); }
+
+/* 板块7 对象清单：flex 定宽列，横向可滚 */
+[data-module="ads"] .ads-ltablewrap {
+  overflow: auto;
+  max-height: 560px;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+[data-module="ads"] .ads-ltable {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: max-content;
+}
+[data-module="ads"] .ads-lrow {
+  display: flex;
+  gap: var(--s2);
+  align-items: center;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r3);
+  font-size: var(--fs-anno);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-lrow:nth-child(even) { background: var(--bg3); }
+[data-module="ads"] .ads-lrow:hover { background: var(--bg2); }
+[data-module="ads"] .ads-lhead {
+  color: var(--fg3);
+  font-size: var(--fs-axis);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background: var(--bg1);
+  z-index: 2;
+  cursor: default;
+}
+[data-module="ads"] .ads-ld {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--fg2);
+}
+[data-module="ads"] .ads-ld > b {
+  display: block;
+  font-weight: 600;
+  color: var(--fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+[data-module="ads"] .ads-ld > em {
+  display: block;
+  font-style: normal;
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+[data-module="ads"] .ads-selbox {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  accent-color: var(--ink);
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--fg3);
+  border-radius: 3px;
+}
+[data-module="ads"] .ads-selbox:checked { background: var(--ink); }
+
+/* 侧栏 板块2/3 粒度锁与标签选项 */
+[data-module="ads"] .ads-grainlock {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s1);
+  background: var(--bg2);
+  border-radius: var(--r3);
+  padding: 3px;
+  margin-bottom: var(--s2);
+}
+[data-module="ads"] .ads-gl {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: var(--s1) var(--s1);
+  font: inherit;
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+  border-radius: var(--r3);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-gl.ads-on {
+  background: var(--bg1);
+  color: var(--fg);
+  font-weight: 600;
+  box-shadow: var(--card);
+}
+[data-module="ads"] .ads-lopt {
+  appearance: none;
+  border: 0;
+  background: var(--bg3);
+  color: var(--fg2);
+  font: inherit;
+  font-size: var(--fs-axis);
+  border-radius: var(--r3);
+  padding: var(--s1) var(--s2);
+  margin: 0 var(--s1) var(--s1) 0;
+  cursor: pointer;
+  text-align: left;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-lopt.ads-on { background: var(--ink); color: var(--bg1); }
+[data-module="ads"] .ads-lopt:hover { background: var(--bg2); }

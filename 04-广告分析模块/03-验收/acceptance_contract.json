@@ -1,0 +1,268 @@
+{
+  "contract_id": "bamboocool-advertising-acceptance-v1",
+  "contract_version": "1.0.0",
+  "frozen_at": "2026-08-29",
+  "status_vocabulary": ["PASS", "FAIL", "BLOCKED"],
+  "scope": {
+    "parent_asins": [
+      "B0DDNK229S",
+      "B0GQXK2Q58",
+      "B0CJV3G988",
+      "B0D9FLMR6N",
+      "B0CCLWDJNV"
+    ],
+    "parent_child_counts": {
+      "B0DDNK229S": 103,
+      "B0GQXK2Q58": 92,
+      "B0CJV3G988": 134,
+      "B0D9FLMR6N": 96,
+      "B0CCLWDJNV": 96
+    },
+    "child_asin_count": 521,
+    "ad_group_name_key_count": 54,
+    "ad_group_counts_by_type": {"SP": 40, "SB": 5, "SD": 9},
+    "amazon_fact_window": {"start": "2026-07-01", "end": "2026-07-31"},
+    "attribution_days": {"SP": 7, "SB": 14, "SD": 14},
+    "promoted_asin_scope_count": 115,
+    "promoted_parent_asins": ["B0DDNK229S", "B0GQXK2Q58", "B0CJV3G988"],
+    "preferred_page2_anchor": {"parent_asin": "B0DDNK229S", "child_asin": "B088WF1PRW"}
+  },
+  "provenance_states": ["direct", "derived", "supplemented", "scenario_added", "blocked"],
+  "source_role_boundaries": {
+    "promoted_asin": "Only an explicit advertising-ASIN or advertised-product relation proves that the product is promoted.",
+    "positive_spend_asin": "A child-grain positive advertising-spend fact proves spend, but not a Campaign/ad-group relationship unless a direct advertising-ASIN link exists.",
+    "purchased_asin": "An advertised conversion outcome; it must not be promoted to a promoted-product relation.",
+    "target_asin": "An ASIN used as targeting/matching/search-term content; it may be an external competitor and must not be promoted to a promoted-product relation.",
+    "matched_asin": "A matched target or search context; it must remain distinct from promoted and purchased roles.",
+    "source_name_key": "The 54 ad groups are deterministic name keys, not Amazon stable IDs. A key is ad_type + campaign_name + ad_group_name.",
+    "shared_result": "When an advertising object serves more than one child ASIN, shared facts remain shared or unattributed; they are not force-split."
+  },
+  "page_grains": {
+    "page_1": {
+      "name": "广告分类与数据查看",
+      "minimum_result_grain": "one ad_group OR one target × one effective label version × one reporting window × one attribution basis",
+      "allowed_object_levels": ["AD_GROUP", "TARGET"],
+      "forbidden_outputs": ["product_goal_judgement", "strategy_priority", "diagnosis", "bid_recommendation", "budget_recommendation", "pause_recommendation", "new_campaign_plan"]
+    },
+    "page_2": {
+      "name": "单一子 ASIN 广告决策",
+      "minimum_result_grain": "one child_asin × one product_goal_version × one decision_at",
+      "required_evidence_types": ["PRODUCT_GOAL", "INVENTORY", "KEYWORD", "COMPETITOR", "HISTORY_ACTION"]
+    }
+  },
+  "logical_artifacts": {
+    "dataset_manifest": {"kind": "object"},
+    "dim_product_parent": {"kind": "records"},
+    "dim_product_child": {"kind": "records"},
+    "dim_ad_object": {"kind": "records"},
+    "bridge_ad_object_product": {"kind": "records"},
+    "fact_ad_performance": {"kind": "records"},
+    "fact_ad_label_version": {"kind": "records"},
+    "dim_anomaly_rule": {"kind": "records"},
+    "fact_page1_result": {"kind": "records"},
+    "fact_page1_anomaly": {"kind": "records"},
+    "fact_decision_context": {"kind": "records"},
+    "fact_decision_evidence": {"kind": "records"},
+    "fact_required_ad_task": {"kind": "records"},
+    "bridge_task_ad_object": {"kind": "records"},
+    "fact_ad_diagnosis": {"kind": "records"},
+    "fact_ad_recommendation": {"kind": "records"},
+    "fact_ad_decision_event": {"kind": "records"},
+    "fact_review_feedback": {"kind": "records"},
+    "scenario_registry": {"kind": "records"},
+    "source_lineage": {"kind": "records"}
+  },
+  "capabilities": [
+    {
+      "capability_id": "AD-01",
+      "title": "统一 SP、SB、SD 广告数据与对象层级",
+      "page": "shared",
+      "priority": "P0",
+      "required_artifacts": ["dataset_manifest", "dim_ad_object", "fact_ad_performance", "source_lineage"],
+      "assertions": [
+        "AD-01-A: 广告对象覆盖 SP、SB、SD，广告组使用 source_name_key 且不得冒充 Amazon 稳定 ID。",
+        "AD-01-B: release 阶段恰有 54 个广告组名称键，按类型为 SP=40、SB=5、SD=9；slice 阶段 manifest 仍声明这一完整目标。",
+        "AD-01-C: Amazon direct 事实只能位于 2026-07-01 至 2026-07-31；窗外数据必须标注非 direct 来源。",
+        "AD-01-D: SP 使用 7 天归因，SB/SD 使用 14 天归因；不同归因基础不得合并为一行。",
+        "AD-01-E: 每条事实有来源、来源状态、对象层级和统计区间，主键与目标粒度唯一。"
+      ],
+      "definition_of_done": "对象层级、时间、归因、来源和名称键均可追溯；统一不等于混加。"
+    },
+    {
+      "capability_id": "AD-02",
+      "title": "建立广告对象与子 ASIN 的关系及归因边界",
+      "page": "shared",
+      "priority": "P0",
+      "required_artifacts": ["dim_product_parent", "dim_product_child", "dim_ad_object", "bridge_ad_object_product", "source_lineage"],
+      "assertions": [
+        "AD-02-A: release 阶段父体集合严格为冻结的 5 父、完整 521 子，子 ASIN 唯一归属一个父体。",
+        "AD-02-B: promoted_asin、positive_spend_asin、purchased_asin、target_asin、matched_asin 分角色保存，禁止角色推断升级。",
+        "AD-02-C: 115 个范围内推广 ASIN 只通过直接广告 ASIN 证据建立，覆盖 3 个已知推广父体。",
+        "AD-02-D: 共享广告对象保留多子关系和 shared/unattributed 归因状态，不强制均摊。",
+        "AD-02-E: 关系包含生效时间、来源状态、来源引用和归因边界；外部购买/目标 ASIN 允许不进入产品维度。"
+      ],
+      "definition_of_done": "从广告对象可下钻到真实服务子体，并能区分直接、共享、外部和不可归因结果。"
+    },
+    {
+      "capability_id": "AD-03",
+      "title": "建立并管理广告对象标签",
+      "page": "page_1",
+      "priority": "P0",
+      "required_artifacts": ["dim_ad_object", "fact_ad_label_version", "scenario_registry"],
+      "assertions": [
+        "AD-03-A: 标签包含产品关系、投放对象、广告目的、广告属性和运营自定义五类中的可用类别。",
+        "AD-03-B: 来源区分 system_attribute、auto_mapping、group_inherited、ai_suggested、operator_confirmed。",
+        "AD-03-C: 确认状态至少能表达 confirmed、pending、rejected、unrecognized。",
+        "AD-03-D: 每个版本有生效区间；历史版本不被当前值覆盖；同一对象同一标签值版本不重叠。",
+        "AD-03-E: Target 继承广告组标签时保留 inherited_from_object_id 与来源。"
+      ],
+      "definition_of_done": "可以确认、修改、拒绝并追溯标签，历史区间使用当时有效版本。"
+    },
+    {
+      "capability_id": "AD-04",
+      "title": "计算广告对象区间经营表现",
+      "page": "shared",
+      "priority": "P0",
+      "required_artifacts": ["dim_ad_object", "fact_ad_performance", "source_lineage"],
+      "assertions": [
+        "AD-04-A: 事实粒度和统计区间唯一，基础量非负。",
+        "AD-04-B: CTR、CPC、CVR、ACoS、ROAS 可从分子分母复算；零分母不伪造比率。",
+        "AD-04-C: 区间结果保留实际覆盖日期、归因天数、共享状态和可比状态。",
+        "AD-04-D: 不同对象层级、时间范围或归因基础不进入同一可比排名。",
+        "AD-04-E: 经营事实只描述数值，不包含产品目标判断或调整建议。"
+      ],
+      "definition_of_done": "同一逻辑事实可以独立复算，比较限制可见，不通过平均的平均值生成结果。"
+    },
+    {
+      "capability_id": "AD-05",
+      "title": "组装单一子 ASIN 广告决策证据",
+      "page": "page_2",
+      "priority": "P0",
+      "required_artifacts": ["fact_decision_context", "fact_decision_evidence", "scenario_registry", "source_lineage"],
+      "assertions": [
+        "AD-05-A: 决策主键是 child_asin × product_goal_version × decision_at，不能用父体或广告组替代。",
+        "AD-05-B: 明星切片同时包含产品目标、库存、关键词、竞品、历史动作五类证据。",
+        "AD-05-C: 证据记录 observed_at、valid_as_of、source_status、source_ref 和 fact/inference 边界。",
+        "AD-05-D: 决策时刻之后才出现的证据不得进入当前版本；过期、冲突和缺失必须显式标记。"
+      ],
+      "definition_of_done": "单一子 ASIN 页面能展示一个有时间和来源的完整决策证据包。"
+    },
+    {
+      "capability_id": "AD-06",
+      "title": "推导当前应有广告任务",
+      "page": "page_2",
+      "priority": "P0",
+      "required_artifacts": ["fact_decision_context", "fact_decision_evidence", "fact_required_ad_task"],
+      "assertions": [
+        "AD-06-A: 每项任务绑定决策版本、产品目标和证据。",
+        "AD-06-B: 每项任务有优先级、流量对象、经营约束、评价方向和停止条件。",
+        "AD-06-C: 规则未确认时只输出任务和待确认条件，不产生精确预算、竞价或广告位幅度。",
+        "AD-06-D: 库存不可承接场景必须产生限制、暂缓或前置问题，而不是扩量任务。"
+      ],
+      "definition_of_done": "用户能看懂广告当前应解决什么问题、为什么、受什么限制以及何时停止。"
+    },
+    {
+      "capability_id": "AD-07",
+      "title": "比较应有任务与现有广告结构",
+      "page": "page_2",
+      "priority": "P0",
+      "required_artifacts": ["fact_required_ad_task", "bridge_task_ad_object", "dim_ad_object", "bridge_ad_object_product"],
+      "assertions": [
+        "AD-07-A: 每项任务都有 covered、missing、duplicate、mixed、object_mismatch 或 data_insufficient 对照状态。",
+        "AD-07-B: covered/duplicate/mixed/object_mismatch 必须连接真实广告对象；missing 不允许伪造承担者。",
+        "AD-07-C: 共享关系、重叠投放和不可归因限制在对照结果中保留。",
+        "AD-07-D: 结构复杂或共享不会被自动判定为错误。"
+      ],
+      "definition_of_done": "每项应有任务都能落到现有对象或明确缺口，并能下钻核验。"
+    },
+    {
+      "capability_id": "AD-08",
+      "title": "评价目标支撑并形成综合诊断",
+      "page": "page_2",
+      "priority": "P0",
+      "required_artifacts": ["fact_decision_context", "bridge_task_ad_object", "fact_ad_diagnosis", "fact_decision_evidence"],
+      "assertions": [
+        "AD-08-A: 每条诊断包含问题类型、影响目标/任务、优先级、可信度、证据、不确定项、缺失项和检查方向。",
+        "AD-08-B: 事实、推导和运营确认目标分开；诊断证据可回溯。",
+        "AD-08-C: 没有阈值时使用自身历史或严格可比对象，否则输出条件判断或数据不足。",
+        "AD-08-D: 不把同期变化写成确定因果，causal_claim 必须为 false。"
+      ],
+      "definition_of_done": "诊断说明发生了什么、影响什么、依据什么、可靠到什么程度以及还缺什么。"
+    },
+    {
+      "capability_id": "AD-09",
+      "title": "生成广告调整方案与观察要求",
+      "page": "page_2",
+      "priority": "P0",
+      "required_artifacts": ["fact_ad_diagnosis", "fact_ad_recommendation", "dim_ad_object"],
+      "assertions": [
+        "AD-09-A: 建议绑定子 ASIN 决策、产品目标、诊断、广告目的和真实广告对象或明确结构缺口。",
+        "AD-09-B: 建议方向来自保持、观察、调整、暂停、恢复、拆分、合并、补建、测试、暂缓或补信息。",
+        "AD-09-C: 建议包含依据、前置条件、风险、不确定项、观察指标和 D+3/必要时 D+7 窗口。",
+        "AD-09-D: 精确值只有在 rule_status=confirmed 且 rule_id 非空时允许；不承诺不可验证的结果。"
+      ],
+      "definition_of_done": "建议可被运营理解和确认，并具备交接执行复盘所需的完整边界。"
+    },
+    {
+      "capability_id": "AD-10",
+      "title": "生成标签筛选、横向比较与数值异常",
+      "page": "page_1",
+      "priority": "P0",
+      "required_artifacts": ["fact_page1_result", "fact_page1_anomaly", "dim_anomaly_rule", "fact_ad_label_version", "scenario_registry"],
+      "assertions": [
+        "AD-10-A: 一个 query_id 只包含 AD_GROUP 或 TARGET 一种粒度，范围、标签条件和对象数量可见。",
+        "AD-10-B: 只有同粒度、同时间、同归因且指标可比的对象进入比较。",
+        "AD-10-C: anomaly 必须绑定已配置 rule_id；没有规则时只能显示变化和排序。",
+        "AD-10-D: 页面一结果不包含产品目标诊断、策略优先级或调整动作。",
+        "AD-10-E: 改变筛选范围产生新的 query_id 和重新计算结果，不复用上一范围的排名或异常。"
+      ],
+      "definition_of_done": "用户能按标签查数、切换粒度、横向比较和识别有规则依据的数值异常，但不会收到策略结论。"
+    },
+    {
+      "capability_id": "AD-11",
+      "title": "记录运营决定并衔接历史反馈",
+      "page": "page_2",
+      "priority": "P0",
+      "required_artifacts": ["fact_ad_recommendation", "fact_ad_decision_event", "fact_review_feedback", "scenario_registry"],
+      "assertions": [
+        "AD-11-A: 保存 AI 原建议快照并记录 accept、modify、reject、defer，修改不得覆盖原建议。",
+        "AD-11-B: accept/modify 可进入 handoff；reject/defer 记录原因且不得伪装成已执行。",
+        "AD-11-C: 交接包含子 ASIN、目标、诊断、广告对象、建议方向、观察要求、未确认项及数据/规则版本。",
+        "AD-11-D: D+3/D+7 反馈由执行复盘结果引用回流，包含同期变量、结论和下一问题；广告模块不伪造实际执行计算。",
+        "AD-11-E: 新决策版本引用前序版本，不覆盖旧记录。"
+      ],
+      "definition_of_done": "原判断、AI 建议、运营决定、交接和历史反馈形成不可覆盖的版本链。"
+    }
+  ],
+  "vertical_slice_gates": [
+    {
+      "gate_id": "VS-00",
+      "name": "契约与范围门禁",
+      "capability_ids": ["AD-01", "AD-02"],
+      "required_scenarios": ["SOURCE_ROLE_BOUNDARY", "SHARED_AD_OBJECT"],
+      "pass_condition": "逻辑产物可加载，manifest 冻结 5父/521子/54名称键组/2026-07 Amazon 窗，切片记录满足对象、角色、来源和归因约束。"
+    },
+    {
+      "gate_id": "VS-01",
+      "name": "第一页纵向切片",
+      "capability_ids": ["AD-03", "AD-04", "AD-10"],
+      "required_scenarios": ["PAGE1_FILTER_COMPARE_ANOMALY", "LABEL_VERSION_CHANGE", "NO_ANOMALY_RULE"],
+      "pass_condition": "至少 3 个同粒度可比对象从标签版本与事实计算到筛选、比较和规则异常；更改范围产生独立结果；第一页没有策略字段。"
+    },
+    {
+      "gate_id": "VS-02",
+      "name": "第二页纵向切片",
+      "capability_ids": ["AD-05", "AD-06", "AD-07", "AD-08", "AD-09"],
+      "required_scenarios": ["PAGE2_END_TO_END", "INVENTORY_CONSTRAINT", "UNCONFIRMED_RULE_NO_PRECISE_VALUE"],
+      "pass_condition": "一个明确推广子 ASIN 从五类证据、应有任务、结构对照和诊断走到有边界的建议，所有节点可回溯。"
+    },
+    {
+      "gate_id": "VS-03",
+      "name": "运营决定与反馈门禁",
+      "capability_ids": ["AD-11"],
+      "required_scenarios": ["DECISION_ACCEPT", "DECISION_MODIFY", "DECISION_REJECT", "DECISION_DEFER", "REVIEW_FEEDBACK_LINK"],
+      "pass_condition": "四种运营决定均可重复触发，原建议不被覆盖，接受/修改可交接且至少一条 D+3/D+7 历史反馈能关联回下一决策版本。"
+    }
+  ],
+  "release_rule": "Only PASS for every AD-01..AD-11 and VS-00..VS-03 permits batch generation or frontend handoff. Missing evidence is BLOCKED; contradictory or invalid submitted evidence is FAIL."
+}

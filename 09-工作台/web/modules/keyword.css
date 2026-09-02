@@ -1,0 +1,860 @@
+/* 关键词模块样式。契约 5.3：全部写在 [data-module="keyword"] 之下。
+   零 #id 选择器、零裸元素选择器、零 -- 变量定义（G2/G3）。
+   只用 tokens.css 实有的变量：--s1..s6 / --r..r3 / --fg..fg3 / --bg0..bg3 / --card
+   / --accent / --mono。tokens.css 没有字号刻度，字号用字面值。 */
+
+[data-module="keyword"] .kw-band {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s3);
+  margin-bottom: var(--s5);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s1);
+}
+
+[data-module="keyword"] .kw-lead > b {
+  font-size: var(--fs-num);
+  font-weight: 600;
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  color: var(--fg);
+}
+
+[data-module="keyword"] .kw-lead > span {
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+}
+
+/* 用 grid 等宽轨道而不是 flex+gap：标签长度差异大（「监控词」vs「关键词 × 子ASIN 关系」），
+   flex 下长标签会把相邻数字挤到一起，实测 163,982 和 562 之间几乎没有间隔。 */
+[data-module="keyword"] .kw-statrow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 148px));
+  gap: var(--s3) var(--s4);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-stat {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+[data-module="keyword"] .kw-stat > b {
+  font-size: var(--fs-value);
+  font-weight: 600;
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+
+[data-module="keyword"] .kw-stat > span {
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+}
+
+/* 0 值降调：读成「查过，没有」而不是「板块坏了」 */
+[data-module="keyword"] .kw-stat-zero > b {
+  font-size: var(--fs-body);
+  font-weight: 500;
+  font-family: var(--sans);
+  color: var(--fg3);
+  line-height: 1.4;
+}
+
+[data-module="keyword"] .kw-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-chip {
+  font-size: var(--fs-anno);
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r);
+  background: var(--bg2);
+  color: var(--fg2);
+  white-space: nowrap;
+}
+
+[data-module="keyword"] .kw-chip > b {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+/* 容器要能收缩，否则宽表把整页顶爆 —— min-width:0 是必需的，不是可选优化 */
+[data-module="keyword"] .kw-table-wrap {
+  min-width: 0;
+  overflow: auto;
+}
+
+[data-module="keyword"] .kw-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-meta);
+}
+
+[data-module="keyword"] .kw-table th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--fg3);
+  padding: var(--s2) var(--s3) var(--s2) 0;
+  white-space: nowrap;
+}
+
+[data-module="keyword"] .kw-table td {
+  padding: var(--s2) var(--s3) var(--s2) 0;
+  min-width: 0;
+  max-width: 22ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--fg);
+}
+
+[data-module="keyword"] .kw-table .kw-num {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  padding-right: var(--s5);
+}
+
+[data-module="keyword"] .kw-row {
+  cursor: pointer;
+}
+
+[data-module="keyword"] .kw-row:hover {
+  background: var(--bg2);
+}
+
+[data-module="keyword"] .kw-pending {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+}
+
+/* ================= 页面三 ================= */
+
+[data-module="keyword"] .kw-sec {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s3);
+  margin-bottom: var(--s6);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-sec-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+}
+
+[data-module="keyword"] .kw-sec-title {
+  font-size: var(--fs-title);
+  font-weight: 600;
+  color: var(--fg);
+}
+
+[data-module="keyword"] .kw-sec-note {
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+}
+
+[data-module="keyword"] .kw-blocked {
+  font-size: var(--fs-anno);
+  color: var(--warn);
+}
+
+/* 决策摘要：一个主数字独大，支撑项降级，不做等权卡片网格 */
+[data-module="keyword"] .kw-hero-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s1);
+}
+
+[data-module="keyword"] .kw-hero-main > b {
+  font-size: var(--fs-num);
+  font-weight: 600;
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--fg);
+}
+
+[data-module="keyword"] .kw-hero-main > span {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+}
+
+[data-module="keyword"] .kw-top-call {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-top-text {
+  font-size: var(--fs-meta);
+  color: var(--fg);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-tag {
+  font-size: var(--fs-axis);
+  padding: 2px var(--s2);
+  border-radius: var(--r);
+  background: var(--fg);
+  color: var(--bg0);
+  white-space: nowrap;
+}
+
+[data-module="keyword"] .kw-kv {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-kv-item {
+  display: inline-flex;
+  gap: var(--s1);
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-kv-item > b {
+  color: var(--fg);
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 缺口比例条 */
+[data-module="keyword"] .kw-gapcell {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-gapnum {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  min-width: 3ch;
+  text-align: right;
+}
+
+[data-module="keyword"] .kw-bar {
+  display: block;
+  position: relative;
+  width: 72px;
+  height: 6px;
+  border-radius: var(--r);
+  background: var(--bg2);
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+[data-module="keyword"] .kw-bar > i {
+  display: block;
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--fg2);
+}
+
+[data-module="keyword"] .kw-bar-gap > i {
+  background: var(--warn);
+}
+
+/* 逐日图：主体是位次条，底部一条细状态带 */
+[data-module="keyword"] .kw-chart {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s2);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-chart-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-cols {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 96px;
+  min-width: 0;
+  background: var(--bg1);
+  border-radius: var(--r);
+  padding: 0 2px;
+}
+
+[data-module="keyword"] .kw-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+}
+
+[data-module="keyword"] .kw-col-fail {
+  background: var(--bg3);
+}
+
+/* 行内元素的 width/height 无效会塌成 0×0，必须 display:block */
+[data-module="keyword"] .kw-rankbar {
+  display: block;
+  width: 100%;
+  background: var(--fg);
+}
+
+[data-module="keyword"] .kw-stateband {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 6px;
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+[data-module="keyword"] .kw-seg {
+  display: block;
+  width: 100%;
+  min-height: 1px;
+}
+
+[data-module="keyword"] .kw-seg-covered { background: var(--fg); }
+[data-module="keyword"] .kw-seg-weak { background: var(--warn); }
+[data-module="keyword"] .kw-seg-none { background: var(--fg3); }
+[data-module="keyword"] .kw-seg-fail { background: var(--alert); }
+[data-module="keyword"] .kw-seg-off { background: var(--bg3); }
+
+[data-module="keyword"] .kw-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-lg {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+}
+
+[data-module="keyword"] .kw-lg-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+/* CSS-only sparkline */
+[data-module="keyword"] .kw-spark {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 20px;
+  width: 88px;
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-spark-bar {
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  background: var(--fg2);
+}
+
+[data-module="keyword"] .kw-spark-gap {
+  background: var(--bg3);
+  height: 2px;
+}
+
+[data-module="keyword"] .kw-warn-row > td {
+  color: var(--warn);
+}
+
+/* 证据列表 */
+[data-module="keyword"] .kw-evlist {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-module="keyword"] .kw-ev {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+  padding-bottom: var(--s3);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-ev-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-ev-kw {
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  color: var(--fg);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-ev-meta {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  white-space: nowrap;
+}
+
+[data-module="keyword"] .kw-ev-concl {
+  font-size: var(--fs-meta);
+  color: var(--fg);
+}
+
+[data-module="keyword"] .kw-ev-basis,
+[data-module="keyword"] .kw-ev-limit {
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+}
+
+/* 同类证据折叠 */
+[data-module="keyword"] .kw-ev-group {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s2);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-ev-grouphead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-foldwrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s2);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-fold {
+  appearance: none;
+  border: 0;
+  background: var(--bg2);
+  color: var(--fg2);
+  font: inherit;
+  font-size: var(--fs-anno);
+  padding: var(--s1) var(--s3);
+  border-radius: var(--r);
+  cursor: pointer;
+  justify-self: start;
+}
+
+[data-module="keyword"] .kw-fold:hover {
+  background: var(--bg3);
+}
+
+/* ================= 页面二 ================= */
+
+[data-module="keyword"] .kw-kwname {
+  font-weight: 600;
+  color: var(--fg);
+}
+
+[data-module="keyword"] .kw-warn-cell {
+  color: var(--warn);
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  padding-right: var(--s5);
+}
+
+[data-module="keyword"] .kw-own-row > td {
+  background: var(--bg2);
+}
+
+[data-module="keyword"] .kw-chip-own {
+  background: var(--fg);
+  color: var(--bg0);
+}
+
+/* ================= 页面一 ================= */
+
+/* 日报五问五答：问在左窄列、答在右。答句降为次级 —— 每问先出页面自算的
+   结构化数字（.kw-metrics），存在库里的整句退成 12px 说明。 */
+[data-module="keyword"] .kw-qa {
+  display: grid;
+  gap: var(--s3);
+  margin: 0;
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-qa-row {
+  display: grid;
+  grid-template-columns: 148px minmax(0, 1fr);
+  gap: var(--s1) var(--s4);
+  align-items: baseline;
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-qa-q {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s1);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-qa-n {
+  flex: 0 0 auto;
+  font-size: var(--fs-axis);
+  font-style: normal;
+  color: var(--fg3);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="keyword"] .kw-qa-q > b {
+  font-size: var(--fs-meta);
+  color: var(--fg2);
+  font-weight: 600;
+}
+
+[data-module="keyword"] .kw-qa-body {
+  display: grid;
+  gap: var(--s1);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-qa-a {
+  margin: 0;
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+  line-height: 1.5;
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-wide {
+  min-width: 8ch;
+}
+
+[data-module="keyword"] .kw-bar-vol > i {
+  background: var(--fg2);
+}
+
+/* 双频率折线：柱是主指标，圆点是副指标（不同量级，各自归一） */
+[data-module="keyword"] .kw-dot {
+  display: block;
+  position: absolute;
+  left: 50%;
+  width: 3px;
+  height: 3px;
+  margin-left: -1.5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+[data-module="keyword"] .kw-cols .kw-col {
+  position: relative;
+}
+
+[data-module="keyword"] .kw-lg-static {
+  position: static;
+  margin-left: 0;
+  width: 8px;
+  height: 8px;
+}
+
+/* ================= 指标条 · 堆叠条 · 区间游标 · 色阶 · 排序表头 =================
+   这五件是为了让页面不读起来像一段文字陈述。
+   前提口径（照 ads / inventory 两个模块）：
+   · 语义色只上 color，不上 background —— 一行里五个标签并排才不打架；
+     唯一的例外是色阶和堆叠条，它们的信息就在面积和浓度上。
+   · 数字不用等宽字体，用 font-variant-numeric: tabular-nums + --sans。
+   · 交互色（--accent）只表示「你正在动它」，不表示好坏。 */
+
+/* 指标条：替掉原来挂在板块标题下的散文段落。「标签 + 值」两段式，
+   标签 11px 灰、值 13px 墨色，想写一句话就得先给它起个三五字的标签。 */
+[data-module="keyword"] .kw-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  align-items: baseline;
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-m {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s1);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-m > em {
+  font-style: normal;
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  white-space: nowrap;
+}
+
+[data-module="keyword"] .kw-m > b {
+  font-size: var(--fs-meta);
+  color: var(--fg);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-module="keyword"] .kw-m-good > b { color: var(--good); }
+[data-module="keyword"] .kw-m-warn > b { color: var(--warn); }
+[data-module="keyword"] .kw-m-alert > b { color: var(--alert); }
+[data-module="keyword"] .kw-m-calm > b { color: var(--calm); }
+/* 0 值降调但仍占位：本期无 ≠ 板块坏了 */
+[data-module="keyword"] .kw-m-zero > b {
+  color: var(--fg3);
+  font-weight: 400;
+}
+
+/* 堆叠比例条：六个并排数字看得出大小、看不出谁占几成。
+   段宽由 JS 内联百分比，零值段不渲染（0 宽会留一条缝）。 */
+[data-module="keyword"] .kw-stackwrap {
+  display: grid;
+  gap: var(--s2);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-stack {
+  display: flex;
+  width: 100%;
+  height: 10px;
+  border-radius: var(--r3);
+  overflow: hidden;
+  background: var(--bg2);
+  min-width: 0;
+}
+
+/* 行内元素上的 width/height 会被忽略，段必须 block，否则整条塌成 0 高 */
+[data-module="keyword"] .kw-stack-seg {
+  display: block;
+  height: 100%;
+  min-width: 2px;
+}
+
+[data-module="keyword"] .kw-stacklegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s4);
+  min-width: 0;
+}
+
+[data-module="keyword"] .kw-lg {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  min-width: 0;
+}
+
+/* 图例色块复用段的 kw-seg-* 底色：一处改色带动条和图例两个视觉 */
+[data-module="keyword"] .kw-lg > i {
+  display: block;
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+[data-module="keyword"] .kw-lg > b {
+  color: var(--fg);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 堆叠条与图例共用的语义段色。这里是唯一允许语义色上 background 的地方 */
+[data-module="keyword"] .kw-seg-good { background: var(--good); }
+[data-module="keyword"] .kw-seg-warn { background: var(--warn); }
+[data-module="keyword"] .kw-seg-alert { background: var(--alert); }
+[data-module="keyword"] .kw-seg-calm { background: var(--calm); }
+[data-module="keyword"] .kw-seg-mut { background: var(--bg3); }
+[data-module="keyword"] .kw-seg-vol { background: var(--fg2); }
+/* 图例的小方块靠 currentColor 取色，所以图例上要把语义色给到 color */
+[data-module="keyword"] .kw-lg.kw-seg-good { background: none; color: var(--good); }
+[data-module="keyword"] .kw-lg.kw-seg-warn { background: none; color: var(--warn); }
+[data-module="keyword"] .kw-lg.kw-seg-alert { background: none; color: var(--alert); }
+[data-module="keyword"] .kw-lg.kw-seg-calm { background: none; color: var(--calm); }
+[data-module="keyword"] .kw-lg.kw-seg-mut { background: none; color: var(--fg3); }
+[data-module="keyword"] .kw-lg.kw-seg-vol { background: none; color: var(--fg2); }
+
+/* 区间游标：最好 / 最差两个并排数字读不出波动幅度，也读不出这个词
+   整体在深位还是浅位。轨道左端是第 1 位，横条是跨度，圆点是当前。 */
+[data-module="keyword"] .kw-rangecell {
+  min-width: 132px;
+}
+
+[data-module="keyword"] .kw-range {
+  display: block;
+  position: relative;
+  width: 100%;
+  min-width: 96px;
+  height: 12px;
+  border-radius: var(--r3);
+  background: var(--bg2);
+}
+
+[data-module="keyword"] .kw-range-span {
+  display: block;
+  position: absolute;
+  top: 4px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--fg3);
+  min-width: 3px;
+}
+
+[data-module="keyword"] .kw-range-dot {
+  display: block;
+  position: absolute;
+  top: 2px;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+/* 色阶格：数值自己带背景浓度，一列扫下来深浅就是排序。
+   契约禁止模块定义新色值，所以不用 color-mix，改嵌套底层调 opacity。 */
+[data-module="keyword"] .kw-heat {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-module="keyword"] .kw-heat-bg {
+  display: block;
+  position: absolute;
+  inset: 1px;
+  border-radius: var(--r3);
+  z-index: -1;
+}
+
+[data-module="keyword"] .kw-heat > span {
+  position: relative;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 可排序表头：数值列点一下按值排。--accent 只做交互反馈不表好坏 */
+[data-module="keyword"] .kw-th-sort {
+  cursor: pointer;
+  user-select: none;
+}
+
+[data-module="keyword"] .kw-th-sort:hover {
+  color: var(--accent);
+}
+
+[data-module="keyword"] .kw-th-sort::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: var(--s1);
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 4px solid var(--bg3);
+  vertical-align: middle;
+}
+
+[data-module="keyword"] .kw-th-sort[data-dir="desc"]::after {
+  border-top-color: var(--accent);
+}
+
+[data-module="keyword"] .kw-th-sort[data-dir="asc"]::after {
+  border-top: 0;
+  border-bottom: 4px solid var(--accent);
+}
+
+[data-module="keyword"] .kw-na {
+  color: var(--fg3);
+}
+
+/* ================= 判断来源条 =================
+   Agent 没跑过时这一条必须看得见 —— 降级说明不上屏就等于悄悄回落到预烤值。
+   刻意做成低调但不可忽略：不用 alert 红（那是业务风险的颜色），
+   用左侧一条粗边 + 一个圆点表示「这是关于数据本身的说明」。 */
+[data-module="keyword"] .kw-srcband {
+  border-left: 3px solid var(--bg3);
+}
+
+[data-module="keyword"] .kw-srcband[data-source="scaffold"] {
+  border-left-color: var(--warn);
+}
+
+[data-module="keyword"] .kw-srcband[data-source="stale"] {
+  border-left-color: var(--calm);
+}
+
+[data-module="keyword"] .kw-srcband[data-source="agent"] {
+  border-left-color: var(--good);
+}
+
+[data-module="keyword"] .kw-srctitle {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  font-size: var(--fs-sub);
+}
+
+[data-module="keyword"] .kw-srcdot {
+  display: block;
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--bg3);
+}
+
+[data-module="keyword"] .kw-srcband[data-source="scaffold"] .kw-srcdot {
+  background: var(--warn);
+}
+
+[data-module="keyword"] .kw-srcband[data-source="stale"] .kw-srcdot {
+  background: var(--calm);
+}
+
+[data-module="keyword"] .kw-srcband[data-source="agent"] .kw-srcdot {
+  background: var(--good);
+}
+
+[data-module="keyword"] .kw-srcdetail {
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+  line-height: 1.5;
+}

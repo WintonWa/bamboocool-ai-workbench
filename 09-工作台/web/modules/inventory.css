@@ -1,0 +1,469 @@
+/* 产品与库存模块 · 模块样式
+ *
+ * 来源：03-前端Demo/web/app.css（18810 版）。视觉规则一条没改，改的是作用域。
+ *
+ * 三件事与源文件不同：
+ *
+ * 1. **`:root` 的 28 个变量全部删掉**（门禁 G3 要求模块内 `--` 定义为 0）。
+ *    删之前逐值核对过外壳 tokens.css：24 个字节相同，3 个只是空格写法差异
+ *    （`.05` vs `0.05`、逗号后空格），唯一实质不同的是 `--sans` ——
+ *    那正是口径一定下来的改动（库存跟外壳走，用 IBM Plex Sans 那套）。
+ *    所以删掉本地定义之后，除字体栈外视觉零变化。
+ *
+ * 2. **全部规则包进 `[data-module="inventory"]`。**
+ *    因此裸元素选择器（section / table / th / td）**不再改名**——
+ *    迁移指导第 8 节要求改成类名，理由是"会漏出去改别的模块的表格和卡片"，
+ *    而属性作用域已经完全杜绝了泄漏（rail 与 body 各自带 data-module，
+ *    别的模块的内容不可能嵌在里面）。改名要同步改 JS，
+ *    在一次"只搬家不改逻辑"的迁移里那是多余的风险面。
+ *
+ * 3. **顶栏 / 标签 / 筛选 / 参数面板 / 滚动条 / body 基样式的规则全部删掉**，
+ *    那些由外壳提供。id 选择器只留模块自己拥有的四个，并改成类：
+ *      #listmeta -> .inv-listmeta   #list -> .inv-list
+ *      #hits     -> .inv-hits       #daychart-mount -> .inv-chartmount
+ *    另外 h1 改成 .inv-h1：外壳的 #wb-title 才是页面的 h1，
+ *    一页两个 h1 对读屏是错的。
+ *
+ * **字体全部走 var(--sans)，模块内不用 var(--mono)。**
+ * 用户的设计图用的是 SF Pro（比值指纹偏差 0.0220，SF Mono 是 0.1115）。
+ * 等宽字体为了填满字身会给 "1" 画底衬线，所以数字比设计图宽近一倍 ——
+ * 那是原来 18810 版就有的差异，上一轮"逐像素复现"只对了字号没对字族。
+ * 需要数字列对齐的地方用 font-variant-numeric: tabular-nums，
+ * 比例字体加它一样能对齐，不必牺牲字形。
+ * 代价：ASIN 这类字母数字混排失去逐位竖向对齐 —— 用户明确要求统一字形。
+ *
+ * 浮层与抽屉的内容要注意：外壳的 #wb-pop / #wb-drawer 挂在文档顶层，
+ * **在 [data-module] 作用域之外**，所以放进去的内容必须自带一个
+ * data-module="inventory" 的包裹节点，否则这里的规则一条都不生效。
+ * 模块 JS 里的 popBody() 就是干这个的。
+ */
+
+/* ---------- 通用 ---------- */
+[data-module="inventory"] .num{font-family:var(--sans);font-variant-numeric:tabular-nums;
+  text-align:right;white-space:nowrap}
+
+/* ---------- 侧栏：对象清单 ----------
+ * 列宽按真实数据的最大值定，不是照搬 18810 的值：
+ *   外壳的 rail 是 --rail-w 280px，18810 的 #side 是 344px，窄了 64px。
+ *   原来的 `1fr 58px 56px 46px` 在 280px 下把 ASIN 列挤到 63px，
+ *   而 10 位 ASIN 用 12.5px 等宽字要 75px —— 直接截断成 B0B3LM36V。
+ * 实测最大值（342 个子体全量）：
+ *   覆盖 1,363.0（7 字符）· 30天 3,742（5 字符）· 可售 5,897（5 字符）
+ * 按等宽 12.5px 每字符约 7.5px 取 54 / 40 / 40，gap 收到 6px，
+ * ASIN 列拿到 92px，同时 .sub 那行（款号·组合·尺码）也宽松了。
+ * 两处网格必须一致，否则表头与行对不齐 —— 它们的内容宽都是 244px。 */
+[data-module="inventory"] .inv-listmeta{padding:4px 18px 6px;font-size:var(--fs-axis);color:var(--fg3);
+  display:grid;grid-template-columns:minmax(0,1fr) 54px 40px 40px;gap:6px;align-items:center}
+[data-module="inventory"] .inv-listmeta .num{cursor:help}
+[data-module="inventory"] .inv-list{padding:0 8px 12px}
+[data-module="inventory"] .row{display:grid;grid-template-columns:minmax(0,1fr) 54px 40px 40px;gap:6px;
+  padding:9px 10px;border-radius:var(--r2);cursor:pointer;align-items:center}
+[data-module="inventory"] .row:hover{background:var(--bg2)}
+[data-module="inventory"] .row.on{background:var(--bg2)}
+[data-module="inventory"] .row.on .asin{font-weight:600}
+[data-module="inventory"] .row.on .num{color:var(--fg)}
+[data-module="inventory"] .row .id{overflow:hidden}
+[data-module="inventory"] .row .asin{font-family:var(--sans);font-size:var(--fs-anno);
+  font-variant-numeric:tabular-nums;letter-spacing:.01em}
+[data-module="inventory"] .row .sub{font-size:var(--fs-axis);color:var(--fg3);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+[data-module="inventory"] .row .num{font-size:var(--fs-anno);color:var(--fg2)}
+[data-module="inventory"] .sev{display:inline-block;width:7px;height:7px;border-radius:50%;
+  margin-right:6px;vertical-align:1px}
+[data-module="inventory"] .sev.high{background:var(--alert)}
+[data-module="inventory"] .sev.medium{background:var(--warn)}
+[data-module="inventory"] .sev.low{background:var(--fg3)}
+[data-module="inventory"] .sev.none{background:var(--good)}
+
+/* 命中概要（原 #hits，参数面板里那块搬到侧栏底部） */
+[data-module="inventory"] .inv-hits{margin:16px 0 6px;padding:14px 16px;background:var(--bg2);
+  border-radius:var(--r2);font-size:var(--fs-anno);color:var(--fg2);line-height:1.8}
+[data-module="inventory"] .inv-hits .t{color:var(--fg3);font-size:var(--fs-axis);margin-bottom:6px}
+[data-module="inventory"] .inv-hits .h{display:flex;justify-content:space-between;gap:10px}
+[data-module="inventory"] .inv-hits .h span:last-child{font-family:var(--sans);font-variant-numeric:tabular-nums;
+  white-space:nowrap;color:var(--fg)}
+
+/* ---------- 产品身份块 ----------
+ * 主图是正方形，边长 = 右侧信息块的高度（两者齐平）。
+ *
+ * 边长由 JS 量出来设，不是 CSS。试过 align-items:stretch + aspect-ratio:1，
+ * 宽度恒为 0 —— flex 的主轴宽度必须在交叉轴高度确定之前算完，
+ * 而 stretch 给的高度来得太晚，比例推不出宽度。见 page-detail.js 的 sizeIdSquare。
+ * 容器用 flex-start 而不是 stretch：让右列高度只由内容决定，
+ * 否则「JS 按右列高设方图 → 方图撑行高 → 右列被 stretch 拉高」会自激。
+ *
+ * padding-bottom 从 18px 收到 10px，并把右列最后一块的下外边距清零：
+ * .specwide 是 <dl>，浏览器默认 margin:1em 0 给了它 13px 下边距，
+ * 作为最后一个子元素那是纯死白。两处合计原有 31px，而身份块与下一个板块
+ * 之间本来就是 0 间距 —— 看起来「空隙大」全出自这里。 */
+[data-module="inventory"] .idblock{display:flex;gap:18px;align-items:flex-start;padding:20px 0 10px}
+[data-module="inventory"] .idimgwrap{position:relative;flex:none;
+  width:115px;height:115px;   /* JS 会按右列高覆盖；这是 JS 未跑时的兜底 */
+  border-radius:var(--r2);overflow:hidden;background:var(--bg2)}
+/* 图必须绝对定位。留在流内的话它的天然尺寸（774x972）会撑出容器内容宽，
+   把行高一起顶到 774 —— 实测过一次。绝对定位让容器内容尺寸为 0，
+   尺寸只由外部设定决定。 */
+[data-module="inventory"] .idimg{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block}
+[data-module="inventory"] .idimgtag{position:absolute;left:0;bottom:0;right:0;text-align:center;
+  font-size:var(--fs-axis);padding:2px 0;color:#fff;background:rgba(17,17,19,.62);letter-spacing:.06em}
+[data-module="inventory"] .idmain{flex:1;min-width:0}
+[data-module="inventory"] .inv-h1{font-size:var(--fs-value);margin:0 0 6px;font-weight:700;
+  letter-spacing:-.01em;font-family:var(--sans);font-variant-numeric:tabular-nums}
+[data-module="inventory"] .inv-h1 .nick{font-family:var(--sans);font-weight:500;font-size:var(--fs-sub);
+  letter-spacing:0;color:var(--fg2)}
+[data-module="inventory"] .idrow{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+[data-module="inventory"] .idparent{font-size:var(--fs-anno);color:var(--fg3)}
+[data-module="inventory"] .idparent b{font-family:var(--sans);font-weight:400;color:var(--fg2)}
+[data-module="inventory"] .idbtn{display:inline-flex;align-items:center;font-size:var(--fs-anno);padding:5px 11px;
+  border-radius:var(--r3);background:var(--bg2);color:var(--fg2);cursor:pointer;
+  user-select:none;white-space:nowrap}
+[data-module="inventory"] .idbtn::before{content:"";display:inline-block;width:0;height:0;margin-right:6px;
+  border-left:4px solid currentColor;border-top:3.5px solid transparent;border-bottom:3.5px solid transparent}
+[data-module="inventory"] .idbtn:hover{background:#ebebec;color:var(--fg)}
+[data-module="inventory"] .idbtn.on{background:var(--ink);color:#fff}
+[data-module="inventory"] .idblock .idpack{margin-top:0;margin-bottom:0}
+
+/* ---------- 卡片 ---------- */
+[data-module="inventory"] section{background:var(--bg1);border-radius:var(--r);padding:20px 22px;
+  margin-bottom:14px;box-shadow:var(--card)}
+[data-module="inventory"] section>h2{font-size:var(--fs-title);color:var(--fg);margin:0 0 26px;
+  font-weight:600;letter-spacing:-.01em;line-height:1.3}
+[data-module="inventory"] section>h2 .hint{font-weight:400;color:var(--fg3);margin-left:12px;
+  letter-spacing:0;font-size:var(--fs-meta)}
+[data-module="inventory"] .grid{display:grid;gap:18px}
+[data-module="inventory"] .g2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+[data-module="inventory"] .g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+[data-module="inventory"] .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+[data-module="inventory"] .kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;
+  font-size:var(--fs-meta);align-content:start}
+[data-module="inventory"] .kv dt{color:var(--fg3)}
+[data-module="inventory"] .kv dd{margin:0;font-family:var(--sans);font-variant-numeric:tabular-nums}
+[data-module="inventory"] .big{font-size:var(--fs-num);font-family:var(--sans);
+  font-variant-numeric:tabular-nums;line-height:1.05;letter-spacing:-.03em}
+[data-module="inventory"] .big.zero{font-size:var(--fs-value);color:var(--fg3);letter-spacing:0}
+/* 复合值与日期：`$12.97 / $0.00`、`2026-08-08`、`342 / 5 / 15` 这类，
+   30px 那档放不下。原来是在 JS 里内联 font-size:17px 压下去的 ——
+   内联字号在 CSS 层扫不到，门禁管不住它，所以收成一个类走 22 档。 */
+[data-module="inventory"] .big.compact{font-size:var(--fs-value);letter-spacing:-.01em}
+[data-module="inventory"] .big2{font-size:var(--fs-value);font-weight:600;color:var(--fg);
+  letter-spacing:-.3px;line-height:1.15}
+[data-module="inventory"] .lbl{font-size:var(--fs-meta);color:var(--fg3);letter-spacing:.01em;margin-bottom:14px}
+
+/* ---------- 表格：斑马纹代替行线 ---------- */
+[data-module="inventory"] table{border-collapse:collapse;width:100%;font-size:var(--fs-meta)}
+[data-module="inventory"] th{text-align:left;font-weight:500;color:var(--fg3);font-size:var(--fs-axis);
+  letter-spacing:.03em;padding:0 10px 7px 0}
+[data-module="inventory"] th.num,[data-module="inventory"] td.num{text-align:right}
+[data-module="inventory"] td{padding:7px 10px 7px 0;color:var(--fg2)}
+[data-module="inventory"] td:first-child{padding-left:9px;border-radius:var(--r3) 0 0 var(--r3)}
+[data-module="inventory"] td:last-child{padding-right:9px;border-radius:0 var(--r3) var(--r3) 0}
+[data-module="inventory"] th:first-child{padding-left:9px}
+[data-module="inventory"] th:last-child{padding-right:9px}
+[data-module="inventory"] tbody tr:nth-child(odd){background:var(--bg3)}
+[data-module="inventory"] tbody tr:hover{background:var(--bg2)}
+[data-module="inventory"] td.dim{color:var(--fg3)}
+[data-module="inventory"] table.tight{width:auto;min-width:270px}
+[data-module="inventory"] table.tight th.num,[data-module="inventory"] table.tight td.num{padding-left:36px}
+
+/* ---------- 结论条 ---------- */
+[data-module="inventory"] .verdict{display:flex;align-items:flex-start;gap:20px;padding:0 0 4px}
+[data-module="inventory"] .verdict .v-main{flex:1;min-width:0;display:flex;gap:11px;align-items:flex-start}
+[data-module="inventory"] .verdict .v-dot{flex:none;width:9px;height:9px;border-radius:50%;
+  margin-top:8px;background:var(--fg3)}
+[data-module="inventory"] .verdict.high .v-dot{background:var(--alert)}
+[data-module="inventory"] .verdict.medium .v-dot{background:var(--warn)}
+[data-module="inventory"] .verdict.low .v-dot{background:var(--fg3)}
+[data-module="inventory"] .verdict.none .v-dot{background:var(--good)}
+[data-module="inventory"] .verdict .v-text{font-size:var(--fs-sub);line-height:1.45;font-weight:600;
+  color:var(--fg);letter-spacing:-.01em}
+[data-module="inventory"] .verdict .v-side{flex:none;display:flex;gap:8px;flex-wrap:wrap;
+  justify-content:flex-end;max-width:46%}
+[data-module="inventory"] .v-tag{font-size:var(--fs-anno);color:var(--fg3);border-radius:var(--r3);
+  padding:5px 11px;background:var(--bg2);white-space:nowrap}
+[data-module="inventory"] .v-tag b{color:var(--fg);font-weight:600;font-size:var(--fs-meta);margin-left:4px}
+[data-module="inventory"] .v-tag.warn b{color:var(--warn)}
+[data-module="inventory"] .v-tag.alert b{color:var(--alert)}
+[data-module="inventory"] .v-tag.good b{color:var(--good)}
+
+
+/* ---------- 盘点结论带 ----------
+ * 五行，不做卡片网格 —— 五个等权卡片会让眯眼测试失败，
+ * 视线落不到最紧急的那一条。排序按严重度，最要紧的在最上面。
+ * 设计见 01-方案与数据需求/10-盘点结论Agent接口契约.md v0.2 §6。 */
+[data-module="inventory"] .inv-verdicts{margin:0 0 18px}
+[data-module="inventory"] .inv-vd-head{display:flex;align-items:baseline;gap:10px;
+  margin-bottom:10px}
+[data-module="inventory"] .inv-vd-title{font-size:var(--fs-meta);color:var(--fg3);
+  letter-spacing:.01em}
+[data-module="inventory"] .inv-vd-stamp{font-size:var(--fs-anno);color:var(--fg3);
+  font-variant-numeric:tabular-nums}
+[data-module="inventory"] .inv-vd-btn{margin-left:auto;font-size:var(--fs-anno);
+  padding:5px 12px;border-radius:var(--r3);background:var(--bg2);color:var(--fg2);
+  cursor:pointer;white-space:nowrap}
+[data-module="inventory"] .inv-vd-btn:hover{background:#ebebec;color:var(--fg)}
+
+[data-module="inventory"] .inv-vd-row{display:grid;
+  grid-template-columns:9px 6.5em 4.5em minmax(0,1fr) auto;
+  gap:10px;align-items:baseline;padding:7px 0}
+[data-module="inventory"] .inv-vd-dot{width:9px;height:9px;border-radius:50%;
+  background:var(--fg3);align-self:center}
+[data-module="inventory"] .inv-vd-row[data-tone="alert"] .inv-vd-dot{background:var(--alert)}
+[data-module="inventory"] .inv-vd-row[data-tone="warn"] .inv-vd-dot{background:var(--warn)}
+[data-module="inventory"] .inv-vd-row[data-tone="good"] .inv-vd-dot{background:var(--good)}
+[data-module="inventory"] .inv-vd-name{font-size:var(--fs-meta);color:var(--fg3);
+  white-space:nowrap}
+[data-module="inventory"] .inv-vd-state{font-size:var(--fs-meta);font-weight:600;
+  white-space:nowrap;color:var(--fg2)}
+[data-module="inventory"] .inv-vd-row[data-tone="alert"] .inv-vd-state{color:var(--alert)}
+[data-module="inventory"] .inv-vd-row[data-tone="warn"] .inv-vd-state{color:var(--warn)}
+[data-module="inventory"] .inv-vd-row[data-tone="good"] .inv-vd-state{color:var(--good)}
+/* 一句话结论：整句陈述归 16（22 留给指标值），见视觉基准要则第一节 */
+[data-module="inventory"] .inv-vd-say{font-size:var(--fs-sub);line-height:1.45;
+  color:var(--fg);letter-spacing:-.01em}
+
+/* 右侧三个标签从原结论条里挪出来，单独一行放在五条下面 */
+[data-module="inventory"] .verdict-side{display:flex;gap:8px;flex-wrap:wrap;
+  margin:0 0 4px}
+
+
+/* ---------- 需求判断 ----------
+ * 交底见 00-通用方法与规范/07-需求判断上屏交底.md。
+ * 两种来源不画成一样：Agent 那种有一句话结论 + 五条因子 + 跑于时间；
+ * 回落那种只有一行统计口径事实，没有因子行。
+ * tone 只给三档（重度扭曲 / 轻度扭曲 / 衰退），方向由 +/- 符号表达不用颜色。 */
+[data-module="inventory"] .inv-judge{margin:22px 0 0;padding:14px 16px;
+  background:var(--bg2);border-radius:var(--r2)}
+[data-module="inventory"] .inv-jd-head{display:flex;align-items:baseline;
+  gap:10px;flex-wrap:wrap}
+[data-module="inventory"] .inv-jd-title{font-size:var(--fs-meta);color:var(--fg3);
+  letter-spacing:.01em}
+/* 来源徽标：Agent 判断与统计口径必须一眼分得开 */
+[data-module="inventory"] .inv-jd-origin{font-size:var(--fs-anno);font-weight:600;
+  padding:2px 8px;border-radius:var(--r3);color:var(--fg2);background:var(--bg1)}
+[data-module="inventory"] .inv-jd-origin[data-agent="1"]{color:var(--calm)}
+[data-module="inventory"] .inv-jd-stamp{font-size:var(--fs-anno);color:var(--fg3);
+  font-variant-numeric:tabular-nums}
+/* 可点开的那种：外观与不可点的戳一致，只多一条虚下划线表示能点。
+   用真 button 而不是带 role 的 span —— 键盘和读屏都白拿。 */
+[data-module="inventory"] button.inv-jd-stamp{border:0;padding:0;background:none;
+  font-family:inherit;cursor:pointer;text-decoration:underline dotted;
+  text-underline-offset:3px}
+[data-module="inventory"] button.inv-jd-stamp:hover{color:var(--fg)}
+/* 执行过程列表，浮层里用。每步三行：做了什么 / 结论 / 看了哪些数据源 */
+[data-module="inventory"] .inv-steps{margin:8px 0 0;padding:0 0 0 18px;
+  display:flex;flex-direction:column;gap:9px}
+[data-module="inventory"] .inv-steps li{min-width:0}
+[data-module="inventory"] .inv-st-label{display:block;font-size:var(--fs-meta);
+  color:var(--fg);font-weight:600}
+[data-module="inventory"] .inv-st-detail{display:block;font-size:var(--fs-anno);
+  color:var(--fg2);margin-top:1px}
+[data-module="inventory"] .inv-st-src{display:block;font-size:var(--fs-axis);
+  color:var(--fg3);margin-top:2px}
+[data-module="inventory"] .inv-st-bad{font-size:var(--fs-axis);color:var(--alert);
+  margin-left:6px}
+[data-module="inventory"] .inv-jd-conf{margin-left:auto;font-size:var(--fs-anno);
+  color:var(--fg3);white-space:nowrap}
+[data-module="inventory"] .inv-jd-conf b{color:var(--fg);font-weight:600}
+/* 一句话结论：整句陈述归 16（22 留给指标值） */
+[data-module="inventory"] .inv-jd-say{margin-top:10px;font-size:var(--fs-sub);
+  line-height:1.45;color:var(--fg);letter-spacing:-.01em}
+[data-module="inventory"] .inv-jd-fallback{margin-top:8px;font-size:var(--fs-body);
+  color:var(--fg2);line-height:1.6}
+[data-module="inventory"] .inv-jd-rows{margin-top:12px;display:grid;gap:2px}
+[data-module="inventory"] .inv-jd-row{display:grid;
+  grid-template-columns:5.5em 7em 5.5em auto;gap:10px;align-items:baseline;
+  padding:4px 0}
+[data-module="inventory"] .inv-jd-name{font-size:var(--fs-meta);color:var(--fg3);
+  white-space:nowrap}
+[data-module="inventory"] .inv-jd-state{font-size:var(--fs-meta);font-weight:600;
+  color:var(--fg2);white-space:nowrap}
+[data-module="inventory"] .inv-jd-row[data-tone="alert"] .inv-jd-state{color:var(--alert)}
+[data-module="inventory"] .inv-jd-row[data-tone="warn"] .inv-jd-state{color:var(--warn)}
+/* 影响幅度：null 显示「—」、0 显示「0.00%」，两者必须可区分。
+   不给方向上色 —— 符号已经说明方向，颜色只留给三档 state。 */
+[data-module="inventory"] .inv-jd-impact{font-size:var(--fs-meta);color:var(--fg);
+  font-variant-numeric:tabular-nums;text-align:right}
+
+/* ---------- 状态 ---------- */
+[data-module="inventory"] .states{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+[data-module="inventory"] .state{font-size:var(--fs-anno);padding:5px 11px;border-radius:var(--r3);color:var(--fg2);
+  background:var(--bg2);cursor:pointer;white-space:nowrap;user-select:none}
+[data-module="inventory"] .state:hover{background:#ebebec;color:var(--fg)}
+[data-module="inventory"] .state.on{background:var(--ink);color:#fff}
+
+/* ---------- 规格 ---------- */
+[data-module="inventory"] .spec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;
+  margin-top:18px;font-size:var(--fs-meta);align-items:start}
+[data-module="inventory"] .spec.spec2{grid-template-columns:repeat(2,minmax(0,1fr))}
+[data-module="inventory"] .spec>.col{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;
+  align-content:start;background:var(--bg2);border-radius:var(--r2);padding:14px 16px}
+[data-module="inventory"] .spec .st{grid-column:1/-1;font-size:var(--fs-axis);color:var(--fg3);
+  letter-spacing:.03em;margin-bottom:4px}
+[data-module="inventory"] .spec dt{color:var(--fg3);white-space:nowrap}
+[data-module="inventory"] .spec dd{margin:0;font-family:var(--sans);font-variant-numeric:tabular-nums;
+  word-break:break-word;color:var(--fg)}
+[data-module="inventory"] .spec dd.text{font-family:inherit}
+[data-module="inventory"] .specwide{margin-top:12px;background:var(--bg2);border-radius:var(--r2);
+  padding:14px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:var(--fs-meta)}
+[data-module="inventory"] .specwide dt{color:var(--fg3);white-space:nowrap}
+[data-module="inventory"] .specwide dd{margin:0;line-height:1.6}
+
+/* 组合装清单 */
+[data-module="inventory"] .packhead{font-size:var(--fs-anno);color:var(--fg3);margin-bottom:9px}
+[data-module="inventory"] .packhead .ok{color:var(--good)}
+[data-module="inventory"] .packhead .warn{color:var(--warn)}
+[data-module="inventory"] .packlist{display:flex;flex-wrap:wrap;gap:7px}
+[data-module="inventory"] .packitem{font-size:var(--fs-anno);border-radius:var(--r3);padding:5px 11px;
+  background:var(--bg1);white-space:nowrap;color:var(--fg)}
+[data-module="inventory"] .packitem b{font-family:var(--sans);font-size:var(--fs-axis);color:var(--fg3);
+  font-weight:400;margin-right:6px}
+[data-module="inventory"] .packitem i{font-style:normal;color:var(--fg3);margin-left:5px}
+[data-module="inventory"] .packitem em{font-style:normal;font-family:var(--sans);font-variant-numeric:tabular-nums;
+  color:var(--fg2);margin-left:7px}
+
+/* ---------- 来源标注 ---------- */
+[data-module="inventory"] .chip{display:inline-block;font-size:var(--fs-axis);padding:1px 0;letter-spacing:.02em;
+  vertical-align:1px;white-space:nowrap;color:var(--fg3);font-weight:500}
+[data-module="inventory"] .chip::before{content:"";display:inline-block;width:5px;height:5px;
+  border-radius:50%;margin-right:4px;vertical-align:1px;background:currentColor}
+[data-module="inventory"] .chip.real{color:var(--good)}
+[data-module="inventory"] .chip.derived{color:var(--fg3)}
+[data-module="inventory"] .chip.est{color:var(--warn)}
+[data-module="inventory"] .chip.supp{color:var(--calm)}
+[data-module="inventory"] .chip.na{color:var(--fg3)}
+
+/* ---------- 风险 ---------- */
+[data-module="inventory"] .risk{background:var(--bg2);border-radius:var(--r2);padding:14px 16px;margin-bottom:10px}
+[data-module="inventory"] .risk .rh{display:flex;gap:11px;align-items:baseline}
+[data-module="inventory"] .risk .rt{font-size:var(--fs-body);font-weight:600}
+[data-module="inventory"] .risk .rt::before{content:"";display:inline-block;width:8px;height:8px;
+  border-radius:50%;margin-right:9px;vertical-align:1px;background:var(--fg3)}
+[data-module="inventory"] .risk.high .rt::before{background:var(--alert)}
+[data-module="inventory"] .risk.medium .rt::before{background:var(--warn)}
+[data-module="inventory"] .risk .rs{font-size:var(--fs-axis);color:var(--fg3);font-family:var(--sans);
+  font-variant-numeric:tabular-nums}
+[data-module="inventory"] .risk .head{font-size:var(--fs-meta);color:var(--fg);margin:6px 0 7px}
+[data-module="inventory"] .risk ul{margin:0;padding-left:18px;font-size:var(--fs-anno);color:var(--fg2)}
+[data-module="inventory"] .risk ul li{margin-bottom:2px}
+
+[data-module="inventory"] .na{color:var(--fg3);font-size:var(--fs-anno);font-style:normal}
+[data-module="inventory"] .inv-reasons{font-size:var(--fs-anno);color:var(--fg2);
+  padding-left:18px;margin:4px 0 0}
+[data-module="inventory"] .note{font-size:var(--fs-anno);color:var(--fg3);margin-top:10px;line-height:1.6}
+[data-module="inventory"] .notice{background:var(--bg2);border-radius:var(--r2);padding:11px 14px;
+  color:var(--fg2);font-size:var(--fs-anno);line-height:1.6}
+[data-module="inventory"] .notice.sm{margin-top:10px;font-size:var(--fs-anno);color:var(--fg3)}
+
+/* ---------- ⓘ 标记与浮层内容 ----------
+ * 容器（定位、投影、圆角）由外壳的 .wb-pop 提供，这里只管里面的排版。
+ * 生效的前提是内容自带 data-module 包裹节点 —— 见文件头。 */
+[data-module="inventory"] .info{display:inline-flex;align-items:center;justify-content:center;
+  width:16px;height:16px;border-radius:50%;color:var(--fg3);font-size:var(--fs-axis);cursor:pointer;
+  background:var(--bg2);margin-left:7px;vertical-align:1px;font-style:normal;
+  font-family:var(--sans);font-weight:500;letter-spacing:0;text-transform:none;
+  user-select:none;flex:none}
+[data-module="inventory"] .info:hover{background:#e7e7e9;color:var(--fg)}
+[data-module="inventory"] .info.on{color:#fff;background:var(--accent)}
+[data-module="inventory"].inv-pop,
+[data-module="inventory"] .inv-pop{max-width:470px;font-size:var(--fs-anno);line-height:1.65;color:var(--fg2);
+  font-weight:400;letter-spacing:0;text-transform:none}
+[data-module="inventory"] .inv-pop b{color:var(--fg);font-weight:600}
+[data-module="inventory"] .inv-pop dl{display:grid;grid-template-columns:auto minmax(0,1fr);
+  gap:4px 14px;margin:7px 0 0}
+[data-module="inventory"] .inv-pop dt{color:var(--fg3)}
+[data-module="inventory"] .inv-pop dd{margin:0;font-family:var(--sans);font-variant-numeric:tabular-nums;
+  word-break:break-all}
+
+/* ---------- 折叠区 ---------- */
+[data-module="inventory"] .fold{border-radius:var(--r);background:var(--bg1);margin-bottom:14px;
+  box-shadow:var(--card)}
+[data-module="inventory"] .fold>summary{padding:15px 22px;font-size:var(--fs-meta);color:var(--fg);
+  cursor:pointer;font-weight:600;letter-spacing:.01em;list-style:none;display:flex;
+  align-items:center;border-radius:var(--r)}
+[data-module="inventory"] .fold>summary::-webkit-details-marker{display:none}
+[data-module="inventory"] .fold>summary::before{content:"";width:0;height:0;margin-right:10px;
+  border-left:5px solid var(--fg3);border-top:4px solid transparent;
+  border-bottom:4px solid transparent;transition:transform .12s}
+[data-module="inventory"] .fold[open]>summary::before{transform:rotate(90deg) translateX(1px)}
+[data-module="inventory"] .fold>summary:hover{color:var(--fg)}
+[data-module="inventory"] .fold>summary .c{margin-left:10px;font-weight:400;color:var(--fg3);
+  letter-spacing:0;font-size:var(--fs-anno)}
+[data-module="inventory"] .foldbody{padding:0 22px 20px}
+
+/* ---------- 小 SVG 图：墨线 + 极淡网格 ---------- */
+[data-module="inventory"] svg .axis{stroke:#ececed;stroke-width:1}
+[data-module="inventory"] svg .demand{fill:none;stroke:var(--ink);stroke-width:1.5}
+[data-module="inventory"] svg .bal{fill:none;stroke:var(--ink);stroke-width:1.8}
+[data-module="inventory"] svg .zero{stroke:var(--alert);stroke-width:1;stroke-dasharray:2 3}
+[data-module="inventory"] svg .safety{stroke:var(--warn);stroke-width:1;stroke-dasharray:4 3}
+[data-module="inventory"] svg .parent{fill:none;stroke:#a1a1aa;stroke-width:1}
+[data-module="inventory"] svg .avgline{stroke:var(--fg3);stroke-width:1;stroke-dasharray:4 3}
+[data-module="inventory"] svg text{fill:var(--fg3);font-size:var(--fs-axis);font-family:var(--sans);
+  font-variant-numeric:tabular-nums}
+[data-module="inventory"] .legend{font-size:var(--fs-axis);color:var(--fg3);margin-top:6px;
+  display:flex;gap:16px;flex-wrap:wrap}
+[data-module="inventory"] .legend i{display:inline-block;width:15px;height:2px;margin-right:5px;
+  vertical-align:3px;border-radius:1px}
+
+/* ---------- 库龄柱 ----------
+ * 轨道自己撑高度并做定位上下文；填充必须 block + absolute。
+ * 行内元素上的 width/height 会被忽略，之前柱子全部塌成 0×0。 */
+[data-module="inventory"] .bars{display:flex;flex-direction:column;gap:7px}
+[data-module="inventory"] .bars .b{display:grid;grid-template-columns:104px minmax(0,1fr) 68px;
+  gap:10px;align-items:center;font-size:var(--fs-anno)}
+[data-module="inventory"] .bars .track{position:relative;height:14px;background:transparent}
+[data-module="inventory"] .bars .track::before{content:"";position:absolute;left:0;right:0;top:0;
+  height:10px;background:var(--bg2);border-radius:5px}
+[data-module="inventory"] .bars .fill{display:block;position:absolute;left:0;top:0;height:10px;
+  background:var(--ink);border-radius:5px;min-width:2px}
+[data-module="inventory"] .bars .fill.aged{background:var(--warn)}
+[data-module="inventory"] .bars .fill.june{top:11px;height:3px;background:#c4c4c9;
+  border-radius:2px;opacity:1}
+
+/* ---------- 逐日柱状图 ----------
+ * 图本身没有边框，靠卡片内的浅灰面板与留白从上下文里分出来。
+ * 高度 452px 是给事件标注的三层（日期 / 名称 / 横条）留出的行高之后的值，
+ * 见 00-通用方法与规范/06-视觉基准要则.md 第三节。 */
+[data-module="inventory"] .daychart{height:452px;width:100%;background:var(--bg1)}
+[data-module="inventory"] .daydetail{margin-top:10px;background:var(--bg2);border-radius:var(--r2);
+  padding:12px 14px;min-height:44px;font-size:var(--fs-body);line-height:1.7}
+[data-module="inventory"] .daydetail .dim{color:var(--fg3);font-size:var(--fs-meta)}
+[data-module="inventory"] .dd-h{font-weight:600;font-size:var(--fs-body);color:var(--fg);
+  margin-bottom:14px;display:flex;align-items:center;gap:7px}
+[data-module="inventory"] .dd-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+[data-module="inventory"] .dd-p{color:var(--fg2);font-size:var(--fs-body);margin:4px 0;line-height:1.75}
+[data-module="inventory"] .dd-q{font-weight:600;color:var(--fg);font-size:var(--fs-body);margin:16px 0 6px}
+[data-module="inventory"] .dd-q:first-of-type{margin-top:0}
+[data-module="inventory"] .dd-l{margin:0;padding-left:18px;color:var(--fg2)}
+[data-module="inventory"] .dd-l li{margin:3px 0}
+[data-module="inventory"] .dd-l b{color:var(--fg)}
+[data-module="inventory"] .daydetail table{width:100%;border-collapse:collapse;margin-top:4px}
+[data-module="inventory"] .daydetail table th{text-align:left;font-weight:500;color:var(--fg3);
+  font-size:var(--fs-axis);padding:3px 8px 3px 0}
+[data-module="inventory"] .daydetail table td{padding:3px 8px 3px 0;vertical-align:top;color:var(--fg2)}
+[data-module="inventory"] .daydetail table tbody tr:nth-child(odd){background:rgba(255,255,255,.6)}
+
+/* 指标行与图表之间的呼吸（设计图 54px，这里按 0.8 倍收） */
+[data-module="inventory"] .inv-chartmount{margin-top:40px}
+
+/* 指标格：值与脚注之间 12px，脚注上一档字号 */
+[data-module="inventory"] section .big + .dim,
+[data-module="inventory"] section .big2 + .dim{display:block;margin-top:12px;
+  font-size:var(--fs-body);color:var(--fg2);line-height:1.5}
+
+/* ---------- 图表 tooltip：只列当天有值的行，合计在最前 ----------
+ * ECharts 的 tooltip 也挂在文档顶层，所以同样需要 data-module 包裹节点。 */
+[data-module="inventory"].tt,
+[data-module="inventory"] .tt{min-width:206px;padding:10px 12px;font-size:var(--fs-anno);color:var(--fg2)}
+[data-module="inventory"] .tt-h{font-weight:600;color:var(--fg);font-size:var(--fs-anno);padding-bottom:6px}
+[data-module="inventory"] .tt-total{display:flex;justify-content:space-between;align-items:baseline;
+  padding:5px 0 7px;border-radius:0}
+[data-module="inventory"] .tt-total span{color:var(--fg3);font-size:var(--fs-axis)}
+[data-module="inventory"] .tt-total b{font-size:var(--fs-value);color:var(--fg);font-variant-numeric:tabular-nums}
+[data-module="inventory"] .tt table{border-collapse:collapse;width:100%}
+[data-module="inventory"] .tt .tk{color:var(--fg3);padding:1.5px 12px 1.5px 0;white-space:nowrap}
+[data-module="inventory"] .tt .tv{text-align:right;font-variant-numeric:tabular-nums;
+  color:var(--fg2);white-space:nowrap}
+[data-module="inventory"] .tt-warn{color:var(--warn)}
+[data-module="inventory"] .tt-f{color:var(--fg3);font-size:var(--fs-axis);padding-top:7px}

@@ -1,0 +1,695 @@
+{
+  "contract_id": "bamboocool-advertising-acceptance-v1",
+  "contract_version": "1.0.0",
+  "dataset": "/Users/linsen/BAM/04-广告分析模块/02-数据构建/v0.1.0",
+  "mode": "release",
+  "evaluated_at": "2026-08-29T20:08:57+08:00",
+  "overall_status": "PASS",
+  "counts": {
+    "PASS": 63
+  },
+  "capability_status": {
+    "AD-01": "PASS",
+    "AD-02": "PASS",
+    "AD-03": "PASS",
+    "AD-04": "PASS",
+    "AD-05": "PASS",
+    "AD-06": "PASS",
+    "AD-07": "PASS",
+    "AD-08": "PASS",
+    "AD-09": "PASS",
+    "AD-10": "PASS",
+    "AD-11": "PASS",
+    "VS-00": "PASS",
+    "VS-01": "PASS",
+    "VS-02": "PASS",
+    "VS-03": "PASS"
+  },
+  "checks": [
+    {
+      "check_id": "AD-01-A1",
+      "capability_id": "AD-01",
+      "status": "PASS",
+      "message": "SP、SB、SD 对象覆盖。",
+      "evidence": {
+        "observed_types": [
+          "SB",
+          "SD",
+          "SP"
+        ]
+      }
+    },
+    {
+      "check_id": "AD-01-A2",
+      "capability_id": "AD-01",
+      "status": "PASS",
+      "message": "广告组必须声明为名称键，不得冒充平台稳定 ID。",
+      "evidence": {
+        "invalid_ids": []
+      }
+    },
+    {
+      "check_id": "AD-01-B0",
+      "capability_id": "AD-01",
+      "status": "PASS",
+      "message": "manifest 冻结完整 54 个广告组名称键。",
+      "evidence": {
+        "observed": 54
+      }
+    },
+    {
+      "check_id": "AD-01-B1",
+      "capability_id": "AD-01",
+      "status": "PASS",
+      "message": "release 广告组名称键数量必须为 54。",
+      "evidence": {
+        "observed": 54
+      }
+    },
+    {
+      "check_id": "AD-01-B2",
+      "capability_id": "AD-01",
+      "status": "PASS",
+      "message": "release 广告组类型分布必须为 SP40/SB5/SD9。",
+      "evidence": {
+        "observed": {
+          "SB": 5,
+          "SD": 9,
+          "SP": 40
+        }
+      }
+    },
+    {
+      "check_id": "AD-01-C",
+      "capability_id": "AD-01",
+      "status": "PASS",
+      "message": "Amazon direct 事实必须落在冻结的 2026-07 窗口。",
+      "evidence": {
+        "invalid_fact_ids": []
+      }
+    },
+    {
+      "check_id": "AD-01-D",
+      "capability_id": "AD-01",
+      "status": "PASS",
+      "message": "广告归因天数必须为 SP=7、SB/SD=14。",
+      "evidence": {
+        "invalid_fact_ids": []
+      }
+    },
+    {
+      "check_id": "AD-01-E1",
+      "capability_id": "AD-01",
+      "status": "PASS",
+      "message": "广告事实主键唯一且来源/粒度/时间字段齐全。",
+      "evidence": {
+        "duplicates": [],
+        "incomplete": []
+      }
+    },
+    {
+      "check_id": "AD-01-E2",
+      "capability_id": "AD-01",
+      "status": "PASS",
+      "message": "广告事实来源状态使用冻结五分类。",
+      "evidence": {
+        "invalid_fact_ids": []
+      }
+    },
+    {
+      "check_id": "AD-02-A0",
+      "capability_id": "AD-02",
+      "status": "PASS",
+      "message": "manifest 冻结 5 父和完整 521 子目标。",
+      "evidence": {
+        "observed_parents": [
+          "B0CCLWDJNV",
+          "B0CJV3G988",
+          "B0D9FLMR6N",
+          "B0DDNK229S",
+          "B0GQXK2Q58"
+        ],
+        "observed_child_target": 521
+      }
+    },
+    {
+      "check_id": "AD-02-A1",
+      "capability_id": "AD-02",
+      "status": "PASS",
+      "message": "release 父体集合必须与冻结范围完全一致。",
+      "evidence": {
+        "observed": [
+          "B0CCLWDJNV",
+          "B0CJV3G988",
+          "B0D9FLMR6N",
+          "B0DDNK229S",
+          "B0GQXK2Q58"
+        ]
+      }
+    },
+    {
+      "check_id": "AD-02-A2",
+      "capability_id": "AD-02",
+      "status": "PASS",
+      "message": "release 必须保留完整 521 个子 ASIN。",
+      "evidence": {
+        "observed": 521
+      }
+    },
+    {
+      "check_id": "AD-02-A3",
+      "capability_id": "AD-02",
+      "status": "PASS",
+      "message": "每个父体的完整子体数量必须符合冻结范围。",
+      "evidence": {
+        "observed": {
+          "B0DDNK229S": 103,
+          "B0CJV3G988": 134,
+          "B0GQXK2Q58": 92,
+          "B0CCLWDJNV": 96,
+          "B0D9FLMR6N": 96
+        }
+      }
+    },
+    {
+      "check_id": "AD-02-A4",
+      "capability_id": "AD-02",
+      "status": "PASS",
+      "message": "子 ASIN 唯一归属一个冻结父体。",
+      "evidence": {
+        "duplicates": []
+      }
+    },
+    {
+      "check_id": "AD-02-B",
+      "capability_id": "AD-02",
+      "status": "PASS",
+      "message": "关系角色必须显式区分推广、正花费、购买、目标和匹配。",
+      "evidence": {
+        "invalid_relation_ids": []
+      }
+    },
+    {
+      "check_id": "AD-02-C1",
+      "capability_id": "AD-02",
+      "status": "PASS",
+      "message": "release 范围内推广 ASIN 必须为 115 个。",
+      "evidence": {
+        "observed": 115
+      }
+    },
+    {
+      "check_id": "AD-02-C2",
+      "capability_id": "AD-02",
+      "status": "PASS",
+      "message": "推广 ASIN 只覆盖三个有明确广告关系的父体。",
+      "evidence": {
+        "observed": [
+          "B0CJV3G988",
+          "B0DDNK229S",
+          "B0GQXK2Q58"
+        ]
+      }
+    },
+    {
+      "check_id": "AD-02-C3",
+      "capability_id": "AD-02",
+      "status": "PASS",
+      "message": "推广关系必须来自直接 advertising_asin 证据。",
+      "evidence": {
+        "invalid_relation_ids": [],
+        "promoted_rows": 331
+      }
+    },
+    {
+      "check_id": "AD-02-C4",
+      "capability_id": "AD-02",
+      "status": "PASS",
+      "message": "购买/目标/匹配 ASIN 不得被升级为广告 ASIN。",
+      "evidence": {
+        "invalid_relation_ids": []
+      }
+    },
+    {
+      "check_id": "AD-02-D",
+      "capability_id": "AD-02",
+      "status": "PASS",
+      "message": "共享广告对象保留 shared/unattributed 归因边界。",
+      "evidence": {
+        "shared_object_count": 45,
+        "invalid_relation_ids": []
+      }
+    },
+    {
+      "check_id": "AD-02-E",
+      "capability_id": "AD-02",
+      "status": "PASS",
+      "message": "广告产品关系包含生效时间、来源与归因边界。",
+      "evidence": {
+        "incomplete_relation_ids": []
+      }
+    },
+    {
+      "check_id": "AD-03-A",
+      "capability_id": "AD-03",
+      "status": "PASS",
+      "message": "标签切片覆盖五类标签体系。",
+      "evidence": {
+        "observed_types": [
+          "AD_ATTRIBUTE",
+          "AD_PURPOSE",
+          "OPERATOR_CUSTOM",
+          "PRODUCT_RELATION",
+          "TARGET_OBJECT"
+        ]
+      }
+    },
+    {
+      "check_id": "AD-03-B",
+      "capability_id": "AD-03",
+      "status": "PASS",
+      "message": "标签来源使用冻结枚举。",
+      "evidence": {
+        "invalid_versions": []
+      }
+    },
+    {
+      "check_id": "AD-03-C",
+      "capability_id": "AD-03",
+      "status": "PASS",
+      "message": "切片包含确认、待确认、拒绝和无法识别状态。",
+      "evidence": {
+        "observed_states": [
+          "confirmed",
+          "pending",
+          "rejected",
+          "unrecognized"
+        ]
+      }
+    },
+    {
+      "check_id": "AD-03-D",
+      "capability_id": "AD-03",
+      "status": "PASS",
+      "message": "标签版本区间有效、不重叠，且切片含历史变化。",
+      "evidence": {
+        "invalid_dates": [],
+        "overlaps": [],
+        "has_history": true
+      }
+    },
+    {
+      "check_id": "AD-03-E",
+      "capability_id": "AD-03",
+      "status": "PASS",
+      "message": "继承标签保留来源广告组。",
+      "evidence": {
+        "inherited_count": 679
+      }
+    },
+    {
+      "check_id": "AD-04-A",
+      "capability_id": "AD-04",
+      "status": "PASS",
+      "message": "基础经营量不得为负。",
+      "evidence": {
+        "invalid_ids": []
+      }
+    },
+    {
+      "check_id": "AD-04-B",
+      "capability_id": "AD-04",
+      "status": "PASS",
+      "message": "CTR/CPC/CVR/ACoS/ROAS 必须可由分子分母复算。",
+      "evidence": {
+        "mismatches": []
+      }
+    },
+    {
+      "check_id": "AD-04-C1",
+      "capability_id": "AD-04",
+      "status": "PASS",
+      "message": "广告经营事实目标粒度唯一。",
+      "evidence": {
+        "duplicate_grains": []
+      }
+    },
+    {
+      "check_id": "AD-04-C2",
+      "capability_id": "AD-04",
+      "status": "PASS",
+      "message": "区间结果保留覆盖、归因、共享和可比状态。",
+      "evidence": {
+        "incomplete_fact_ids": []
+      }
+    },
+    {
+      "check_id": "AD-04-E",
+      "capability_id": "AD-04",
+      "status": "PASS",
+      "message": "经营事实不携带产品诊断或建议字段。",
+      "evidence": {
+        "polluted_fact_ids": []
+      }
+    },
+    {
+      "check_id": "AD-05-A",
+      "capability_id": "AD-05",
+      "status": "PASS",
+      "message": "决策上下文使用子 ASIN × 目标版本 × 决策时刻唯一粒度。",
+      "evidence": {
+        "duplicate_grains": []
+      }
+    },
+    {
+      "check_id": "AD-05-B",
+      "capability_id": "AD-05",
+      "status": "PASS",
+      "message": "至少一个明星决策包含五类必需证据。",
+      "evidence": {
+        "complete_decisions": [
+          "dec_B088WF1PRW_20260803_v01"
+        ]
+      }
+    },
+    {
+      "check_id": "AD-05-C",
+      "capability_id": "AD-05",
+      "status": "PASS",
+      "message": "证据保留时间、来源和事实/推导/确认边界。",
+      "evidence": {
+        "incomplete": [],
+        "invalid_nature": []
+      }
+    },
+    {
+      "check_id": "AD-05-D",
+      "capability_id": "AD-05",
+      "status": "PASS",
+      "message": "决策不使用未来证据，证据质量状态显式。",
+      "evidence": {
+        "invalid_evidence_ids": []
+      }
+    },
+    {
+      "check_id": "AD-06-A",
+      "capability_id": "AD-06",
+      "status": "PASS",
+      "message": "每项任务绑定决策、目标、证据和完整任务边界。",
+      "evidence": {
+        "incomplete": [],
+        "broken_evidence": []
+      }
+    },
+    {
+      "check_id": "AD-06-C",
+      "capability_id": "AD-06",
+      "status": "PASS",
+      "message": "规则未确认时不得输出精确预算、竞价或广告位幅度。",
+      "evidence": {
+        "invalid_task_ids": []
+      }
+    },
+    {
+      "check_id": "AD-06-D",
+      "capability_id": "AD-06",
+      "status": "PASS",
+      "message": "库存不可承接场景生成限制、暂缓或前置任务。",
+      "evidence": {
+        "constrained_tasks": 2
+      }
+    },
+    {
+      "check_id": "AD-07-A",
+      "capability_id": "AD-07",
+      "status": "PASS",
+      "message": "每项应有任务都有冻结的结构对照状态。",
+      "evidence": {
+        "invalid_status": [],
+        "unmapped_tasks": []
+      }
+    },
+    {
+      "check_id": "AD-07-B",
+      "capability_id": "AD-07",
+      "status": "PASS",
+      "message": "已承接状态连接真实对象；缺失状态不伪造承担者。",
+      "evidence": {
+        "broken_links": [],
+        "false_missing": []
+      }
+    },
+    {
+      "check_id": "AD-07-C",
+      "capability_id": "AD-07",
+      "status": "PASS",
+      "message": "结构对照保留共享、重叠或不可归因限制。",
+      "evidence": {
+        "incomplete": []
+      }
+    },
+    {
+      "check_id": "AD-07-D",
+      "capability_id": "AD-07",
+      "status": "PASS",
+      "message": "共享或混合结构不会被自动等同为错误。",
+      "evidence": {
+        "invalid_mapping_ids": []
+      }
+    },
+    {
+      "check_id": "AD-08-A",
+      "capability_id": "AD-08",
+      "status": "PASS",
+      "message": "诊断包含目标、优先级、可信度、证据、不确定项和检查方向。",
+      "evidence": {
+        "incomplete": [],
+        "broken_evidence": []
+      }
+    },
+    {
+      "check_id": "AD-08-C",
+      "capability_id": "AD-08",
+      "status": "PASS",
+      "message": "诊断只使用已确认阈值、自身历史、严格可比对象或条件/不足判断。",
+      "evidence": {
+        "invalid_diagnoses": []
+      }
+    },
+    {
+      "check_id": "AD-08-D",
+      "capability_id": "AD-08",
+      "status": "PASS",
+      "message": "同期变化不得被声明为确定因果。",
+      "evidence": {
+        "causal_diagnoses": []
+      }
+    },
+    {
+      "check_id": "AD-09-A",
+      "capability_id": "AD-09",
+      "status": "PASS",
+      "message": "建议绑定决策、目标、诊断和真实对象或明确结构缺口。",
+      "evidence": {
+        "incomplete": [],
+        "broken_links": []
+      }
+    },
+    {
+      "check_id": "AD-09-B",
+      "capability_id": "AD-09",
+      "status": "PASS",
+      "message": "建议方向使用冻结动作方向。",
+      "evidence": {
+        "invalid_recommendations": []
+      }
+    },
+    {
+      "check_id": "AD-09-C",
+      "capability_id": "AD-09",
+      "status": "PASS",
+      "message": "建议包含 D+3 和必要时 D+7 观察要求。",
+      "evidence": {}
+    },
+    {
+      "check_id": "AD-09-D",
+      "capability_id": "AD-09",
+      "status": "PASS",
+      "message": "精确建议值只在规则已确认且 rule_id 存在时允许。",
+      "evidence": {
+        "invalid_recommendations": []
+      }
+    },
+    {
+      "check_id": "AD-10-A",
+      "capability_id": "AD-10",
+      "status": "PASS",
+      "message": "每次第一页查询只含一种对象粒度，并声明范围、筛选签名和对象数。",
+      "evidence": {
+        "mixed_queries": [],
+        "incomplete_queries": []
+      }
+    },
+    {
+      "check_id": "AD-10-B",
+      "capability_id": "AD-10",
+      "status": "PASS",
+      "message": "可比较对象必须同粒度、同时间、同归因和同指标基础。",
+      "evidence": {
+        "invalid_queries": []
+      }
+    },
+    {
+      "check_id": "AD-10-C",
+      "capability_id": "AD-10",
+      "status": "PASS",
+      "message": "数值异常必须绑定已启用规则；无规则不标异常。",
+      "evidence": {
+        "invalid_anomalies": []
+      }
+    },
+    {
+      "check_id": "AD-10-D",
+      "capability_id": "AD-10",
+      "status": "PASS",
+      "message": "第一页结果不包含产品策略诊断或动作建议字段。",
+      "evidence": {
+        "polluted_results": []
+      }
+    },
+    {
+      "check_id": "AD-10-E",
+      "capability_id": "AD-10",
+      "status": "PASS",
+      "message": "切片包含范围变化重算和无规则不报异常场景。",
+      "evidence": {
+        "query_count": 6,
+        "scenarios": [
+          "DECISION_ACCEPT",
+          "DECISION_DEFER",
+          "DECISION_MODIFY",
+          "DECISION_REJECT",
+          "INVENTORY_CONSTRAINT",
+          "LABEL_VERSION_CHANGE",
+          "NO_ANOMALY_RULE",
+          "PAGE1_FILTER_COMPARE_ANOMALY",
+          "PAGE2_END_TO_END",
+          "REVIEW_FEEDBACK_LINK",
+          "SHARED_AD_OBJECT",
+          "SOURCE_ROLE_BOUNDARY",
+          "UNCONFIRMED_RULE_NO_PRECISE_VALUE"
+        ]
+      }
+    },
+    {
+      "check_id": "AD-11-A",
+      "capability_id": "AD-11",
+      "status": "PASS",
+      "message": "四类运营决定均存在且保存原建议快照。",
+      "evidence": {
+        "observed_types": [
+          "accept",
+          "defer",
+          "modify",
+          "reject"
+        ],
+        "incomplete": []
+      }
+    },
+    {
+      "check_id": "AD-11-B",
+      "capability_id": "AD-11",
+      "status": "PASS",
+      "message": "接受/修改才可交接；拒绝/暂缓记录原因且不伪装执行。",
+      "evidence": {
+        "invalid_event_ids": []
+      }
+    },
+    {
+      "check_id": "AD-11-C",
+      "capability_id": "AD-11",
+      "status": "PASS",
+      "message": "交接包含产品、诊断、对象、方向、观察、未确认项和版本。",
+      "evidence": {
+        "incomplete_event_ids": []
+      }
+    },
+    {
+      "check_id": "AD-11-D",
+      "capability_id": "AD-11",
+      "status": "PASS",
+      "message": "D+3/D+7 反馈通过执行复盘来源回流并保留同期变量。",
+      "evidence": {
+        "windows": [
+          "D+3",
+          "D+7"
+        ],
+        "incomplete": []
+      }
+    },
+    {
+      "check_id": "AD-11-E",
+      "capability_id": "AD-11",
+      "status": "PASS",
+      "message": "新版本引用前序版本和历史反馈，不覆盖旧记录。",
+      "evidence": {
+        "linked_versions": 1
+      }
+    },
+    {
+      "check_id": "VS-00",
+      "capability_id": "VS-00",
+      "status": "PASS",
+      "message": "门禁能力断言和场景均通过。",
+      "evidence": {
+        "missing_scenarios": [],
+        "capability_ids": [
+          "AD-01",
+          "AD-02"
+        ]
+      }
+    },
+    {
+      "check_id": "VS-01",
+      "capability_id": "VS-01",
+      "status": "PASS",
+      "message": "门禁能力断言和场景均通过。",
+      "evidence": {
+        "missing_scenarios": [],
+        "capability_ids": [
+          "AD-03",
+          "AD-04",
+          "AD-10"
+        ]
+      }
+    },
+    {
+      "check_id": "VS-02",
+      "capability_id": "VS-02",
+      "status": "PASS",
+      "message": "门禁能力断言和场景均通过。",
+      "evidence": {
+        "missing_scenarios": [],
+        "capability_ids": [
+          "AD-05",
+          "AD-06",
+          "AD-07",
+          "AD-08",
+          "AD-09"
+        ]
+      }
+    },
+    {
+      "check_id": "VS-03",
+      "capability_id": "VS-03",
+      "status": "PASS",
+      "message": "门禁能力断言和场景均通过。",
+      "evidence": {
+        "missing_scenarios": [],
+        "capability_ids": [
+          "AD-11"
+        ]
+      }
+    }
+  ]
+}
