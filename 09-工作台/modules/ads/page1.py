@@ -63,16 +63,36 @@ def half_change(daily: list[dict], min_per_half: int) -> dict:
         return {"comparable": False, "why": "前后半窗点击样本不足",
                 "days_prev": na, "days_curr": nb}
     ra, rb = _ratios(a), _ratios(b)
+
     def rate(k):
         x, y = ra.get(k), rb.get(k)
         if x in (None, 0) or y is None:
             return None
         return y / x - 1
+
+    def vrate(k):
+        """量类指标的环比。比率类走 rate()，量类走原值 —— 两侧各 15 天等长，
+        所以量可以直接比，不用先除天数。"""
+        x, y = a.get(k), b.get(k)
+        if not x:
+            return None
+        return y / x - 1
+
     return {"comparable": True, "days_prev": na, "days_curr": nb,
             "prev": {**a, **ra}, "curr": {**b, **rb},
+            # 九个指标的环比。以前只吐 acos/cvr/cpc 三个，而 prev/curr
+            # 本来就是完整的前后半窗汇总 —— 剩下六个不是算不出来，是没吐出来。
+            # 基准同一句：后半月对前半月，两侧各 15 天等长。
             "acos_change_rate": rate("acos"),
             "cvr_change_rate": rate("cvr"),
-            "cpc_change_rate": rate("cpc")}
+            "cpc_change_rate": rate("cpc"),
+            "ctr_change_rate": rate("ctr"),
+            "roas_change_rate": rate("roas"),
+            "spend_change_rate": vrate("spend"),
+            "ad_sales_change_rate": vrate("ad_sales"),
+            "orders_change_rate": vrate("orders"),
+            "clicks_change_rate": vrate("clicks"),
+            "impressions_change_rate": vrate("impressions")}
 
 
 def build_universe(con, grain: str, basis: str) -> list[dict]:
@@ -151,6 +171,9 @@ def build_universe(con, grain: str, basis: str) -> list[dict]:
             "shared_child_count": n_kid,
             "history": half_change(ds, 0) if ds else {"comparable": False,
                                                       "why": "无日粒度序列"},
+            # 日线挂在内部行上供块级趋势汇总用。**不进对外载荷** ——
+            # 出口那两处是显式投影，54 个对象各 31 天会把响应撑大四倍。
+            "daily": ds or [],
             "nature": data.nature(f.get("source_status")),
         })
     out.sort(key=lambda x: -(x["spend"] or 0))
@@ -293,9 +316,19 @@ def facets(universe: list[dict], f: dict, grain: str) -> list[dict]:
     return out
 
 
-def aggregate(sel: list[dict]) -> dict:
-    """按归因周期分块。花费可加，归因销售额不可加。"""
+def aggregate(sel: list[dict], rs: dict | None = None) -> dict:
+    """按归因周期分块。花费可加，归因销售额不可加。
+
+    2026-09-04 加了块级环比：把块内每个对象的前后半窗汇总相加，再各自算比率
+    做比值。这是真实日粒度数据的合并，不是新造一个数 —— 基准与对象级同一句
+    「后半月对前半月，两侧各 15 天等长」。
+    **样本不足的对象不进环比汇总**，并报出纳入了几个对象，
+    否则一个没有日线的对象会静默把环比拉平。
+    """
+    min_half = (rs or {}).get("min_clicks_per_half") or 0
     blocks: dict[int, dict] = {}
+    halves: dict[int, dict] = {}
+    days: dict[int, dict] = {}
     for r in sel:
         d = r.get("attribution_days") or 0
         b = blocks.setdefault(d, {"attribution_days": d, "ad_types": set(),
@@ -303,11 +336,73 @@ def aggregate(sel: list[dict]) -> dict:
         b["ad_types"].add(r["ad_type"])
         b["objects"] += 1
         _add(b, r)
+        h = r.get("history") or {}
+        if h.get("comparable"):
+            bag = halves.setdefault(d, {"n": 0, "prev": _zero(),
+                                        "curr": _zero()})
+            bag["n"] += 1
+            _add(bag["prev"], h["prev"])
+            _add(bag["curr"], h["curr"])
+        # 块内逐日：按日期把对象的日线相加。真实数据的合并，不是新造的数。
+        # 只有 SP 有日线（来自搜索词报表），SB/SD 那块会是空的 —— 如实为空。
+        for x in (r.get("daily") or []):
+            dt = x.get("stat_date")
+            if not dt:
+                continue
+            cell = days.setdefault(d, {}).setdefault(dt, {"n": 0, **_zero()})
+            cell["n"] += 1
+            _add(cell, x)
     out = []
     for d in sorted(blocks, reverse=True):
         b = blocks[d]
         b["ad_types"] = sorted(b["ad_types"])
         b.update(_ratios(b))
+        bag = halves.get(d)
+        if bag and bag["n"]:
+            pr, cr = _ratios(bag["prev"]), _ratios(bag["curr"])
+
+            def _r(k, pr=pr, cr=cr):
+                x, y = pr.get(k), cr.get(k)
+                if x in (None, 0) or y is None:
+                    return None
+                return y / x - 1
+
+            def _v(k, bag=bag):
+                x, y = bag["prev"].get(k), bag["curr"].get(k)
+                if not x:
+                    return None
+                return y / x - 1
+
+            b["change"] = {
+                "objects": bag["n"], "of": b["objects"],
+                "min_clicks_per_half": min_half,
+                "basis": "后半月对前半月，两侧各 15 天等长",
+                "spend": _v("spend"), "ad_sales": _v("ad_sales"),
+                "orders": _v("orders"), "clicks": _v("clicks"),
+                "impressions": _v("impressions"),
+                "ctr": _r("ctr"), "cpc": _r("cpc"), "cvr": _r("cvr"),
+                "acos": _r("acos"), "roas": _r("roas"),
+            }
+        else:
+            b["change"] = {"objects": 0, "of": b["objects"],
+                           "why": "块内没有对象通过前后半窗样本门槛"}
+        # 趋势用的逐日序列。ACoS 由当天两个量算，不摊平月度值。
+        series = []
+        for dt in sorted((days.get(d) or {}).keys()):
+            cell = days[d][dt]
+            sp, sa = cell.get("spend") or 0, cell.get("ad_sales") or 0
+            series.append({
+                "date": dt, "objects": cell["n"],
+                "spend": sp, "ad_sales": sa,
+                "clicks": cell.get("clicks") or 0,
+                "orders": cell.get("orders") or 0,
+                "impressions": cell.get("impressions") or 0,
+                "acos": (sp / sa) if sa else None,
+            })
+        b["daily"] = series
+        b["daily_note"] = ("" if series else
+                           "这一归因窗口的对象没有日粒度序列，"
+                           "日线只能从搜索词报表拿到，只覆盖 SP")
         out.append(b)
     total_spend = sum(r.get("spend") or 0 for r in sel)
     total_clicks = sum(r.get("clicks") or 0 for r in sel)
@@ -500,6 +595,15 @@ def object_detail(con, universe: list[dict], oid: str, rs: dict) -> dict | None:
     if r is None:
         return None
     cid = r.get("campaign_id")
+    # 抽屉要的两样（2026-09-04 照参考稿加）：
+    #   · 逐日序列 —— 画趋势图。只有搜索词报表覆盖到的对象才有，没有就为空。
+    #   · 这个对象命中的异常规则 —— 稿子那张「异常规则匹配」表。
+    #     复用 detect_anomalies() 的判定，不在这里另写一套判据。
+    hits = []
+    for row in (detect_anomalies(con, universe, rs).get("rows") or []):
+        if row["ad_object_id"] == oid:
+            hits = row.get("anomalies") or []
+            break
     return {
         "ad_object_id": oid, "name": r["name"], "level": r["level"],
         "ad_type": r["ad_type"], "campaign": r["campaign"],
@@ -511,6 +615,8 @@ def object_detail(con, universe: list[dict], oid: str, rs: dict) -> dict | None:
         "shared_child_count": r["shared_child_count"],
         "history": r["history"],
         "nature": r["nature"],
+        "daily": r.get("daily") or [],
+        "anomalies": hits,
         "budget": data.budget_by_campaign(con).get(cid),
         "invalid": data.invalid_by_campaign(con).get(cid),
         "yoy": data.yoy_by_campaign(con).get(cid),
@@ -582,13 +688,16 @@ def catalog_page(con, rs: dict, flt: dict) -> dict:
         "grain": grain,
         "grain_label": "广告组" if grain == "AD_GROUP" else "投放对象",
         "grain_note": grain_note(con, grain, basis, sel),
-        "scope": data.scope_counts(con),
+        "scope": {**data.scope_counts(con),
+                  # 报表窗口。工具条那个「报告范围」显示它，只读 ——
+                  # 这个包只有一个静态窗口，给可拖的选择器是误导。
+                  "window": [HALF[0], HALF[3]]},
         "taxonomy": data.label_taxonomy(con, grain),
         "facets": facets(uni, flt, grain),
         "active": active_filters(flt, grain),
         "state_vocab": [{"key": k, "label": v}
                         for k, v in data.STATE_CN.items()],
-        "aggregate": aggregate(sel),
+        "aggregate": aggregate(sel, rs),
         "benchmark": data.benchmark_ladder(con),
         "anomalies": detect_anomalies(con, sel, rs),
         "rules": data.anomaly_rules(con),
@@ -604,6 +713,14 @@ def catalog_page(con, rs: dict, flt: dict) -> dict:
                   **{k: r.get(k) for k in ("ctr", "cpc", "cvr", "acos",
                                            "roas")},
                   "acos_change_rate": r["history"].get("acos_change_rate"),
+                  # 九个指标的环比一起给，前端那张表要按列显示
+                  "change": {k: r["history"].get(k + "_change_rate")
+                             for k in ("spend", "ad_sales", "orders",
+                                       "clicks", "impressions", "ctr",
+                                       "cpc", "cvr", "acos", "roas")},
+                  "change_comparable": bool(
+                      r["history"].get("comparable")),
+                  "change_why": r["history"].get("why"),
                   "comparable": r["history"].get("comparable")}
                  for r in sel],
     }

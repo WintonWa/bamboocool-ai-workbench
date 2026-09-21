@@ -530,6 +530,12 @@ def g25(mods):
         try:
             _, payload = get("/api/agentcfg/agents")
             for a in payload.get("agents", []):
+                # 那个接口现在把「模块自己声明的」也一并回出来（这样 Agent 配置页
+                # 才查得到已认领的 Agent，见 agentcfg/module.py 的 _module_agents）。
+                # 上面已经从 mods 收过一遍，这里必须跳过，否则每个已认领的 Agent
+                # 都会被数两次、报成「id 重复」—— 那是假红。
+                if str(a.get("declared_in") or "").startswith("模块"):
+                    continue
                 agents.append(("登记表", a))
         except Exception as e:                                  # noqa: BLE001
             gate("G25 Agent 声明交叉引用", False, f"读不到登记表：{e}")
@@ -570,6 +576,55 @@ def g25(mods):
 
 
 # ---- G16 深链往返 -------------------------------------------------------
+# ---- G26 AI 徽标词表与注册表一致 -----------------------------------------
+def g26(mods):
+    """页面上标了 AI 的板块，必须能在 Agent 登记表里查到那个 Agent。
+
+    为什么要机械核：徽标的词表在 web/aimark.js 里是一份**镜像**（外壳不能依赖
+    某个模块的接口，契约 8.4），镜像天生会漂移。漂移的后果是客户点开
+    「Agent 配置」找不到页面上标着的那个 Agent —— 当场露馅，而且没有任何报错。
+
+    同时挡另一个方向：往 aimark.js 里塞一个注册表没有的名字，
+    等于凭空给客户看一个不存在的 AI 能力。
+    """
+    ids = {m["id"] for m in mods}
+    if "agentcfg" not in ids:
+        gate("G26 AI 徽标词表", False, "没有 Agent 配置模块，本条无检查对象")
+        return
+    try:
+        _, payload = get("/api/agentcfg/agents")
+        registry = {a["label"] for a in payload.get("agents", []) if a.get("label")}
+    except Exception as e:                                        # noqa: BLE001
+        gate("G26 AI 徽标词表", False, f"读不到登记表：{e}")
+        return
+
+    src = (ROOT / "web" / "aimark.js")
+    if not src.exists():
+        gate("G26 AI 徽标词表", False, "web/aimark.js 不存在")
+        return
+    body = src.read_text(encoding="utf-8")
+    m = re.search(r"AI_AGENTS = new Set\(\[(.*?)\]\)", body, re.S)
+    if not m:
+        gate("G26 AI 徽标词表", False, "aimark.js 里找不到 AI_AGENTS 词表")
+        return
+    mirror = set(re.findall(r'"([^"]+)"', m.group(1)))
+
+    if not mirror:
+        gate("G26 AI 徽标词表", False, "词表是空的，本条无检查对象")
+        return
+
+    ghost = sorted(mirror - registry)     # 页面标了但登记表查不到
+    missing = sorted(registry - mirror)   # 登记表有但页面从不标
+
+    # 只有 ghost 是硬错。missing 不算错：Agent 存在但还没决定标在哪个板块，
+    # 是正常中间态；报出来供人看，不判红。
+    gate("G26 AI 徽标词表与登记表一致", not ghost,
+         ("镜像里有登记表查不到的：" + "、".join(ghost)) if ghost
+         else f"{len(mirror)} 个标签全部对得上"
+              + (f"（登记表另有 {len(missing)} 个尚未标到板块：" + "、".join(missing) + "）"
+                 if missing else ""))
+
+
 def g16(mods):
     bad = []
     # 无扩展名路径交给前端路由，必须回 index.html
@@ -620,6 +675,7 @@ def main() -> int:
     g16(mods)
     g19_g23(mods)
     g25(mods)
+    g26(mods)
 
     width = max(len(n) for n, _, _ in results)
     failed = 0

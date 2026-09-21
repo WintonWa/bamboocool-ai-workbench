@@ -1,0 +1,1 @@
+{"app": "Bamboocool 运营工作台", "version": "V6", "as_of": "2026-08-03", "spine": {"children": 342, "parents": null, "condition": "正常"}, "health": {"total": 8, "ok": ["overview", "inventory", "preinvest", "keyword", "competitor", "ads", "agentcfg", "sample"], "degraded": [], "enabled_filter": [], "dev": true}}

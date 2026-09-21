@@ -187,6 +187,7 @@ def discover(force: bool = False) -> dict[str, Module]:
 NAV_ORDER = [
     "overview",     # 总览（汇总其他模块的结论，目前是空页面）
     "inventory",    # 产品与库存
+    "preinvest",    # 面料预投（库存那条链的下游：预测→预投→下单）
     "keyword",      # 关键词分析
     "competitor",   # 竞品分析
     "ads",          # 广告分析

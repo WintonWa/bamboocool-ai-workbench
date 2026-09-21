@@ -1,0 +1,1 @@
+{"as_of": "2026-08-03", "fingerprint": "15fbe5511357", "condition": "正常", "source_label": "示例结论 · 总览 Agent 未接入", "upstream": [{"module": "inventory", "label": "产品与库存", "condition": "正常"}, {"module": "keyword", "label": "关键词分析", "condition": "正常"}, {"module": "competitor", "label": "竞品分析", "condition": "正常"}, {"module": "ads", "label": "广告分析", "condition": "正常"}]}

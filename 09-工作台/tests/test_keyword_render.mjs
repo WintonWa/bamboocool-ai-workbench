@@ -183,10 +183,27 @@ function makeCtx(pageId, objectId) {
     pageId, objectId,
     nature: (v) => el("span", { text: v }),
     cond: (v) => el("span", { text: v }),
+    /* AI 徽标与方案下拉。2026-09-02 外壳加了这两个 ctx 方法、模块的 sec() 开始调用，
+       但这份桩没同步 —— 于是四屏一直报 `ctx.aiMark is not a function`（既有破损，
+       2026-09-04 重构时发现并补上）。
+
+       桩必须真吐出带标签文字的节点，不能返回 null 空吞：徽标和方案名都是要上屏的
+       文字，空吞等于把它们移出禁词扫描范围，那门禁就在假绿。 */
+    aiMark: (label) => (label
+      ? el("span", { class: "wb-ai", title: "这个板块有 Agent 能力" }, [
+        el("i", { class: "wb-ai-glyph", text: "✦" }), el("span", { text: label }),
+      ])
+      : null),
+    schemePicker: (label) => (label
+      ? el("span", { class: "wb-scheme" }, [
+        el("span", { text: "方案" }), el("b", { text: "方案一（默认）" }),
+      ])
+      : null),
     placeholder: (t, d) => el("div", {}, [el("h2", { text: t }), el("p", { text: d })]),
     open() {},
     setShared() {},
     setFilters() {},
+    setParams() {},
     drawer: { open() {}, close() {} },
     pop: { show() {}, close() {} },
     async api(resource) {
@@ -198,13 +215,19 @@ function makeCtx(pageId, objectId) {
 }
 
 /* ---- 跑 ---------------------------------------------------------------- */
+/* 2026-09-04 拆页：单词深研与子体盘点提成独立页面 kw-term / kw-asin。
+   这里用新的页面 id —— 用 kw-child + objectId 是拆页前才存在的状态，
+   继续测它等于在测一个真实应用到不了的组合。
+   两个「还没选对象」的落地屏也纳入：那是拆页新增的状态。 */
 const SCREENS = [
   ["kw-overview", undefined, "页面一 总览"],
-  ["kw-market", undefined, "页面二 词库列表"],
-  ["kw-market", "kw_00001", "页面二 单词深研 mens underwear"],
-  ["kw-child", undefined, "页面三 子体清单"],
-  ["kw-child", "B0B3LWGP36", "页面三 盘点 B0B3LWGP36（66 对全锚点）"],
-  ["kw-child", "B0CBPXNC1M", "页面三 盘点 B0CBPXNC1M（五态齐全）"],
+  ["kw-market", undefined, "页面二 市场词库"],
+  ["kw-child", undefined, "页面三 重点子体清单"],
+  ["kw-term", undefined, "页面四 单一关键词分析（未选对象）"],
+  ["kw-term", "kw_00001", "页面四 单一关键词分析 mens underwear"],
+  ["kw-asin", undefined, "页面五 单一子 ASIN 盘点（未选对象）"],
+  ["kw-asin", "B0B3LWGP36", "页面五 盘点 B0B3LWGP36（66 对全锚点）"],
+  ["kw-asin", "B0CBPXNC1M", "页面五 盘点 B0CBPXNC1M（五态齐全）"],
 ];
 
 let fail = 0;
@@ -228,7 +251,11 @@ for (const [pageId, objectId, label] of SCREENS) {
     unmount();
     continue;
   }
-  report(`${label} 渲染出内容（${text.length} 字）`, text.length > 200, text.length);
+  /* 未选对象的落地屏只是一句「去左边选一个」的引导，200 字门槛是给正文页定的。
+     它仍要有实质文字（不能是空白页），所以给 20 字的下限而不是不检查。 */
+  const isLanding = (pageId === "kw-term" || pageId === "kw-asin") && !objectId;
+  const floor = isLanding ? 20 : 200;
+  report(`${label} 渲染出内容（${text.length} 字）`, text.length > floor, text.length);
 
   const hits = LEAK.filter((w) => new RegExp(`\\b${w}\\b`, "i").test(text));
   report(`${label} 可见文本零枚举码`, hits.length === 0, hits.join(", "));
@@ -266,12 +293,21 @@ for (const [pageId, objectId, label] of SCREENS) {
   /* 3. 判断来源必须显式上屏。
      《07-Agent运行与落库口径.md》§七：上游没跑过时下游必须降级说明，
      不能悄悄回落到预烤值。所以页面上必须能读到「这批结论是谁做的」。
-     子体清单页没有判断层内容，不要求。 */
-  if (pageId !== "kw-child" || objectId) {
-    const declared = /尚未接入关键词 Agent|本次 Agent 判断|Agent 结果已过期/
-      .test(text);
-    report(`${label} 判断来源已上屏`, declared,
-      "页面没说这批结论是 Agent 产出还是构造脚手架");
+     按「这一屏到底有没有判断层内容」判，不按页名枚举：
+     清单页和「还没选对象」的落地屏都没有判断可归属，要求它们标来源
+     只会逼出一个假的来源标签。 */
+  const carriesJudgment = pageId === "kw-overview" || pageId === "kw-market"
+    || ((pageId === "kw-term" || pageId === "kw-asin") && !!objectId);
+  if (carriesJudgment) {
+    /* 2026-09-04：原来钉的是三句完整文案（「尚未接入关键词 Agent」等），
+       概览卡改版后措辞变了，门禁跟着红 —— 但页面其实说清了。
+       改成断言**标签 + 值**两样都在，比钉句子更严也更耐改版：
+       缺标签读者不知道那个词在讲什么，缺值就等于没说来源。 */
+    const hasLabel = /判断来源/.test(text);
+    const hasValue = /Agent 产出|构造脚手架/.test(text);
+    report(`${label} 判断来源已上屏`, hasLabel && hasValue,
+      hasLabel ? "有「判断来源」标签但没说是 Agent 产出还是构造脚手架"
+        : "页面没说这批结论是 Agent 产出还是构造脚手架");
   }
 
   unmount();

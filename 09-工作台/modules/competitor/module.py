@@ -12,7 +12,7 @@ import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 
-from core import ctx as ctx_mod
+from core import ctx as ctx_mod, xlsx
 from core import paths
 
 from . import compute, data, rules
@@ -155,6 +155,51 @@ def handle_analyze(c: ctx_mod.Ctx) -> dict:
         },
         "steps": [_step("已受理", "分析已排队", STATUS_OK, ["竞品分析 Agent"])],
     }
+
+
+def handle_export(c: ctx_mod.Ctx):
+    """威胁比较表导出。判断对象是竞品产品族（父 ASIN），一族一行。
+
+    刻意不导 *_cell 那几列：它们是给页面排版用的结构，不是数据。
+    也不导 run_id / attention_key —— 内部标识，客户拿去下单用不上。
+    """
+    d = handle_rivals(c)
+    table = d.get("table") or []
+    if not table:
+        return {"message": "当前没有可导出的竞品"}
+
+    w = d.get("window") or ["", ""]
+    sheets = [xlsx.from_records("威胁比较表", table, [
+        ("family_asin", "竞品族（父 ASIN）"),
+        ("brand", "品牌"),
+        ("sub_category", "子类目"),
+        ("threat_label", "威胁判定"),
+        ("attention", "关注理由"),
+        ("rank_now", "当前排名"),
+        ("units_now", "当期销量"),
+        ("unit_price_now", "竞品件单价（$）"),
+        ("own_unit_price", "自有件单价（$）"),
+        ("gap_multiple", "价差倍数"),
+        ("unit_price_median", "同段中位件单价（$）"),
+        ("price_band", "价格段"),
+        ("variant_count", "变体数"),
+        ("captured_children", "已抓子体数"),
+        ("evidence_reason", "证据说明"),
+        ("happened_from", "变化起始"),
+        ("happened_state", "变化状态"),
+        ("analysis_state", "分析状态"),
+        ("run_date", "判断日期"),
+        ("nature", "数据性质"),
+    ], [20, 14, 14, 12, 34, 10, 10, 16, 16, 10, 18, 12, 8, 12, 40, 12, 12, 12, 12, 10])]
+
+    cb = d.get("count_band") or []
+    if cb:
+        sheets.append(xlsx.from_records("规模分布", cb, [
+            ("domain", "维度"), ("label", "档位"), ("family_count", "族数"),
+        ], [16, 20, 10]))
+
+    name = f"竞品威胁比较-{w[0]}至{w[1]}.xlsx"
+    return ctx_mod.Download(filename=name, data=xlsx.build(sheets))
 
 
 def handle_analyze_status(c: ctx_mod.Ctx) -> dict:
@@ -336,6 +381,7 @@ MODULE = {
         "rival": handle_rival,
         "analyze": handle_analyze,
         "analyze-status": handle_analyze_status,
+        "export": handle_export,
     },
     "tasks": TASKS,
     "params": rules.PARAMS,

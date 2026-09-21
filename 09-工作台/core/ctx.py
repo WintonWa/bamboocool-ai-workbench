@@ -15,6 +15,23 @@ from typing import Any
 # 而手写 __slots__ 会与 dataclass 生成的默认值类变量冲突，所以这里不用 slots。
 # Ctx 每个请求只造一个，省这点内存没意义。
 @dataclass
+class Download:
+    """要当文件下载的响应。模块的路由函数返回它，服务端就不走 JSON。
+
+    2026-08-31 会上王楠要的导出：「他给其他部门下单也是用文件下单」。
+    所以下载通道做成通用的 —— 四个模块都要出导出，不给广告或库存单开后门。
+
+    filename 直接进 Content-Disposition。中文文件名靠 RFC 5987 的 filename*
+    传，服务端负责编码，这里原样给中文就行。
+    """
+
+    filename: str
+    data: bytes
+    content_type: str = ("application/vnd.openxmlformats-officedocument"
+                         ".spreadsheetml.sheet")
+
+
+@dataclass
 class Ctx:
     module: str
     resource: str

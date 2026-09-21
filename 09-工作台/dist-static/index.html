@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bamboocool 运营工作台</title>
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/base.css">
+  <script src="/static-shim.js"></script>
+</head>
+<body>
+<!-- 全局原则 §4 的八个槽位。外层结构稳定，内层业务表达由模块专用（法则三）。 -->
+<div class="wb-app">
+
+  <!-- 槽位 1：全局导航。模块与页面由 /api/modules 发现后生成，此处不写死任何清单。
+       数据基准日与品牌同处这一行：它是"整页数据说到哪一天"的全局事实，
+       和某个页面无关，所以不该待在页面标题那一层。 -->
+  <nav class="wb-nav" aria-label="业务模块">
+    <span class="wb-brand">Bamboocool</span>
+    <div class="wb-tabs" id="wb-tabs" role="tablist"></div>
+    <div class="wb-nav-right">
+      <div class="wb-state" id="wb-state"></div>
+      <button class="wb-btn" id="wb-params-btn" type="button" hidden>参数</button>
+    </div>
+  </nav>
+
+  <!-- 槽位 2：模块内页面选择器。居中，选中态是会滑动的下划线而不是黑色块。
+       页面标题已去掉 —— 选中的那个 tab 本身就是标题，再写一遍是重复。 -->
+  <header class="wb-head" id="wb-head">
+    <div class="wb-tabs wb-tabs-slide" id="wb-pages" role="tablist" aria-label="模块内页面">
+      <span class="wb-tabs-ink" id="wb-pages-ink" hidden></span>
+    </div>
+  </header>
+
+  <!-- 槽位 3：快速筛选与上下文。生效筛选必须可见、可清除。 -->
+  <div class="wb-filters" id="wb-filters"></div>
+
+  <!-- 槽位 4 决策摘要 / 5 主比较区 / 7 对象详情：全部由模块渲染进下面两个挂载点。 -->
+  <main class="wb-main" id="wb-main">
+    <aside class="wb-rail" id="wb-rail"></aside>
+    <div class="wb-body" id="wb-body">
+      <div class="wb-placeholder"><h2>正在加载工作台</h2><p>读取模块清单</p></div>
+    </div>
+  </main>
+</div>
+
+<!-- 对象栏开合手柄。始终存在、position:fixed，位置随开合状态变 ——
+     刻意不放在 #wb-rail 里面：模块 mount 时会 textContent="" 清空那个容器。 -->
+<button class="wb-handle-l" id="wb-handle-l" type="button" hidden
+        aria-expanded="true" aria-controls="wb-rail" title="对象栏">
+  <span class="wb-handle-txt" id="wb-handle-l-txt">对象</span>
+</button>
+
+<!-- 槽位 6：任务面板。全站唯一的 Agent 入口。
+     不是聊天框 —— agent 是任务执行器，面板列的是"这个对象能跑什么任务、上次跑成什么样"。
+     非模态：不加遮罩，页面保持可交互，因为运营要一边看执行过程一边看页面上的数字。 -->
+<button class="wb-handle" id="wb-handle" type="button" aria-expanded="false"
+        aria-controls="wb-task" title="任务面板">
+  <span class="wb-handle-txt">任务</span>
+</button>
+<aside class="wb-task" id="wb-task" hidden aria-label="任务面板">
+  <header class="wb-task-head">
+    <span class="wb-task-title" id="wb-task-title">任务</span>
+    <span class="wb-task-scope" id="wb-task-scope"></span>
+    <button class="wb-icon-btn" id="wb-task-close" type="button" aria-label="收起面板">✕</button>
+  </header>
+  <div class="wb-task-body" id="wb-task-body"></div>
+  <footer class="wb-task-foot" id="wb-task-foot" hidden></footer>
+</aside>
+
+<!-- 槽位 8：依据与情景侧页。与任务面板是两套浮层，生命周期不同：
+     侧页是瞬时的（看完就关，带遮罩），任务面板是常驻的（可收起，不带遮罩）。 -->
+<div class="wb-scrim" id="wb-scrim" hidden></div>
+<aside class="wb-drawer" id="wb-drawer" hidden aria-label="侧页">
+  <div class="wb-drawer-head">
+    <span id="wb-drawer-title">依据</span>
+    <button class="wb-icon-btn" id="wb-drawer-close" type="button" style="margin-left:auto"
+            aria-label="关闭侧页">✕</button>
+  </div>
+  <div class="wb-drawer-body" id="wb-drawer-body"></div>
+</aside>
+
+<div class="wb-pop" id="wb-pop" hidden></div>
+
+<script type="module" src="/shell.js"></script>
+<!-- 调参工具：只在 ?tune=1 时激活，否则这个文件什么都不做 -->
+<script src="/tune.js"></script>
+</body>
+</html>

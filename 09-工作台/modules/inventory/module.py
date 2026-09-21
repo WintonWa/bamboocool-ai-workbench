@@ -18,8 +18,8 @@ import urllib.error
 import urllib.request
 from typing import Any
 
-from core import paths
-from core.ctx import Ctx
+from core import paths, xlsx
+from core.ctx import Ctx, Download
 
 from . import compute, data, forecast, listing, rules, verdict
 from . import agent_forecast as af
@@ -190,6 +190,105 @@ def _call_agent(child_asin: str, trigger: str) -> dict[str, Any]:
     )
     with urllib.request.urlopen(req, timeout=AGENT_TIMEOUT_S) as resp:
         return json.loads(resp.read().decode("utf-8"))
+
+
+def handle_export_daily(c: Ctx):
+    """逐日销量与需求导出成 xlsx。
+
+    2026-08-31 会上王楠提的第二条：那张柱状图「不方便做工作……好多工作其实我们是
+    拿表格来的」，落脚理由是「他给其他部门下单也是用文件下单」。
+    所以导的是**能直接拿去下单的粒度**：一天一行，图上看得见的都给出来。
+
+    刻意分成三页而不是挤在一页：
+      逐日数据  —— 主表，按天
+      事件      —— 图上那些活动带，本来只在悬停时能看到
+      叠加指标  —— 价格 / 访问量 / 转化率那几条可切换的线，与主表同一批日期
+
+    「实际 / 预测」不并进一列。并了以后拿到文件的人分不清哪天是已发生哪天是预测，
+    而这正是这张图最要紧的一条区分（深色已发生、浅色未发生）。
+    """
+    asin = c.rest[0] if c.rest else ""
+    if not asin:
+        return {"message": "缺少子 ASIN"}
+    rs = _rules(c)
+    assessment = compute.assess(asin, rs)
+    if not assessment:
+        return {"message": f"没有子 ASIN {asin} 的数据"}
+
+    chart = assessment.get("chart") or {}
+    if not chart.get("available"):
+        return {"message": "这个对象没有逐日数据可导"}
+
+    ident = assessment.get("identity") or {}
+    dates = chart.get("dates") or []
+    actual = chart.get("actual") or []
+    forecast = chart.get("forecast") or []
+    as_of = chart.get("as_of") or c.as_of
+
+    import datetime as dt
+
+    def d(s):
+        try:
+            return dt.date.fromisoformat(s)
+        except Exception:                                       # noqa: BLE001
+            return s
+
+    rows = []
+    for i, ds in enumerate(dates):
+        a = actual[i] if i < len(actual) else None
+        f = forecast[i] if i < len(forecast) else None
+        fv = f.get("value") if isinstance(f, dict) else f
+        lo = f.get("lower") if isinstance(f, dict) else None
+        hi = f.get("upper") if isinstance(f, dict) else None
+        a = a or {}
+        rows.append([
+            d(ds),
+            chart.get("weekdays", [None] * len(dates))[i] if i < len(chart.get("weekdays") or []) else None,
+            "已发生" if ds <= as_of else "预测",
+            a.get("value"),
+            fv, lo, hi,
+            "是" if a.get("is_stockout") else "",
+            "是" if a.get("is_anomaly") else "",
+            a.get("quality_label"),
+            a.get("trust_note") or a.get("adjustment_reason"),
+        ])
+
+    sheets = [{
+        "name": "逐日数据",
+        "headers": ["日期", "星期", "数据性质", "实际销量（件）",
+                    "预测销量（件）", "预测下界", "预测上界",
+                    "当天缺货", "当天异常", "数据质量", "口径说明"],
+        "rows": rows,
+        "widths": [12, 8, 10, 14, 14, 11, 11, 10, 10, 12, 40],
+    }]
+
+    bands = list(chart.get("bands") or []) + list(chart.get("points") or [])
+    if bands:
+        sheets.append({
+            "name": "事件",
+            "headers": ["类型", "名称", "开始", "结束", "天数", "是否未来"],
+            "rows": [[b.get("type_label"), b.get("label"), d(b.get("from")),
+                      d(b.get("to")), b.get("days"),
+                      "是" if b.get("is_future") else ""] for b in bands],
+            "widths": [14, 28, 12, 12, 8, 10],
+        })
+
+    lines = [ln for ln in (chart.get("lines") or []) if not ln.get("is_constant")]
+    if lines:
+        head = ["日期"] + [f"{ln.get('label')}（{ln.get('unit')}）" if ln.get("unit")
+                          else str(ln.get("label")) for ln in lines]
+        lrows = []
+        for i, ds in enumerate(dates):
+            vals = [(ln.get("values") or [None] * len(dates))[i]
+                    if i < len(ln.get("values") or []) else None for ln in lines]
+            if any(v is not None for v in vals):
+                lrows.append([d(ds)] + vals)
+        if lrows:
+            sheets.append({"name": "叠加指标", "headers": head, "rows": lrows,
+                           "widths": [12] + [14] * len(lines)})
+
+    name = f"{asin}-逐日销量与需求-{as_of}.xlsx"
+    return Download(filename=name, data=xlsx.build(sheets))
 
 
 def handle_forecast_status(c: Ctx) -> dict[str, Any]:
@@ -382,6 +481,8 @@ MODULE = {
         "run-demand-forecast": handle_run_demand_forecast,
         # 轮询进度。任务声明里的 `poll` 指向它。
         "forecast-status": handle_forecast_status,
+        # 导出。回 Download，服务端认类型走文件通道而不是 JSON。
+        "export-daily": handle_export_daily,
     },
     # 可运行任务。外壳的任务面板读这个，模块自己不做任务入口（契约第 9 节）。
     "tasks": TASKS,

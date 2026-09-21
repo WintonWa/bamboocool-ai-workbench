@@ -23,10 +23,10 @@ const CASES = [
   { pageId: "kw-overview", objectId: undefined },
   { pageId: "kw-market", objectId: undefined },
   { pageId: "kw-child", objectId: undefined },
-  { pageId: "kw-child", objectId: "B0B3LWGP36" },
-  { pageId: "kw-child", objectId: "B0CBPXNC1M" },
-  { pageId: "kw-market", objectId: "kw_00001" },
-  { pageId: "kw-market", objectId: "kw_01991" },
+  { pageId: "kw-asin", objectId: "B0B3LWGP36" },
+  { pageId: "kw-asin", objectId: "B0CBPXNC1M" },
+  { pageId: "kw-term", objectId: "kw_00001" },
+  { pageId: "kw-term", objectId: "kw_01991" },
 ];
 
 for (const c of CASES) {
@@ -41,22 +41,33 @@ for (const c of CASES) {
    那时拿不到 impl.parsePath，会回落到「段名匹配 pages[].id」。
    用短别名的话首屏深链会被解析成 objectId，页签停在第一页。 */
 ok("段名用页面 id 而不是短别名",
-  pathFor({ pageId: "kw-child", objectId: "B0X" }).startsWith("kw-child/"),
-  pathFor({ pageId: "kw-child", objectId: "B0X" }));
+  pathFor({ pageId: "kw-asin", objectId: "B0X" }).startsWith("kw-asin/"),
+  pathFor({ pageId: "kw-asin", objectId: "B0X" }));
 ok("总览不出段（外壳默认页）", pathFor({ pageId: "kw-overview" }) === "");
 ok("短别名仍能解析（向后兼容）",
-  parsePath(["child", "B0B3LWGP36"]).pageId === "kw-child"
-  && parsePath(["market"]).pageId === "kw-market");
+  parsePath(["child"]).pageId === "kw-child"
+  && parsePath(["market"]).pageId === "kw-market"
+  && parsePath(["term", "kw_00001"]).pageId === "kw-term"
+  && parsePath(["asin", "B0X"]).pageId === "kw-asin");
+
+/* 2026-09-04 拆页：单词深研与子体盘点提成独立页面。客户和同事手上已经有
+   /keyword/kw-child/<asin> 这种旧链接，让它 404 或者停在列表页都是回退，
+   所以「列表页 + 带对象」必须重定向到对应的单对象页。 */
+ok("旧深链（列表页带对象）重定向到单对象页",
+  parsePath(["kw-child", "B0B3LWGP36"]).pageId === "kw-asin"
+  && parsePath(["kw-child", "B0B3LWGP36"]).objectId === "B0B3LWGP36"
+  && parsePath(["kw-market", "kw_00001"]).pageId === "kw-term",
+  JSON.stringify(parsePath(["kw-child", "B0B3LWGP36"])));
 
 /* 对象 id 要编码，解码失败要回退原值不抛异常 */
 const weird = "A/B?C#D E";
 ok("对象 id 编码后能原样还回",
-  roundTrip({ pageId: "kw-child", objectId: weird }).objectId === weird
-  || pathFor({ pageId: "kw-child", objectId: weird }).includes(encodeURIComponent(weird)),
-  pathFor({ pageId: "kw-child", objectId: weird }));
+  roundTrip({ pageId: "kw-asin", objectId: weird }).objectId === weird
+  || pathFor({ pageId: "kw-asin", objectId: weird }).includes(encodeURIComponent(weird)),
+  pathFor({ pageId: "kw-asin", objectId: weird }));
 let threw = false;
 try {
-  parsePath(["kw-child", "%E0%A4%A"]);
+  parsePath(["kw-asin", "%E0%A4%A"]);
 } catch (e) {
   threw = true;
 }
@@ -66,5 +77,5 @@ ok("坏编码不抛异常", !threw);
 ok("未知段落回落总览", parsePath(["nonsense"]).pageId === "kw-overview");
 ok("空段落回落总览", parsePath([]).pageId === "kw-overview");
 
-console.log(`\n${CASES.length + 8} 条，失败 ${fail} 条`);
+console.log(`\n${CASES.length + 9} 条，失败 ${fail} 条`);
 process.exit(fail ? 1 : 0);

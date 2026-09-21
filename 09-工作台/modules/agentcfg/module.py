@@ -27,6 +27,7 @@ from core import ctx as ctx_mod
 from core import db as db_mod
 from core import paths
 
+from . import registry_seed, schemes
 from .registry_seed import (
     DONE_COL,
     ERROR_COLS,
@@ -51,6 +52,30 @@ def handle_meta(c: ctx_mod.Ctx) -> dict:
         "pending": len(SEED) - len(claimed),
         "condition": "正常",
     }
+
+
+def _module_agents() -> list[dict]:
+    """各业务模块在自己的 MODULE["agents"] 里声明的 Agent。
+
+    契约 §8.1：Agent 最终由所属模块声明，登记表只是过渡落点。
+    但这一页原来只读 SEED —— 于是一个模块「认领」之后，它的 Agent 就从
+    Agent 配置页消失了，而页面上的 AI 徽标还标着。那正是 G26 要防的那种
+    当场露馅（客户点开配置页查不到页面上标着的 Agent）。
+
+    走 core.registry 而不是 import 那些模块：registry 是外壳的一部分，
+    不违反「模块之间禁止互相 import」（§8.5）—— 本文件是模块，
+    直接 import modules/preinvest/ 才是违规。
+    """
+    from core import registry                     # 局部 import，避免循环
+
+    out = []
+    for m in registry.modules():
+        if m.degraded or m.id == "agentcfg":
+            continue
+        for a in (m.spec.get("agents") or []):
+            if isinstance(a, dict) and a.get("id"):
+                out.append(dict(a, declared_in="模块 " + m.id))
+    return out
 
 
 def handle_agents(c: ctx_mod.Ctx) -> dict:
@@ -82,7 +107,7 @@ def handle_agents(c: ctx_mod.Ctx) -> dict:
                 "declared_in": "登记表",
             }
             for a in SEED
-        ],
+        ] + _module_agents(),
     }
 
 
@@ -254,6 +279,69 @@ def _collect(spec: dict) -> tuple:
     return records, state
 
 
+def _params_by_key() -> dict:
+    """全站参数声明 {带前缀的键: 声明}。方案要拿默认值，也要拿它挡掉登记表里写错的键。
+
+    用 ruleset.describe() 拼，不自己拼 f"{prefix}.{name}" —— 前缀规则只该有一处，
+    自己拼一遍就等于多一个真相来源，前缀规则一改这里就静默错位。
+    """
+    from core import registry, ruleset
+
+    out = {}
+    for m in registry.modules():
+        ps = m.spec.get("params") or []
+        if not ps:
+            continue
+        for d in ruleset.describe(m.prefix, ps, {}):
+            out[d["key"]] = d
+    return out
+
+
+def handle_schemes(c: ctx_mod.Ctx) -> dict:
+    """每个 Agent 的配置方案清单。第一项永远是默认方案（现算，不入库）。"""
+    pbk = _params_by_key()
+    return {
+        "as_of": c.as_of,
+        "agents": [
+            {
+                "id": a["id"],
+                "label": a["label"],
+                "owner": a["owner"],
+                "thresholds": [k for k in (a.get("thresholds") or []) if k in pbk],
+                "schemes": schemes.for_agent(a, pbk),
+            }
+            for a in registry_seed.SEED
+        ],
+        "params": pbk,
+    }
+
+
+def handle_scheme_save(c: ctx_mod.Ctx) -> dict:
+    """存一个方案。POST 体：{agent_id, name, values, id?, note?}"""
+    body = c.json()
+    aid = body.get("agent_id")
+    agent = next((a for a in registry_seed.SEED if a["id"] == aid), None)
+    if not agent:
+        return {"ok": False, "message": f"没有名为 {aid} 的 Agent"}
+    pbk = _params_by_key()
+    allowed = [k for k in (agent.get("thresholds") or []) if k in pbk]
+    try:
+        row = schemes.save(aid, body.get("name"), body.get("values") or {},
+                           allowed, body.get("id"), body.get("note") or "")
+    except ValueError as e:
+        return {"ok": False, "message": str(e)}
+    return {"ok": True, "scheme": row}
+
+
+def handle_scheme_delete(c: ctx_mod.Ctx) -> dict:
+    body = c.json()
+    try:
+        gone = schemes.delete(body.get("agent_id"), body.get("id"))
+    except ValueError as e:
+        return {"ok": False, "message": str(e)}
+    return {"ok": gone, "message": "" if gone else "没找到这个方案"}
+
+
 def handle_runs(c: ctx_mod.Ctx) -> dict:
     """按真实时刻倒序的运行存档。
 
@@ -301,6 +389,10 @@ MODULE = {
         "meta": handle_meta,
         "agents": handle_agents,
         "runs": handle_runs,
+        # 配置方案。方案一/二/三那套 —— 每个 Agent 各自一份清单。
+        "schemes": handle_schemes,
+        "scheme-save": handle_scheme_save,
+        "scheme-delete": handle_scheme_delete,
     },
     "db": None,                      # 不取业务数，只给声明与运行台账
 }

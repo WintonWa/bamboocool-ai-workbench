@@ -87,6 +87,20 @@ COPY = {
         "竞品 {cmp_monitored} 个产品族里只有 {cmp_run} 个跑出了分析结论，"
         "广告 {ads_cand} 个候选子体里只有 {ads_evi} 个证据链完整 —— 这两处的结论覆盖最薄。"
     ),
+    # 头条三格的标题与徽标。构图与这几个词照抄灵感稿
+    # 11-页面框架与决策/Image2-视觉灵感-2026-09-04/images/01-运营总览.png：
+    # 圆底序号 + 标题 + 徽标 / 一句话 / 去处理 ›，三格并排竖线分隔。
+    # 性质与 COPY 里其余文案相同 —— 人写的示例文案，板块右上角挂着
+    # SOURCE_LABEL「示例结论 · 总览 Agent 未接入」，不是 Agent 判出来的词。
+    "head_inventory": "库存高风险预警",
+    "head_keyword": "关键词事项待处理",
+    "head_thin": "竞品与广告证据待补齐",
+    "badge_inventory": "高风险",
+    "badge_keyword": "需跟进",
+    # 灵感稿第三格写的是「中风险」。这里不照抄那个词：这一格说的是结论覆盖不全，
+    # 不是风险高低，挂「中风险」等于凭空多一档风险分级。
+    "badge_thin": "待补齐",
+    "lede_go": "去处理",
     "card_inventory": "{top_n} 个的主风险是{top_label}，{high} 个判到高严重度；另有 {none} 个当前无风险。",
     "card_keyword": "最大的两类是{first_label} {first_n} 项、{second_label} {second_n} 项；核心词事件 {core} 条，其中显著 {sig} 条。",
     "card_competitor": "{analyzed} 个进了分析范围，{run} 个已出结论，其余 {rest} 个尚未分析。",
@@ -395,6 +409,11 @@ def _fill_parts(template: str, **slots) -> list:
     return out
 
 
+def _badge(label: str, tone: str) -> dict:
+    """头条一格右上的徽标。色调只从现有五个语义色里取，不新开颜色。"""
+    return {"label": label, "tone": tone}
+
+
 def _headline(inv: dict, kw: dict, cmp_: dict, ads: dict) -> list:
     lines = []
 
@@ -414,7 +433,12 @@ def _headline(inv: dict, kw: dict, cmp_: dict, ads: dict) -> list:
             multi=inv.get("multi3"),
         )
         if text:
-            lines.append({"text": text, "parts": parts, "module": "inventory", "module_label": inv["label"]})
+            lines.append({
+                "text": text, "parts": parts,
+                "module": "inventory", "module_label": inv["label"],
+                "title": COPY["head_inventory"],
+                "badge": _badge(COPY["badge_inventory"], "alert"),
+            })
 
     if kw.get("ok"):
         text = _fill(
@@ -432,7 +456,12 @@ def _headline(inv: dict, kw: dict, cmp_: dict, ads: dict) -> list:
             watch=kw.get("watch"),
         )
         if text:
-            lines.append({"text": text, "parts": parts, "module": "keyword", "module_label": kw["label"]})
+            lines.append({
+                "text": text, "parts": parts,
+                "module": "keyword", "module_label": kw["label"],
+                "title": COPY["head_keyword"],
+                "badge": _badge(COPY["badge_keyword"], "warn"),
+            })
 
     if cmp_.get("ok") and ads.get("ok"):
         text = _fill(
@@ -450,7 +479,12 @@ def _headline(inv: dict, kw: dict, cmp_: dict, ads: dict) -> list:
             ads_evi=ads.get("with_evidence"),
         )
         if text:
-            lines.append({"text": text, "parts": parts, "module": "competitor", "module_label": cmp_["label"]})
+            lines.append({
+                "text": text, "parts": parts,
+                "module": "competitor", "module_label": cmp_["label"],
+                "title": COPY["head_thin"],
+                "badge": _badge(COPY["badge_thin"], "warn"),
+            })
 
     return lines
 
@@ -728,7 +762,8 @@ def handle_digest(c: ctx_mod.Ctx) -> dict:
         "as_of": c.as_of,
         "condition": "正常" if lines else "空结果",
         "source_label": SOURCE_LABEL,
-        "headline": {"lines": lines},
+        # go_label：三格底部那个跳转的文字。中文一律由这一侧给，前端不写中文。
+        "headline": {"lines": lines, "go_label": COPY["lede_go"]},
         "cards": _cards(inv, kw, cmp_, ads),
         "charts": _charts(inv, kw),
         "coverage": _coverage(inv, kw, cmp_, ads),

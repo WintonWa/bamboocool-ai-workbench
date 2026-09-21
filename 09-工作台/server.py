@@ -30,7 +30,7 @@ if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))          # 让 core / modules 成为可导入的包
 
 from core import db, paths, registry, ruleset          # noqa: E402
-from core.ctx import Ctx                               # noqa: E402
+from core.ctx import Download, Ctx                               # noqa: E402
 
 CONTENT_TYPES = {
     ".html": "text/html; charset=utf-8",
@@ -112,6 +112,22 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         if self.command != "HEAD":
             self.wfile.write(body)
+
+    def _download(self, d: "Download") -> None:
+        """回一个附件。中文文件名两条都给：filename 退化成 ASCII 保底，
+        filename* 按 RFC 5987 传 UTF-8 —— 只给前者中文会乱码，
+        只给后者老浏览器拿不到名字。"""
+        import urllib.parse
+
+        ascii_name = d.filename.encode("ascii", "replace").decode("ascii").replace("?", "_")
+        quoted = urllib.parse.quote(d.filename)
+        self._send(
+            200,
+            d.data,
+            d.content_type,
+            extra={"Content-Disposition":
+                   f'attachment; filename="{ascii_name}"; filename*=UTF-8\'\'{quoted}'},
+        )
 
     def _json(self, payload, code: int = 200) -> None:
         body = json.dumps(payload, ensure_ascii=False, default=str).encode("utf-8")
@@ -220,7 +236,13 @@ class Handler(BaseHTTPRequestHandler):
             body=self._body,
         )
         try:
-            self._json(fn(ctx))
+            result = fn(ctx)
+            # 导出类接口回的是文件，不是 JSON。判类型而不是判资源名 ——
+            # 判资源名的话每加一个导出接口都要回来改这里。
+            if isinstance(result, Download):
+                self._download(result)
+            else:
+                self._json(result)
         except Exception:
             traceback.print_exc()
             # 契约 8.4：一个模块的接口炸了只回它自己的错误，不影响其他模块

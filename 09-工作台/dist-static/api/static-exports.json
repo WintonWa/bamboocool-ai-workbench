@@ -1,0 +1,23 @@
+[
+  {
+    "module": "inventory",
+    "route": "export-daily",
+    "arg": "B0B3LM36WB",
+    "file": "exports/库存-B0B3LM36WB-逐日销量与需求.xlsx",
+    "size": 63186
+  },
+  {
+    "module": "preinvest",
+    "route": "export-child",
+    "arg": "B0B3LM36WB",
+    "file": "exports/预投-B0B3LM36WB-逐日预估与预投窗口.xlsx",
+    "size": 8641
+  },
+  {
+    "module": "preinvest",
+    "route": "export-plan",
+    "arg": null,
+    "file": "exports/预投-2026-10预投表.xlsx",
+    "size": 35846
+  }
+]

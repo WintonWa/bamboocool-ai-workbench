@@ -1,0 +1,1294 @@
+/* 面料预投模块 · 样式
+ *
+ * 契约 §5.3：全部规则在 [data-module="preinvest"] 之下；
+ * 零 #id 选择器；零裸元素选择器；只用 tokens.css 已有的变量，不定义新变量（G3）。
+ *
+ * flex/grid 子项要能收缩必须显式给 min-width:0，grid 轨道用 minmax(0,1fr)
+ * 而不是 1fr —— 这条是踩过的（契约 §11 工程类第一条）。
+ */
+
+/* ======================================================== 标题与摘要 === */
+
+[data-module="preinvest"] .pre-h1 {
+  font-size: var(--fs-page);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+[data-module="preinvest"] .pre-h1sub {
+  font-size: var(--fs-meta);
+  font-weight: 400;
+  color: var(--fg3);
+  margin-left: 8px;
+  vertical-align: 2px;
+}
+
+[data-module="preinvest"] .pre-sub1 {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  margin: 3px 0 12px;
+}
+
+[data-module="preinvest"] .pre-summary {
+  margin-bottom: 26px;
+}
+
+/* 结论先行：主结论字号最大，不做等权卡片（契约 §7 / §11） */
+[data-module="preinvest"] .pre-lead {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--glass-line);
+}
+
+[data-module="preinvest"] .pre-leadnum {
+  font-size: var(--fs-num);
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+[data-module="preinvest"] .pre-leadnum .u {
+  font-size: var(--fs-body);
+  font-weight: 400;
+  color: var(--fg3);
+  margin-left: 2px;
+}
+
+[data-module="preinvest"] .pre-leadtxt {
+  font-size: var(--fs-body);
+  color: var(--fg3);
+  line-height: 1.55;
+  min-width: 0;
+  flex: 1 1 260px;
+}
+
+[data-module="preinvest"] .pre-leadtxt b {
+  color: var(--ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 支撑数字一排。等宽轨道，数字对齐 —— 挤在一起是踩过的 bug */
+[data-module="preinvest"] .pre-statrow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 2px 22px;
+  padding: 14px 0;
+}
+
+[data-module="preinvest"] .pre-kv {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-kv .k {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-module="preinvest"] .pre-kv .v {
+  font-size: var(--fs-value);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+/* ============================================================ 板块 === */
+
+[data-module="preinvest"] .pre-sec {
+  margin: 0 0 30px;
+}
+
+[data-module="preinvest"] .pre-sechead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--glass-line);
+  margin-bottom: 10px;
+}
+
+[data-module="preinvest"] .pre-sechead h2 {
+  font-size: var(--fs-title);
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-sectools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+[data-module="preinvest"] .pre-secbody {
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-note {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+[data-module="preinvest"] .pre-note b {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="preinvest"] .pre-empty {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  padding: 18px 0;
+}
+
+/* ==================================================== 未接入横幅 === */
+
+[data-module="preinvest"] .pre-banner {
+  border: 1px solid var(--glass-line);
+  border-left: 3px solid var(--warn);
+  padding: 14px 16px;
+  margin: 0 0 26px;
+  background: var(--bg2);
+}
+
+[data-module="preinvest"] .pre-bannerhd {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+[data-module="preinvest"] .pre-bannerbd {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  line-height: 1.65;
+}
+
+[data-module="preinvest"] .pre-bannerbd b {
+  color: var(--ink);
+}
+
+/* ============================================================= 表 === */
+
+[data-module="preinvest"] .pre-t {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-meta);
+}
+
+[data-module="preinvest"] .pre-t thead th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--fg3);
+  padding: 6px 10px 6px 0;
+  border-bottom: 1px solid var(--glass-line);
+  white-space: nowrap;
+}
+
+[data-module="preinvest"] .pre-t thead th.num,
+[data-module="preinvest"] .pre-t tbody td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 比例条列：th 与 td 都要给宽度。只给 th 的话 td 里的 .pre-bar
+   拿不到可用宽度，整列会塌成看不见 —— 第一次截图就是这个症状。 */
+[data-module="preinvest"] .pre-t thead th.bar,
+[data-module="preinvest"] .pre-t tbody td.bar {
+  width: 88px;
+  min-width: 88px;
+}
+
+[data-module="preinvest"] .pre-t tbody td.bar {
+  vertical-align: middle;
+  padding-right: 14px;
+}
+
+[data-module="preinvest"] .pre-t tbody td {
+  padding: 7px 10px 7px 0;
+  border-bottom: 1px solid var(--glass-line);
+  color: var(--ink);
+  vertical-align: top;
+}
+
+[data-module="preinvest"] .pre-t tbody tr.on td {
+  background: var(--bg2);
+  font-weight: 500;
+}
+
+[data-module="preinvest"] .pre-t tbody td.good { color: var(--good); }
+[data-module="preinvest"] .pre-t tbody td.warn { color: var(--warn); }
+
+[data-module="preinvest"] .pre-cellsub {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+[data-module="preinvest"] .pre-drill a {
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+[data-module="preinvest"] .pre-drill a:hover {
+  text-decoration: underline;
+}
+
+/* ==================================================== 比例条 / 图 === */
+
+/* fill 必须是 block + 有高度。行内 span 给 width/height 无效会塌成 0x0，
+   这是库龄柱状图从深色版起一直没渲染过的那个真 bug，已加门禁。 */
+[data-module="preinvest"] .pre-bar {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 8px;
+  background: var(--glass-line);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+[data-module="preinvest"] .pre-bar .fill {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--accent);
+}
+
+[data-module="preinvest"] .pre-bar .fill.good { background: var(--good); }
+[data-module="preinvest"] .pre-bar .fill.warn { background: var(--warn); }
+[data-module="preinvest"] .pre-bar .fill.bad { background: var(--alert); }
+
+[data-module="preinvest"] .pre-bar.empty {
+  border: 1px dashed var(--fg3);
+  background: transparent;
+}
+
+[data-module="preinvest"] .pre-chart {
+  width: 100%;
+  height: 268px;
+  min-width: 0;
+}
+
+/* 尺码 sparkline。柱子用 block + 百分比高度，容器给固定高度。 */
+[data-module="preinvest"] .pre-spark {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 22px;
+  min-width: 44px;
+}
+
+[data-module="preinvest"] .pre-spark .b {
+  display: block;
+  width: 4px;
+  min-height: 1px;
+  background: var(--accent);
+  opacity: 0.72;
+}
+
+/* ================================================= 口径对比（§4.4）=== */
+
+[data-module="preinvest"] .pre-cmp {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+[data-module="preinvest"] .pre-cmprow {
+  display: grid;
+  grid-template-columns: minmax(0, 190px) minmax(0, 1fr) minmax(0, 96px) minmax(0, 108px);
+  align-items: center;
+  gap: 12px;
+}
+
+[data-module="preinvest"] .pre-cmprow .lab {
+  font-size: var(--fs-meta);
+  color: var(--ink);
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-cmprow .track { min-width: 0; }
+
+[data-module="preinvest"] .pre-cmprow .num {
+  text-align: right;
+  font-size: var(--fs-body);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="preinvest"] .pre-cmprow .note {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  min-width: 0;
+}
+
+/* ====================================================== 甘特（§4.5）=== */
+
+[data-module="preinvest"] .pre-gantt {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+[data-module="preinvest"] .pre-gantt-row {
+  display: grid;
+  grid-template-columns: minmax(0, 62px) minmax(0, 1fr) minmax(0, 168px) minmax(0, 74px);
+  align-items: center;
+  gap: 10px;
+}
+
+[data-module="preinvest"] .pre-gantt-row .lab {
+  font-size: var(--fs-meta);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+[data-module="preinvest"] .pre-gantt-row .track {
+  position: relative;
+  height: 16px;
+  background: var(--glass-line);
+  border-radius: 1px;
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-gantt-row .seg {
+  display: block;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: var(--accent);
+  opacity: 0.78;
+  border-radius: 1px;
+}
+
+/* 里程碑（天数为 0 的那几段）画成竖线而不是条 */
+[data-module="preinvest"] .pre-gantt-row .seg.ms {
+  min-width: 2px;
+  background: var(--ink);
+  opacity: 1;
+}
+
+[data-module="preinvest"] .pre-gantt-row .rng,
+[data-module="preinvest"] .pre-gantt-row .dys {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-module="preinvest"] .pre-gantt-row .dys { text-align: right; }
+
+[data-module="preinvest"] .pre-gantt-foot {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  margin-top: 6px;
+  line-height: 1.6;
+}
+
+/* ================================================= 三个判断点（§4.3）=== */
+
+[data-module="preinvest"] .pre-segs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 280px));
+  gap: 14px;
+}
+
+[data-module="preinvest"] .pre-seg {
+  border: 1px solid var(--glass-line);
+  border-left: 3px solid var(--accent);
+  padding: 12px 14px;
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-seg.pending {
+  border-left-style: dashed;
+  border-left-color: var(--fg3);
+}
+
+[data-module="preinvest"] .pre-seg .hd {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+[data-module="preinvest"] .pre-seg .no {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+}
+
+[data-module="preinvest"] .pre-seg .lb {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+[data-module="preinvest"] .pre-seg .ad {
+  font-size: var(--fs-meta);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+
+[data-module="preinvest"] .pre-seg .bd {
+  font-size: var(--fs-meta);
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+[data-module="preinvest"] .pre-seg.pending .bd { color: var(--fg3); }
+
+[data-module="preinvest"] .pre-seg .ft {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  line-height: 1.55;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--glass-line);
+}
+
+/* =================================================== 四个窗口输入 === */
+
+[data-module="preinvest"] .pre-windows {
+  margin: 0 0 26px;
+}
+
+[data-module="preinvest"] .pre-windowshd,
+[data-module="preinvest"] .pre-scopehd {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+[data-module="preinvest"] .pre-windowsrow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--glass-line);
+  border: 1px solid var(--glass-line);
+}
+
+[data-module="preinvest"] .pre-win {
+  background: var(--bg1);
+  padding: 10px 12px;
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-win.on { background: var(--bg2); }
+
+[data-module="preinvest"] .pre-win .k {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  white-space: nowrap;
+}
+
+[data-module="preinvest"] .pre-win .v {
+  font-size: var(--fs-value);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  margin: 2px 0;
+}
+
+[data-module="preinvest"] .pre-win .w {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+}
+
+[data-module="preinvest"] .pre-scope { margin-top: 18px; }
+
+/* ============================================ 徽标 / chip / ⓘ / 浮层 === */
+
+[data-module="preinvest"] .pre-nature,
+[data-module="preinvest"] .pre-state {
+  display: inline-block;
+  font-size: var(--fs-axis);
+  padding: 1px 6px;
+  border: 1px solid var(--glass-line);
+  border-radius: 2px;
+  color: var(--fg3);
+  white-space: nowrap;
+}
+
+[data-module="preinvest"] .pre-state[data-state="待确认"],
+[data-module="preinvest"] .pre-state[data-state="缺失"] {
+  border-color: var(--warn);
+  color: var(--warn);
+}
+
+[data-module="preinvest"] .pre-state[data-state="失败"] {
+  border-color: var(--alert);
+  color: var(--alert);
+}
+
+[data-module="preinvest"] .pre-chip {
+  display: inline-block;
+  font-size: var(--fs-axis);
+  padding: 1px 6px;
+  margin: 0 3px 3px 0;
+  border: 1px solid var(--glass-line);
+  border-radius: 2px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+[data-module="preinvest"] .pre-chips { margin-top: 10px; }
+
+[data-module="preinvest"] .pre-runtag {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="preinvest"] .pre-i {
+  border: 0;
+  background: none;
+  padding: 0 0 0 4px;
+  color: var(--fg3);
+  cursor: pointer;
+  font-size: var(--fs-meta);
+  line-height: 1;
+}
+
+[data-module="preinvest"] .pre-i:hover { color: var(--accent); }
+
+/* 浮层内容。外壳的 #wb-pop 在 [data-module] 作用域之外，
+   所以入口文件给内容包了一个带 data-module 的节点，这些规则才生效。 */
+[data-module="preinvest"] .pre-pop,
+[data-module="preinvest"].pre-pop {
+  font-size: var(--fs-meta);
+  color: var(--ink);
+  line-height: 1.65;
+  max-width: 380px;
+}
+
+/* ============================================================ 侧栏 === */
+
+[data-module="preinvest"] .pre-listmeta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 52px) minmax(0, 52px) minmax(0, 52px);
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  border-bottom: 1px solid var(--glass-line);
+}
+
+[data-module="preinvest"] .pre-listmeta .num { text-align: right; }
+
+[data-module="preinvest"] .pre-list {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-module="preinvest"] .pre-list .row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 52px) minmax(0, 52px) minmax(0, 52px);
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--glass-line);
+  cursor: pointer;
+}
+
+[data-module="preinvest"] .pre-list .row:hover {
+  background: var(--bg2);
+}
+
+[data-module="preinvest"] .pre-list .row.on {
+  background: var(--bg2);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+[data-module="preinvest"] .pre-list .row.off {
+  cursor: default;
+  opacity: 0.62;
+}
+
+[data-module="preinvest"] .pre-list .id { min-width: 0; }
+
+[data-module="preinvest"] .pre-list .gid {
+  font-size: var(--fs-meta);
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-module="preinvest"] .pre-list .sub {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+[data-module="preinvest"] .pre-list .num {
+  text-align: right;
+  font-size: var(--fs-axis);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="preinvest"] .pre-railhead,
+[data-module="preinvest"] .pre-railfoot {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--glass-line);
+}
+
+[data-module="preinvest"] .pre-railfoot {
+  border-bottom: 0;
+  border-top: 1px solid var(--glass-line);
+}
+
+[data-module="preinvest"] .pre-railhead .t,
+[data-module="preinvest"] .pre-railfoot .t {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  margin-bottom: 6px;
+}
+
+[data-module="preinvest"] .pre-railhead .h,
+[data-module="preinvest"] .pre-railfoot .h {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: var(--fs-axis);
+  color: var(--ink);
+  padding: 2px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="preinvest"] .pre-railhead .n {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* 图表加载失败时的可见提示。绝不留白 —— 空白让人以为「这里本来就没图」。 */
+[data-module="preinvest"] .pre-chartfail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  border: 1px dashed var(--glass-line);
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+}
+
+/* ==================================================== 就地改的输入框 === */
+
+/* 这一页的核心交互。数字右对齐 + 等宽，跟它上下的数字列对齐；
+   聚焦时只换边框不换尺寸 —— 换尺寸会让整行跳。 */
+[data-module="preinvest"] .pre-inp {
+  width: 92px;
+  padding: 3px 6px;
+  border: 1px solid var(--glass-line);
+  border-radius: 2px;
+  background: var(--bg1);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-meta);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+[data-module="preinvest"] .pre-inp:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+}
+
+[data-module="preinvest"] .pre-inp::placeholder { color: var(--fg3); }
+
+[data-module="preinvest"] .pre-inp.big {
+  width: 132px;
+  font-size: var(--fs-value);
+  padding: 4px 8px;
+}
+
+/* 改过的行给一条左边线，不改字色 —— 改字色会和语义色打架 */
+[data-module="preinvest"] .pre-t tbody tr.edited td:first-child {
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+/* ====================================================== 决策条（依据页）=== */
+
+/* 这一页是「图 + 点开看依据」，图必须尽量靠上 —— 实测上方占 405px 时
+   图底部和 dataZoom 都被推出 720p 视口，时间条拖不到。所以这一块只留
+   必要的呼吸，省下来的空间全给图。字号档位不动（那是视觉基准）。 */
+[data-module="preinvest"] .pre-decide {
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--glass-line);
+}
+
+[data-module="preinvest"] .pre-decidemain {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+[data-module="preinvest"] .pre-decidecol {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+[data-module="preinvest"] .pre-decidecol .k {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+}
+
+[data-module="preinvest"] .pre-decidecol .v {
+  font-size: var(--fs-num);
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+[data-module="preinvest"] .pre-decidecol .v .u {
+  font-size: var(--fs-body);
+  font-weight: 400;
+  color: var(--fg3);
+}
+
+[data-module="preinvest"] .pre-decidecol .s {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+}
+
+[data-module="preinvest"] .pre-decidecol.on .v { color: var(--accent); }
+
+[data-module="preinvest"] .pre-decidearrow {
+  font-size: var(--fs-value);
+  color: var(--fg3);
+  padding-bottom: 10px;
+}
+
+/* ---- 现行口径的公式行 ---- */
+
+[data-module="preinvest"] .pre-formula { margin-top: 18px; }
+
+[data-module="preinvest"] .pre-formulahd {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  margin-bottom: 8px;
+}
+
+[data-module="preinvest"] .pre-formularow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+[data-module="preinvest"] .pre-formularow .t {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 10px;
+  border: 1px solid var(--glass-line);
+  border-radius: 2px;
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-formularow .t.on { background: var(--bg2); }
+
+[data-module="preinvest"] .pre-formularow .l {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  white-space: nowrap;
+}
+
+[data-module="preinvest"] .pre-formularow .n {
+  font-size: var(--fs-body);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="preinvest"] .pre-formularow .w {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  white-space: nowrap;
+}
+
+[data-module="preinvest"] .pre-formularow .op {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+}
+
+/* ======================================================== 三样证据卡 === */
+
+[data-module="preinvest"] .pre-evid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 260px));
+  gap: 14px;
+}
+
+[data-module="preinvest"] .pre-evidcard {
+  border: 1px solid var(--glass-line);
+  border-top: 2px solid var(--fg3);
+  padding: 12px 14px;
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-evidcard.bad { border-top-color: var(--alert); }
+[data-module="preinvest"] .pre-evidcard.warn { border-top-color: var(--warn); }
+[data-module="preinvest"] .pre-evidcard.weak { border-top-style: dashed; }
+
+[data-module="preinvest"] .pre-evidcard .hd {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+[data-module="preinvest"] .pre-evidcard .rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+[data-module="preinvest"] .pre-evidcard .rows .pre-kv {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+[data-module="preinvest"] .pre-evidcard .rows .pre-kv .v {
+  font-size: var(--fs-body);
+  font-weight: 400;
+}
+
+[data-module="preinvest"] .pre-evidcard .track { margin: 10px 0 0; }
+
+[data-module="preinvest"] .pre-evidcard .ft {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  line-height: 1.55;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--glass-line);
+}
+
+/* ==================================================== 复核标记与圆点 === */
+
+[data-module="preinvest"] .pre-flag {
+  display: inline-block;
+  font-size: var(--fs-axis);
+  padding: 1px 6px;
+  margin: 0 3px 2px 0;
+  border: 1px solid var(--glass-line);
+  border-radius: 2px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+[data-module="preinvest"] .pre-flag[data-code="missed"] { border-color: var(--alert); color: var(--alert); }
+[data-module="preinvest"] .pre-flag[data-code="promo"] { border-color: var(--warn); color: var(--warn); }
+[data-module="preinvest"] .pre-flag[data-code="diff"] { border-color: var(--accent); color: var(--accent); }
+[data-module="preinvest"] .pre-flag[data-code="ramp"] { border-color: var(--calm); color: var(--calm); }
+
+/* 侧栏里空间不够放文字，用圆点 + title */
+[data-module="preinvest"] .pre-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-right: 4px;
+  background: var(--fg3);
+  vertical-align: 1px;
+}
+
+[data-module="preinvest"] .pre-dot[data-code="missed"] { background: var(--alert); }
+[data-module="preinvest"] .pre-dot[data-code="promo"] { background: var(--warn); }
+[data-module="preinvest"] .pre-dot[data-code="diff"] { background: var(--accent); }
+[data-module="preinvest"] .pre-dot[data-code="ramp"] { background: var(--calm); }
+
+[data-module="preinvest"] .pre-listgrp {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  padding: 8px 12px 4px;
+  border-bottom: 1px solid var(--glass-line);
+  background: var(--bg2);
+}
+
+[data-module="preinvest"] .pre-list .row.edited .gid { color: var(--accent); }
+
+/* ============================================== AI 理由块（接通才出现）=== */
+
+[data-module="preinvest"] .pre-aireasons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 280px));
+  gap: 14px;
+}
+
+[data-module="preinvest"] .pre-aireason {
+  border: 1px solid var(--glass-line);
+  border-left: 3px solid var(--accent);
+  padding: 12px 14px;
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-aireason .hd {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+[data-module="preinvest"] .pre-aireason .lb {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+[data-module="preinvest"] .pre-aireason .ad {
+  font-size: var(--fs-meta);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+
+[data-module="preinvest"] .pre-aireason .bd {
+  font-size: var(--fs-meta);
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+/* ======================================================== 底部动作条 === */
+
+[data-module="preinvest"] .pre-act {
+  margin: 30px 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--glass-line);
+}
+
+[data-module="preinvest"] .pre-actmain {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+[data-module="preinvest"] .pre-actnote {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  line-height: 1.6;
+  margin-top: 10px;
+  max-width: 720px;
+}
+
+/* 预投窗口图比考核页那两张高 —— 它是这一页的主体，要看清逐日形状 */
+[data-module="preinvest"] .pre-chart.tall { height: 340px; }
+
+/* 缺口警告那一行 */
+[data-module="preinvest"] .pre-note[data-warn] {
+  border-left: 2px solid var(--warn);
+  padding-left: 10px;
+  color: var(--warn);
+}
+
+/* ============================================ 页头（标题 + 方案 + 导出标记）=== */
+
+[data-module="preinvest"] .pre-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+[data-module="preinvest"] .pre-headr {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding-top: 6px;
+}
+
+[data-module="preinvest"] .pre-exporttag {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  border: 1px solid var(--glass-line);
+  border-radius: 2px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+/* ================================================= Buffer 条（页头下）=== */
+
+[data-module="preinvest"] .pre-bufbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--glass-line);
+  border: 1px solid var(--glass-line);
+  margin: 18px 0 24px;
+}
+
+[data-module="preinvest"] .pre-bufitem {
+  background: var(--bg1);
+  padding: 12px 14px;
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-bufitem.on { background: var(--bg2); }
+
+[data-module="preinvest"] .pre-bufitem .k {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+[data-module="preinvest"] .pre-bufitem .v {
+  font-size: var(--fs-value);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  margin: 3px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+[data-module="preinvest"] .pre-bufitem.on .v { color: var(--accent); }
+
+[data-module="preinvest"] .pre-bufitem .v .u {
+  font-size: var(--fs-meta);
+  font-weight: 400;
+  color: var(--fg3);
+}
+
+[data-module="preinvest"] .pre-bufitem .s {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  line-height: 1.5;
+}
+
+[data-module="preinvest"] .pre-inp.buf { width: 68px; }
+
+/* ================================================ 产品身份格（表格左列）=== */
+
+[data-module="preinvest"] .pre-t thead th.idcol,
+[data-module="preinvest"] .pre-t tbody td.idcol {
+  width: 46%;
+  min-width: 340px;
+}
+
+[data-module="preinvest"] .pre-idc {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-idimg {
+  position: relative;
+  flex: 0 0 auto;
+  width: 54px;
+  height: 54px;
+  border: 1px solid var(--glass-line);
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--bg2);
+}
+
+[data-module="preinvest"] .pre-idimg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+[data-module="preinvest"] .pre-idimg .tag {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  /* 最小档位。原来写了 9px 字面量，被门禁 G20 抓到 ——
+     阶梯之外的字号一旦允许一个，后面就会有第二个。46px 的图上放
+     --fs-axis(11px) 略挤，所以角标改成只显示一个点击不到的短标记。 */
+  font-size: var(--fs-axis);
+  line-height: 13px;
+  text-align: center;
+  color: var(--bg1);
+  background: rgba(17, 17, 19, 0.55);
+}
+
+/* 三行分开排，不堆成一坨（用户点名过这条） */
+[data-module="preinvest"] .pre-idtxt {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+[data-module="preinvest"] .pre-idtxt .l1 {
+  font-size: var(--fs-body);
+  color: var(--ink);
+  font-weight: 600;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+[data-module="preinvest"] .pre-idtxt .l1 .sz {
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  padding: 0 5px;
+}
+
+[data-module="preinvest"] .pre-idtxt .l2 {
+  font-size: var(--fs-meta);
+  color: var(--fg2);
+}
+
+[data-module="preinvest"] .pre-idtxt .l3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+}
+
+[data-module="preinvest"] .pre-idtxt .l4 {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+[data-module="preinvest"] .pre-flag[data-code="ok"] { border-color: var(--glass-line); color: var(--fg3); }
+
+/* 342 行的表：行高压紧，但产品格要放得下图 */
+[data-module="preinvest"] .pre-asintable tbody td { padding: 8px 10px 8px 0; }
+
+/* ==================================== 五项判断因子（依据页）=== */
+
+[data-module="preinvest"] .pre-summary2 {
+  font-size: var(--fs-sub);
+  color: var(--ink);
+  line-height: 1.65;
+  padding: 12px 14px;
+  border-left: 3px solid var(--accent);
+  background: var(--bg2);
+  margin-bottom: 16px;
+}
+
+[data-module="preinvest"] .pre-factors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 300px));
+  gap: 12px;
+}
+
+[data-module="preinvest"] .pre-factor {
+  border: 1px solid var(--glass-line);
+  padding: 11px 13px;
+  min-width: 0;
+}
+
+[data-module="preinvest"] .pre-factor .hd {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+[data-module="preinvest"] .pre-factor .lb {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+[data-module="preinvest"] .pre-factor .st {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  border: 1px solid var(--glass-line);
+  border-radius: 2px;
+  padding: 0 5px;
+}
+
+[data-module="preinvest"] .pre-factor .st[data-tone="missed"] { color: var(--alert); border-color: var(--alert); }
+[data-module="preinvest"] .pre-factor .st[data-tone="ramp"] { color: var(--calm); border-color: var(--calm); }
+[data-module="preinvest"] .pre-factor .st[data-tone="promo"] { color: var(--warn); border-color: var(--warn); }
+[data-module="preinvest"] .pre-factor .st[data-tone="ok"] { color: var(--good); border-color: var(--good); }
+
+[data-module="preinvest"] .pre-factor .ad {
+  margin-left: auto;
+  font-size: var(--fs-meta);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+[data-module="preinvest"] .pre-factor .bd {
+  font-size: var(--fs-meta);
+  color: var(--fg2);
+  line-height: 1.6;
+}
+
+[data-module="preinvest"] .pre-conf {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--glass-line);
+  font-size: var(--fs-meta);
+}
+
+[data-module="preinvest"] .pre-conf .k { color: var(--fg3); }
+[data-module="preinvest"] .pre-conf .v { color: var(--ink); font-weight: 600; }
+[data-module="preinvest"] .pre-conf .r { color: var(--fg3); flex: 1 1 260px; min-width: 0; line-height: 1.6; }
+
+[data-module="preinvest"] .pre-actnote.inline {
+  margin-top: 0;
+  flex: 1 1 320px;
+  min-width: 0;
+}

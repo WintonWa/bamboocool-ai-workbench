@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bamboocool AI 运营工作台</title>
+<style>
+  :root {
+    --bg: #f5f5f4;
+    --card: #fff;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --accent: #2563eb;
+    --border: #e5e5e5;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "SF Pro Text", "PingFang SC", "Noto Sans SC", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── layout ── */
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 56px 0 0; }
+  section:first-of-type { padding-top: 0; }
+
+  /* ── cover ── */
+  .cover {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: #fff;
+    padding: 96px 0 80px;
+    text-align: center;
+  }
+  .cover h1 { font-size: 42px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 12px; }
+  .cover .sub { font-size: 18px; color: rgba(255,255,255,0.7); }
+  .cover .meta { margin-top: 24px; font-size: 14px; color: rgba(255,255,255,0.45); }
+
+  /* ── headings ── */
+  .sec-num {
+    display: inline-block;
+    font-size: 13px; font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    font-size: 28px; font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+  .sec-lead {
+    font-size: 17px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    max-width: 680px;
+  }
+  h3 {
+    font-size: 20px; font-weight: 600;
+    margin: 40px 0 6px;
+  }
+  .page-desc {
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    max-width: 680px;
+  }
+
+  /* ── cards ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+
+  /* ── tables ── */
+  table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  th {
+    text-align: left; font-weight: 600;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── images ── */
+  .screenshot {
+    width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin: 16px 0 8px;
+    display: block;
+  }
+  .img-caption {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  /* ── AI badge ── */
+  .ai-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: #eff6ff;
+    color: var(--accent);
+    font-size: 13px; font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-top: 12px;
+  }
+  .ai-tag svg { width: 14px; height: 14px; }
+
+  /* ── placeholders ── */
+  .placeholder {
+    background: #f9fafb;
+    border: 2px dashed #d1d5db;
+    border-radius: var(--radius);
+    padding: 48px 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 15px;
+    margin: 16px 0 8px;
+  }
+
+  /* ── divider ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 56px 0 0;
+  }
+
+  /* ── effect table ── */
+  .effect-table td:first-child { font-weight: 600; width: 120px; white-space: nowrap; }
+  .effect-table td:nth-child(2) { color: var(--muted); }
+
+  /* ── footer ── */
+  .footer {
+    text-align: center;
+    padding: 48px 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* ── architecture grid ── */
+  .arch-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .arch-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+  }
+  .arch-item .mod-name {
+    font-size: 17px; font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .arch-item .mod-pages {
+    font-size: 13px; color: var(--accent); font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .arch-item .mod-q {
+    font-size: 14px; color: var(--muted);
+  }
+  .arch-full {
+    grid-column: 1 / -1;
+  }
+
+  /* ── core idea ── */
+  .idea-row {
+    display: flex; gap: 24px; margin-bottom: 16px;
+  }
+  .idea-box {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+  }
+  .idea-box .label { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .idea-box .val { font-size: 20px; font-weight: 700; }
+  .idea-note {
+    font-size: 15px;
+    color: var(--muted);
+    text-align: center;
+    padding: 16px 0 0;
+  }
+
+  /* ── security flow ── */
+  .sec-flow-h {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .sec-flow-step {
+    flex: 1;
+    min-width: 200px;
+    max-width: 280px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .sec-flow-icon { font-size: 28px; margin-bottom: 8px; }
+  .sec-flow-label { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .sec-flow-desc { font-size: 14px; color: var(--muted); line-height: 1.5; }
+  .sec-flow-arrow-h {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    color: #94a3b8;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ── flow chart ── */
+  .flow-section {
+    margin-top: 28px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+  }
+  .flow-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .flow-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.5;
+    min-width: 160px;
+    max-width: 240px;
+  }
+  .flow-node small {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .flow-start {
+    background: #1e293b;
+    color: #fff;
+    border-color: #1e293b;
+  }
+  .flow-output {
+    background: #eff6ff;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+  .flow-dest {
+    background: #f0fdf4;
+    border-color: #10b981;
+  }
+  .flow-review {
+    background: #fffbeb;
+    border-color: #f59e0b;
+    font-weight: 600;
+  }
+  .flow-action {
+    background: #eff6ff;
+    border-color: var(--accent);
+  }
+  .flow-check {
+    background: #f8fafc;
+    border-color: #6b7280;
+  }
+  .flow-ok {
+    background: #f0fdf4;
+    border-color: #10b981;
+  }
+  .flow-fail {
+    background: #fef2f2;
+    border-color: #ef4444;
+  }
+  .flow-arrow {
+    font-size: 20px;
+    color: #94a3b8;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .flow-arrow-d {
+    font-size: 16px;
+    color: #94a3b8;
+    font-weight: 600;
+    text-align: center;
+    padding: 4px 0;
+  }
+  .flow-connect-v {
+    width: 2px;
+    height: 16px;
+    background: #cbd5e1;
+    margin: 0 auto;
+  }
+  .flow-fork {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 8px;
+  }
+  .flow-fork-branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .flow-loop-arrow {
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  /* ── problem section ── */
+  .problem-list {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .problem-item {
+    flex: 1;
+    min-width: 200px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+  }
+  .problem-num {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .problem-text {
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  /* ── module page cards ── */
+  .mod-pages-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .mod-page-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 0.15s, border-color 0.15s;
+    position: relative;
+  }
+  .mod-page-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px rgba(37,99,235,0.10);
+  }
+  .mod-thumb {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    object-position: top left;
+    display: block;
+    border-bottom: 1px solid var(--border);
+  }
+  .mod-page-name {
+    font-size: 17px;
+    font-weight: 700;
+    padding: 12px 16px 2px;
+  }
+  .mod-page-what {
+    font-size: 15px;
+    color: var(--muted);
+    padding: 0 16px 6px;
+  }
+  .mod-page-includes {
+    list-style: none;
+    padding: 0 16px 14px;
+    margin: 0;
+  }
+  .mod-page-includes li {
+    font-size: 14px;
+    color: #555;
+    padding: 3px 0;
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .mod-page-includes li::before {
+    content: '·';
+    position: absolute;
+    left: 2px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  /* ── lightbox ── */
+  .lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+    padding: 32px;
+  }
+  .lightbox-overlay img {
+    max-width: 95vw;
+    max-height: 92vh;
+    border-radius: 8px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    object-fit: contain;
+  }
+
+  /* ── module agent bar ── */
+  .mod-agent-bar {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+  }
+  .mod-agent-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .mod-agent-title::before {
+    content: '';
+  }
+  .mod-agent-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .mod-agent-item {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    padding: 16px;
+  }
+  .mod-agent-name {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .mod-agent-desc {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 720px) {
+    .arch-grid { grid-template-columns: 1fr; }
+    .idea-row { flex-direction: column; }
+    .comp-row { flex-direction: column; }
+    .cover h1 { font-size: 30px; }
+    h2 { font-size: 24px; }
+  }
+
+  /* ── project composition ── */
+  .comp-row {
+    display: flex; gap: 24px;
+  }
+  .comp-col {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 28px 20px;
+  }
+  .comp-header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .comp-count {
+    font-size: 36px; font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    min-width: 48px;
+  }
+  .comp-title { font-size: 18px; font-weight: 700; }
+  .comp-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .comp-list {
+    list-style: none; padding: 0;
+  }
+  .comp-list li {
+    padding: 7px 0;
+    font-size: 16px;
+    border-bottom: 1px solid #f3f3f3;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .comp-list li:last-child { border-bottom: none; }
+  .cl-mod {
+    font-size: 11px; font-weight: 600;
+    color: var(--muted);
+    background: #f5f5f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .cl-pages {
+    font-size: 12px; font-weight: 700;
+    color: var(--accent);
+    min-width: 36px;
+  }
+  .comp-total {
+    margin-top: 12px;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  /* ── org chart ── */
+  .org-chart {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px 24px 32px;
+    overflow-x: auto;
+  }
+  .org-root {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 14px 32px;
+    background: #1e293b;
+    color: #fff;
+    border-radius: 8px;
+    width: fit-content;
+    margin: 0 auto;
+  }
+  .org-connector-v {
+    width: 2px; height: 28px;
+    background: #cbd5e1;
+    margin: 0 auto;
+  }
+  .org-level1 {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  /* horizontal line connecting all branches */
+  .org-level1::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50px;
+    right: 50px;
+    height: 2px;
+    background: #cbd5e1;
+  }
+  .org-node-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding-top: 28px;
+    min-width: 120px;
+    flex: 0 1 auto;
+  }
+  /* vertical stub from horizontal line down to node */
+  .org-node-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 28px;
+    background: #cbd5e1;
+  }
+  .org-node {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px 14px;
+    border-radius: 6px;
+    text-align: center;
+    border: 2px solid;
+    background: #fff;
+    white-space: nowrap;
+  }
+  .org-pg {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 2px;
+  }
+  .n-inv { border-color: #3b82f6; }
+  .n-pre { border-color: #f59e0b; }
+  .n-kw  { border-color: #10b981; }
+  .n-cmp { border-color: #8b5cf6; }
+  .n-ads { border-color: #ef4444; }
+  .n-cfg { border-color: #6b7280; }
+  .n-ov  { border-color: #1e293b; }
+  .org-children {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-top: 12px;
+    position: relative;
+    padding-top: 12px;
+  }
+  /* vertical stub from module node down to children */
+  .org-children::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 12px;
+    background: #e2e8f0;
+  }
+  .org-leaf {
+    font-size: 13px;
+    padding: 5px 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: var(--text);
+  }
+
+  /* ── flow：工作流程七步 ── */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    /* 用 gap 而不是给每格加 margin-right：后者会让最后一格宽出一个间距 */
+    gap: 18px;
+    align-items: stretch;
+  }
+  .flow-step {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 14px 16px;
+    min-width: 0;
+  }
+  /* 步与步之间的箭头。落在 gap 正中，用伪元素画不占格子 */
+  .flow-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -13px;
+    width: 8px;
+    height: 8px;
+    border-top: 1.5px solid #cbd5e1;
+    border-right: 1.5px solid #cbd5e1;
+    transform: translateY(-50%) rotate(45deg);
+  }
+  .flow-n {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+  }
+  .flow-t {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 6px 0 8px;
+    line-height: 1.35;
+  }
+  .flow-d {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  /* 前两步是梳理、后五步是建设，用底色分开两段 */
+  .flow-step.f-prep { background: #f8fafc; }
+  @media (max-width: 900px) {
+    .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .flow-step:not(:last-child)::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ COVER ════════════════════ -->
+<header class="cover">
+  <div class="container">
+    <h1>Bamboocool AI 运营工作台</h1>
+    <div class="sub">用 AI 替代经验判断，用工作台承接日常运营</div>
+    <div class="meta"></div>
+  </div>
+</header>
+
+<main class="container">
+
+<!-- ════════════════════ 2. PROJECT COMPOSITION ════════════════════ -->
+<section>
+  <span class="sec-num">02</span>
+  <h2>项目构成</h2>
+  <p class="sec-lead">判断交给 AI Agent，承接交给工作台。AI 只出「建议 + 原因 + 预期结果」，运营确认后才生效。</p>
+  <div class="comp-row">
+    <div class="comp-col">
+      <div class="comp-header">
+        <div class="comp-count">9</div>
+        <div>
+          <div class="comp-title">AI Agent</div>
+          <div class="comp-sub">负责经验判断——没有公式、只能靠经验的事</div>
+        </div>
+      </div>
+      <ul class="comp-list">
+        <li><span class="cl-mod">库存</span>需求预测</li>
+        <li><span class="cl-mod">库存</span>盘点结论</li>
+        <li><span class="cl-mod">库存</span>库存总体分析</li>
+        <li><span class="cl-mod">关键词</span>关键词机会与风险</li>
+        <li><span class="cl-mod">关键词</span>子体关键词布局</li>
+        <li><span class="cl-mod">竞品</span>竞品威胁判定</li>
+        <li><span class="cl-mod">广告</span>广告异常与决策</li>
+        <li><span class="cl-mod">广告</span>广告目的标签</li>
+        <li><span class="cl-mod">总览</span>运营总览</li>
+      </ul>
+    </div>
+    <div class="comp-col">
+      <div class="comp-header">
+        <div class="comp-count">7</div>
+        <div>
+          <div class="comp-title">工作台模块</div>
+          <div class="comp-sub">负责算术与承接——换算、排序、出表、留痕</div>
+        </div>
+      </div>
+      <ul class="comp-list">
+        <li><span class="cl-pages">3 页</span>产品与库存</li>
+        <li><span class="cl-pages">2 页</span>面料预投</li>
+        <li><span class="cl-pages">5 页</span>关键词分析</li>
+        <li><span class="cl-pages">2 页</span>竞品分析</li>
+        <li><span class="cl-pages">2 页</span>广告分析</li>
+        <li><span class="cl-pages">2 页</span>Agent 配置与运行</li>
+        <li><span class="cl-pages">1 页</span>运营总览</li>
+      </ul>
+      <div class="comp-total">共 17 个页面</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ 3. ARCHITECTURE TREE ════════════════════ -->
+<section>
+  <span class="sec-num">03</span>
+  <h2>工作台架构</h2>
+  <p class="sec-lead">7 个模块、17 个页面的完整结构。</p>
+  <div class="org-chart">
+    <div class="org-root">Bamboocool AI 运营工作台</div>
+    <div class="org-connector-v"></div>
+    <div class="org-level1">
+      <div class="org-node-wrap">
+        <div class="org-node n-inv">产品与库存<span class="org-pg">3 页</span></div>
+        <div class="org-children">
+          <div class="org-leaf">单品盘点</div>
+          <div class="org-leaf">异常总览</div>
+          <div class="org-leaf">库存全览</div>
+        </div>
+      </div>
+      <div class="org-node-wrap">
+        <div class="org-node n-pre">面料预投<span class="org-pg">2 页</span></div>
+        <div class="org-children">
+          <div class="org-leaf">预投计划</div>
+          <div class="org-leaf">配色组依据</div>
+        </div>
+      </div>
+      <div class="org-node-wrap">
+        <div class="org-node n-kw">关键词分析<span class="org-pg">5 页</span></div>
+        <div class="org-children">
+          <div class="org-leaf">动态与机会总览</div>
+          <div class="org-leaf">市场关键词库</div>
+          <div class="org-leaf">重点子体清单</div>
+          <div class="org-leaf">单一关键词分析</div>
+          <div class="org-leaf">子 ASIN 盘点</div>
+        </div>
+      </div>
+      <div class="org-node-wrap">
+        <div class="org-node n-cmp">竞品分析<span class="org-pg">2 页</span></div>
+        <div class="org-children">
+          <div class="org-leaf">竞品威胁总览</div>
+          <div class="org-leaf">单一竞品分析</div>
+        </div>
+      </div>
+      <div class="org-node-wrap">
+        <div class="org-node n-ads">广告分析<span class="org-pg">2 页</span></div>
+        <div class="org-children">
+          <div class="org-leaf">广告数据查看</div>
+          <div class="org-leaf">广告决策</div>
+        </div>
+      </div>
+      <div class="org-node-wrap">
+        <div class="org-node n-cfg">Agent 配置<span class="org-pg">2 页</span></div>
+        <div class="org-children">
+          <div class="org-leaf">Agent 与门槛</div>
+          <div class="org-leaf">输出记录</div>
+        </div>
+      </div>
+      <div class="org-node-wrap">
+        <div class="org-node n-ov">运营总览<span class="org-pg">1 页</span></div>
+        <div class="org-children">
+          <div class="org-leaf">总览首页</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════ 3.5 WORKFLOW ════════════════════ -->
+<section>
+  <span class="sec-num">04</span>
+  <h2>工作流程</h2>
+  <p class="sec-lead">从进场到部署，七个环节按顺序推进。前两步是梳理，把数据和判断逻辑摸清；后五步是建设，逐步把判断交给 Agent。</p>
+  <div class="flow">
+    <div class="flow-step f-prep">
+      <div class="flow-n">01</div>
+      <div class="flow-t">梳理数据</div>
+      <div class="flow-d">数据源、口径、对象关系摸清，贯通到子 ASIN</div>
+    </div>
+    <div class="flow-step f-prep">
+      <div class="flow-n">02</div>
+      <div class="flow-t">梳理业务</div>
+      <div class="flow-d">逐个环节定：哪些判断交给 Agent，哪些留给运营</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-n">03</div>
+      <div class="flow-t">建立 Agent</div>
+      <div class="flow-d">按业务逻辑逐个建，判断落库、上屏、留档</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-n">04</div>
+      <div class="flow-t">调 Agent</div>
+      <div class="flow-d">门槛参数与判断方法论持续校准，越跑越准</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-n">05</div>
+      <div class="flow-t">建立前端框架</div>
+      <div class="flow-d">Agent 的判断有承接的地方，运营能看、能下钻、能改</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-n">06</div>
+      <div class="flow-t">模型微调</div>
+      <div class="flow-d">用积累的判断与反馈微调模型，沉淀成公司自己的能力</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-n">07</div>
+      <div class="flow-t">部署</div>
+      <div class="flow-d">上线运行，权限、审计与运维交接</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════ 3.6 PROBLEM ════════════════════ -->
+<section>
+  <span class="sec-num">05</span>
+  <h2>问题</h2>
+  <p class="sec-lead">日常运营面对的判断量，靠人一个一个看根本看不过来。</p>
+
+  <div class="problem-list">
+    <div class="problem-item">
+      <div class="problem-num">1,500+</div>
+      <div class="problem-text">个 ASIN 的仓储情况需要盘清楚</div>
+    </div>
+    <div class="problem-item">
+      <div class="problem-num">90 天</div>
+      <div class="problem-text">的面料预投数量需要算出来</div>
+    </div>
+    <div class="problem-item">
+      <div class="problem-num">逐个定策略</div>
+      <div class="problem-text">不同库存状态的产品，需要不同的运营动作</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:24px">
+    <p style="font-size:16px; margin-bottom:12px;">比如：</p>
+    <ul style="font-size:15px; color:var(--text); padding-left:20px; line-height:1.8; margin:0;">
+      <li>快断货的产品 → 减少推广力度，减少广告投入，避免卖空</li>
+      <li>库存积压、已经产生仓储费的产品 → 匹配更激进的投放策略，加速出清</li>
+      <li>面料预投 → 57 个配色组各投多少，投多了压资金，投少了断货</li>
+    </ul>
+    <p style="font-size:15px; color:var(--muted); margin-top:16px;">每个产品情况不一样，策略也不一样。靠人一个一个判断，既慢又不一致。</p>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <p style="font-size:17px; font-weight:700; margin-bottom:10px;">这就是 Agent 解决的事</p>
+    <div style="display:flex; gap:24px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:240px;">
+        <p style="font-size:28px; font-weight:800; color:var(--accent); margin-bottom:4px;">一个 Agent 看全部</p>
+        <p style="font-size:15px; color:var(--muted);">不管是 100 个还是 1,500 个 ASIN，同一个 Agent 用同一套标准逐个过，不会遗漏、不会偏。</p>
+      </div>
+      <div style="flex:1; min-width:240px;">
+        <p style="font-size:28px; font-weight:800; color:var(--accent); margin-bottom:4px;">判断质量可沉淀</p>
+        <p style="font-size:15px; color:var(--muted);">把已有的判断经验写进 Agent 的规则里，新人来了也是同一套标准。判断方法越用越准，不会因为人员变动丢掉。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════ 5. INVENTORY ════════════════════ -->
+<section>
+  <span class="sec-num">06</span>
+  <h2>产品与库存</h2>
+  <p class="sec-lead">管的是已经变成货的那部分——补货、清货、断货，先处理谁。</p>
+
+  <div class="mod-pages-row">
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/02-产品库存-单品盘点.png" alt="单品盘点">
+      <div class="mod-page-name">单品盘点</div>
+      <div class="mod-page-what">看某一个产品当前该不该动、动什么</div>
+      <ul class="mod-page-includes">
+        <li>销量与需求预测（历史实销 + AI 预估未来 90 天）</li>
+        <li>库存承接（可售余额、在途到货、安全线、预计断货日）</li>
+        <li>风险判定（库存不足、超量备货、可用性异常）</li>
+        <li>库龄分布与仓储费估算</li>
+        <li>盘点结论（当下最该做什么，排在最前面）</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/02-产品库存-单品盘点.png" alt="单品盘点">
+      </div>
+    </div>
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/03-产品库存-异常总览.png" alt="异常总览">
+      <div class="mod-page-name">异常总览</div>
+      <div class="mod-page-what">几秒内找到最该先处理的产品</div>
+      <ul class="mod-page-includes">
+        <li>五类风险按影响件数排序</li>
+        <li>严重度 × 承接能力矩阵</li>
+        <li>高风险产品清单（可点进单品盘点）</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/03-产品库存-异常总览.png" alt="异常总览">
+      </div>
+    </div>
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/04-产品库存-库存全览.png" alt="库存全览">
+      <div class="mod-page-name">库存全览</div>
+      <div class="mod-page-what">看整体库存健康不健康</div>
+      <ul class="mod-page-includes">
+        <li>库存构成（可售、受限、在途、超龄）</li>
+        <li>库龄分段与未来 7 天跨龄量</li>
+        <li>估算仓储费（当月 + 超期附加）</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/04-产品库存-库存全览.png" alt="库存全览">
+      </div>
+    </div>
+  </div>
+
+  <div class="mod-agent-bar">
+    <div class="mod-agent-title">Agent</div>
+    <div class="mod-agent-list">
+      <div class="mod-agent-item">
+        <div class="mod-agent-name">需求预测 Agent</div>
+        <div class="mod-agent-desc">看历史销量，结合活动排期和季节变化，预估这个产品未来 90 天每天能卖多少。预估准了，后面补货、断货的判断才准。</div>
+      </div>
+      <div class="mod-agent-item">
+        <div class="mod-agent-name">盘点结论 Agent</div>
+        <div class="mod-agent-desc">综合预估和库存情况，直接告诉运营这个产品当下最该做什么——是该补货、该清货、还是暂时不用动。结论排在页面最前面。</div>
+      </div>
+      <div class="mod-agent-item">
+        <div class="mod-agent-name">库存总体分析 Agent</div>
+        <div class="mod-agent-desc">把所有产品的结论汇总起来，挑出最要紧的几个，按影响大小排序，落到异常总览和库存全览两个页面上。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 需求预测 Agent 流程图 -->
+  <div class="flow-section">
+    <div class="flow-title">需求预测 Agent 判断流程</div>
+    <div class="flow-chart">
+      <div class="flow-row">
+        <div class="flow-node flow-start">拿到一个 ASIN</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">读取历史 730 天<br>逐日销量</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">判断历史销量有没有<br>被缺货扭曲</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node">判断活动对需求<br>的影响有多大</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">判断这个产品在<br>生命周期哪一段</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">结合季节变化<br>给出调整</div>
+      </div>
+      <div class="flow-connect-v"></div>
+      <div class="flow-row">
+        <div class="flow-node flow-output">产出：未来 90 天<br>逐日预测 + 区间</div>
+      </div>
+      <div class="flow-fork">
+        <div class="flow-fork-branch">
+          <div class="flow-arrow-d">↓</div>
+          <div class="flow-node flow-dest">提前 2.5 个月<br><strong>面料预投建议</strong><br>按配色组聚合 → 预投表</div>
+        </div>
+        <div class="flow-fork-branch">
+          <div class="flow-arrow-d">↓</div>
+          <div class="flow-node flow-dest">结合当前库存<br><strong>库存风险判断</strong><br>什么时候断货 / 什么时候超量</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════ 5. PREINVEST ════════════════════ -->
+<section>
+  <span class="sec-num">07</span>
+  <h2>面料预投</h2>
+  <p class="sec-lead">管的是钱出去之前——这一轮面料投多少。判断对象是配色组（款号 × 组合），共 57 个。时间口径 M+2：8 月做的预投对应 10 月销量。考核标准：下单数 ÷ 预投数 ≥ 70%。</p>
+
+  <div class="mod-pages-row">
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/23-面料预投-预投表.png" alt="预投计划">
+      <div class="mod-page-name">预投计划</div>
+      <div class="mod-page-what">替代运营填 Excel 的动作，在线填、在线改、直接导出</div>
+      <ul class="mod-page-includes">
+        <li>57 个配色组分两堆：需要复核的 + 按建议走的</li>
+        <li>每行标出为什么要复核（上轮投偏、下月有活动、款在爬坡）</li>
+        <li>预估销量区间（P10–P90）</li>
+        <li>系统建议盒数 + 可修改的「我要投」输入框</li>
+        <li>实时折算面料吨数</li>
+        <li>导出预投表交生产端</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/23-面料预投-预投表.png" alt="预投计划">
+      </div>
+    </div>
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/24-面料预投-单品依据.png" alt="配色组依据">
+      <div class="mod-page-name">配色组依据</div>
+      <div class="mod-page-what">某一行的建议值该接受还是该改，把黑盒打开</div>
+      <ul class="mod-page-includes">
+        <li>决策条：系统建议 → 我最终投 → 折面料</li>
+        <li>逐日柱状图：历史实销 + AI 预估，销售月高亮标出</li>
+        <li>Agent 判断摘要（生命周期、近期表现、活动影响、季节因素）</li>
+        <li>三样反驳证据：去年同期、上一轮达成率、下月活动</li>
+        <li>尺码拆分（生产端按它拆条）</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/24-面料预投-单品依据.png" alt="配色组依据">
+      </div>
+    </div>
+  </div>
+
+  <div class="mod-agent-bar">
+    <div class="mod-agent-title">Agent</div>
+    <div class="mod-agent-list">
+      <div class="mod-agent-item">
+        <div class="mod-agent-name">需求预测 Agent（复用）</div>
+        <div class="mod-agent-desc">预投复用库存模块的需求预测结果。AI 已经对每个子体做了未来 90 天的销量预估，这里按配色组聚合后加上安全余量，就是预投建议值。不重复跑一遍预测。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════ 6. KEYWORD ════════════════════ -->
+<section>
+  <span class="sec-num">08</span>
+  <h2>关键词分析</h2>
+  <p class="sec-lead">管的是流量从哪来——哪些词该动、该守、该抢。</p>
+
+  <div class="mod-pages-row">
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/05-关键词-动态机会总览.png" alt="动态与机会总览">
+      <div class="mod-page-name">动态与机会总览</div>
+      <div class="mod-page-what">本期哪些词发生了变化、哪些值得动</div>
+      <ul class="mod-page-includes">
+        <li>上涨 / 下滑词组统计</li>
+        <li>覆盖变化（新增覆盖、丢失覆盖）</li>
+        <li>优先事项清单：结论 + 依据 + 下一步去向</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/05-关键词-动态机会总览.png" alt="动态与机会总览">
+      </div>
+    </div>
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/06-关键词-市场词库.png" alt="市场关键词库">
+      <div class="mod-page-name">市场关键词库</div>
+      <div class="mod-page-what">1,991 个共享市场词里哪些是机会</div>
+      <ul class="mod-page-includes">
+        <li>散点图：需供比 × 购买率，气泡大小为搜索量</li>
+        <li>高密度比较表（搜索量、购买率、排名、竞争度）</li>
+        <li>词角色分类（核心 / 场景 / 长尾 / 竞品品牌）</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/06-关键词-市场词库.png" alt="市场关键词库">
+      </div>
+    </div>
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/25-关键词-重点子体清单.png" alt="重点子体清单">
+      <div class="mod-page-name">重点子体清单</div>
+      <div class="mod-page-what">30 个重点产品的词布局对比</div>
+      <ul class="mod-page-includes">
+        <li>按真实锚点占比排序</li>
+        <li>关系词数、产品目标、主推关系</li>
+        <li>库存承接状态（能不能接住流量）</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/25-关键词-重点子体清单.png" alt="重点子体清单">
+      </div>
+    </div>
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/26-关键词-单一关键词分析-独立页.png" alt="单一关键词分析">
+      <div class="mod-page-name">单一关键词分析</div>
+      <div class="mod-page-what">一个词自己在变好还是变差</div>
+      <ul class="mod-page-includes">
+        <li>月频 / 周频趋势分开展示</li>
+        <li>两个数据来源对照</li>
+        <li>头部 ASIN 排名与产品关系</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/26-关键词-单一关键词分析-独立页.png" alt="单一关键词分析">
+      </div>
+    </div>
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/27-关键词-单一子ASIN盘点-独立页.png" alt="子 ASIN 关键词盘点">
+      <div class="mod-page-name">子 ASIN 关键词盘点</div>
+      <div class="mod-page-what">某个款的词该守还是该抢</div>
+      <ul class="mod-page-includes">
+        <li>关键词覆盖矩阵（核心/场景/长尾 × 位置段）</li>
+        <li>自然位与广告位变化趋势</li>
+        <li>关键词缺口与机会清单</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/27-关键词-单一子ASIN盘点-独立页.png" alt="子 ASIN 关键词盘点">
+      </div>
+    </div>
+  </div>
+
+  <div class="mod-agent-bar">
+    <div class="mod-agent-title">Agent</div>
+    <div class="mod-agent-list">
+      <div class="mod-agent-item">
+        <div class="mod-agent-name">关键词机会与风险 Agent</div>
+        <div class="mod-agent-desc">从词的排名涨跌、搜索量变化中挑出值得动的词，并按紧急程度排优先级。运营不用自己逐词翻排名变化。</div>
+      </div>
+      <div class="mod-agent-item">
+        <div class="mod-agent-name">子体关键词布局 Agent</div>
+        <div class="mod-agent-desc">针对某个具体产品，判断它当前的词覆盖够不够、缺哪一类词、力气该放在哪几个词上。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════ 7. COMPETITOR ════════════════════ -->
+<section>
+  <span class="sec-num">09</span>
+  <h2>竞品分析</h2>
+  <p class="sec-lead">管的是对手在做什么——降价、排名变动、关键词抢位。</p>
+
+  <div class="mod-pages-row">
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/08-竞品-威胁总览.png" alt="竞品威胁总览">
+      <div class="mod-page-name">竞品威胁总览</div>
+      <div class="mod-page-what">38 个竞品产品族里谁在动</div>
+      <ul class="mod-page-includes">
+        <li>威胁比较表（内嵌趋势线 + 价差对比）</li>
+        <li>按变化类型筛选（降价、排名、关键词、流量）</li>
+        <li>关注程度与证据状态</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/08-竞品-威胁总览.png" alt="竞品威胁总览">
+      </div>
+    </div>
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/09-竞品-单一竞品分析.png" alt="单一竞品分析">
+      <div class="mod-page-name">单一竞品分析</div>
+      <div class="mod-page-what">某个竞品做了什么、怎么影响我们</div>
+      <ul class="mod-page-includes">
+        <li>六条轨道共用一条时间轴（价格、促销、排名、流量、关键词、自有事件）</li>
+        <li>区分事实、推测和假设</li>
+        <li>关键词交叉证据</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/09-竞品-单一竞品分析.png" alt="单一竞品分析">
+      </div>
+    </div>
+  </div>
+
+  <div class="mod-agent-bar">
+    <div class="mod-agent-title">Agent</div>
+    <div class="mod-agent-list">
+      <div class="mod-agent-item">
+        <div class="mod-agent-name">竞品威胁判定 Agent</div>
+        <div class="mod-agent-desc">盯竞品的价格变动、排名变化和关键词抢位，判断哪些变化构成真正的威胁、哪些只是正常波动。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════ 8. ADS ════════════════════ -->
+<section>
+  <span class="sec-num">10</span>
+  <h2>广告分析</h2>
+  <p class="sec-lead">管的是广告钱花得值不值——异常定位和调整建议。</p>
+
+  <div class="mod-pages-row">
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/10-广告-分类数据查看.png" alt="广告分类与数据查看">
+      <div class="mod-page-name">广告数据查看</div>
+      <div class="mod-page-what">54 个广告对象哪些数据异常</div>
+      <ul class="mod-page-includes">
+        <li>严格按 7 天 / 14 天归因分栏</li>
+        <li>异常规则命中排序</li>
+        <li>勾选两行横向对比</li>
+        <li>广告目的标签（每个广告到底在干什么）</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/10-广告-分类数据查看.png" alt="广告分类与数据查看">
+      </div>
+    </div>
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/22-广告-标准决策单视觉优化.png" alt="广告决策">
+      <div class="mod-page-name">广告决策</div>
+      <div class="mod-page-what">某个款的广告该怎么调</div>
+      <ul class="mod-page-includes">
+        <li>三列判断依据（经营约束、广告表现、关键词与竞品证据）</li>
+        <li>四阶段决策链（任务 → 对照 → 诊断 → 调整方案）</li>
+        <li>每条建议：接受 / 修改 / 暂不处理</li>
+        <li>执行后自动回看（达标 = 策略正确，不达标 = 记录下来下次改进）</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/22-广告-标准决策单视觉优化.png" alt="广告决策">
+      </div>
+    </div>
+  </div>
+
+  <div class="mod-agent-bar">
+    <div class="mod-agent-title">Agent</div>
+    <div class="mod-agent-list">
+      <div class="mod-agent-item">
+        <div class="mod-agent-name">广告异常与决策 Agent</div>
+        <div class="mod-agent-desc">判断哪些广告该调价、哪些该扩量、哪些只是样本不够还看不出来。给出具体调整方案，运营确认后才执行。</div>
+      </div>
+      <div class="mod-agent-item">
+        <div class="mod-agent-name">广告目的标签 Agent</div>
+        <div class="mod-agent-desc">从广告的命名和投放行为判断每个广告对象到底在干什么——抢大词、捡漏、拦竞品还是再营销。认不出来的如实标出。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 广告决策 Agent 闭环流程图 -->
+  <div class="flow-section">
+    <div class="flow-title">广告决策 Agent 闭环流程</div>
+    <div class="flow-chart">
+      <div class="flow-row">
+        <div class="flow-node flow-start">产品当前情况<br><small>库存、销量、生命周期</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">结合关键词数据<br><small>词排名、覆盖、机会</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">结合竞品动态<br><small>降价、抢位、活动</small></div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow-d" style="margin:0 auto;">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node flow-output" style="max-width:100%;">Agent 产出广告调整策略<br><small>动作 + 原因 + 预期结果</small></div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow-d" style="margin:0 auto;">↓</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node flow-review">🙋 运营审核<br><small>接受 / 修改 / 暂不处理</small></div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow-d" style="margin:0 auto;">↓ 确认后</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node flow-action">自动执行广告调整<br><small>调用亚马逊广告 API</small></div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-arrow-d" style="margin:0 auto;">↓ 等待阈值到达（如 3 天或 500 点击）</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node flow-check">自动回看执行结果<br><small>抓取关键指标，对比预期</small></div>
+      </div>
+      <div class="flow-fork" style="margin-top:12px;">
+        <div class="flow-fork-branch">
+          <div class="flow-node flow-ok">✅ 达标<br><small>策略正确，记录下来<br>下次同类情况复用</small></div>
+        </div>
+        <div class="flow-fork-branch">
+          <div class="flow-node flow-fail">⚠️ 未达标<br><small>记录偏差原因<br>返回 Agent 重新判断</small></div>
+        </div>
+      </div>
+      <div class="flow-loop-arrow">
+        <div class="flow-arrow-d">↩ 回到 Agent，用新数据重新分析</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════ 9. AGENT CONFIG ════════════════════ -->
+<section>
+  <span class="sec-num">11</span>
+  <h2>Agent 配置与运行记录</h2>
+  <p class="sec-lead">AI 判断的边界和门槛写在明面上，可以改、可以查。</p>
+
+  <div class="mod-pages-row">
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/12-Agent配置-与门槛.png" alt="Agent 与门槛">
+      <div class="mod-page-name">Agent 与门槛</div>
+      <div class="mod-page-what">9 个 Agent 的判断边界和参数，透明可调</div>
+      <ul class="mod-page-includes">
+        <li>每个 Agent：判断什么 / 工作台自己算什么</li>
+        <li>需要什么数据 / 产出什么结果</li>
+        <li>门槛参数可在线调整，调完页面立刻重算</li>
+        <li>配置方案（方案一 / 方案二可切换对比）</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/12-Agent配置-与门槛.png" alt="Agent 与门槛">
+      </div>
+    </div>
+    <div class="mod-page-card" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/13-Agent配置-输出记录.png" alt="Agent 输出记录">
+      <div class="mod-page-name">输出记录</div>
+      <div class="mod-page-what">每次 AI 判断都有完整记录，可追溯</div>
+      <ul class="mod-page-includes">
+        <li>按天分组的运行时间线</li>
+        <li>成功 / 失败状态、耗时、模型版本</li>
+        <li>判断了谁、结论是什么</li>
+        <li>点击可查完整详情</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/13-Agent配置-输出记录.png" alt="Agent 输出记录">
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════ 10. OVERVIEW ════════════════════ -->
+<section>
+  <span class="sec-num">12</span>
+  <h2>运营总览</h2>
+  <p class="sec-lead">早上打开只看这一页。</p>
+
+  <div class="mod-pages-row">
+    <div class="mod-page-card" style="max-width:540px" onclick="this.querySelector('.lightbox-overlay').style.display='flex'">
+      <img class="mod-thumb" src="images/01-运营总览.png" alt="运营总览">
+      <div class="mod-page-name">总览首页</div>
+      <div class="mod-page-what">今天先看什么，一页说完</div>
+      <ul class="mod-page-includes">
+        <li>三条带优先级的判断，各自跳到对应模块</li>
+        <li>四模块状态矩阵（库存风险数 / 关键词待处理 / 竞品覆盖率 / 广告证据完整度）</li>
+        <li>核心数据覆盖状态</li>
+      </ul>
+      <div class="lightbox-overlay" onclick="event.stopPropagation();this.style.display='none'">
+        <img src="images/01-运营总览.png" alt="运营总览">
+      </div>
+    </div>
+  </div>
+
+  <div class="mod-agent-bar">
+    <div class="mod-agent-title">Agent</div>
+    <div class="mod-agent-list">
+      <div class="mod-agent-item">
+        <div class="mod-agent-name">运营总览 Agent</div>
+        <div class="mod-agent-desc">读完五个模块各自的结论，合成三句话告诉运营今天最该关注什么。运营不用逐个模块翻。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════ 11. EXPECTED EFFECT ════════════════════ -->
+<section>
+  <span class="sec-num">13</span>
+  <h2>预期效果</h2>
+  <div class="card">
+    <table class="effect-table">
+      <thead>
+        <tr><th>环节</th><th>现在</th><th>接入后</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>预投准确度</td>
+          <td>运营凭经验填 Excel，各人偏差不同</td>
+          <td>AI 基于历史 + 活动 + 生命周期给建议，运营只复核异常行</td>
+        </tr>
+        <tr>
+          <td>库存风险</td>
+          <td>人工逐个翻表</td>
+          <td>系统自动标出高风险对象并排优先级</td>
+        </tr>
+        <tr>
+          <td>关键词布局</td>
+          <td>人工盯排名变化</td>
+          <td>系统识别机会与风险词，给出优先级和下一步</td>
+        </tr>
+        <tr>
+          <td>竞品监控</td>
+          <td>不定期手动查看</td>
+          <td>每周自动比对，变化自动标出</td>
+        </tr>
+        <tr>
+          <td>广告调整</td>
+          <td>人工看报表做判断</td>
+          <td>AI 出诊断和建议，运营确认后执行</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:14px; color:var(--muted); text-align:center; margin-top:16px;">所有 AI 建议均需运营确认才生效，判断边界和门槛透明可调，每次运行有完整记录可追溯。</p>
+</section>
+
+<hr class="divider">
+
+<!-- ════════════════════ 13. DATA SECURITY ════════════════════ -->
+<section>
+  <span class="sec-num">14</span>
+  <h2>数据安全</h2>
+  <p class="sec-lead">数据怎么来、存在哪、谁能看、谁能导出，都有明确边界。两个方案的区别只在模型跑在哪——数据来源、权限管理这两头是一样的。</p>
+
+  <h3>方案一　接公有云 API</h3>
+  <p class="page-desc">调用时只把当前这一次判断需要的字段送出去，不传全库。成本按用量算，随时可开始。</p>
+  <div class="sec-flow-h">
+    <div class="sec-flow-step">
+      <div class="sec-flow-icon">📥</div>
+      <div class="sec-flow-label">数据来源</div>
+      <div class="sec-flow-desc">从领星 ERP 自动同步<br>不需要手动导出亚马逊后台数据</div>
+    </div>
+    <div class="sec-flow-arrow-h">→</div>
+    <div class="sec-flow-step">
+      <div class="sec-flow-icon">☁️</div>
+      <div class="sec-flow-label">云端存储</div>
+      <div class="sec-flow-desc">所有数据存储在云端服务器<br>加密传输、加密存储</div>
+    </div>
+    <div class="sec-flow-arrow-h">→</div>
+    <div class="sec-flow-step">
+      <div class="sec-flow-icon">🖥️</div>
+      <div class="sec-flow-label">云端部署</div>
+      <div class="sec-flow-desc">工作台和 Agent 部署在云端<br>浏览器打开即用</div>
+    </div>
+  </div>
+
+  <h3>方案二　自己配置 GPU</h3>
+  <p class="page-desc">GPU 租或买都可以，起在贵司自己的云账号或机房里。数据和模型都不出贵司环境，也是模型微调的前提。</p>
+  <div class="sec-flow-h">
+    <div class="sec-flow-step">
+      <div class="sec-flow-icon">📥</div>
+      <div class="sec-flow-label">数据来源</div>
+      <div class="sec-flow-desc">同样从领星 ERP 自动同步<br>这一步两个方案没有区别</div>
+    </div>
+    <div class="sec-flow-arrow-h">→</div>
+    <div class="sec-flow-step">
+      <div class="sec-flow-icon">🔒</div>
+      <div class="sec-flow-label">贵司环境内存储</div>
+      <div class="sec-flow-desc">数据与模型权重都放在贵司<br>自己的云账号或机房内</div>
+    </div>
+    <div class="sec-flow-arrow-h">→</div>
+    <div class="sec-flow-step">
+      <div class="sec-flow-icon">🎛️</div>
+      <div class="sec-flow-label">自有 GPU 运行</div>
+      <div class="sec-flow-desc">模型跑在贵司自己的 GPU 上<br>判断全程不出网，可用自有数据微调</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:24px;">
+    <p style="font-size:17px; font-weight:700; margin-bottom:16px;">权限管理</p>
+    <p style="font-size:15px; color:var(--muted); margin-bottom:16px;">不同角色配备不同权限，看到的数据和能做的操作不一样。两个方案下都一样。</p>
+    <table>
+      <thead>
+        <tr><th>权限项</th><th>说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>页面访问权限</td><td>不同人能进不同模块——比如运营能看库存和广告，财务只能看库存和仓储费</td></tr>
+        <tr><td>数据查看权限</td><td>控制每个人能看到哪些数据范围（按店铺、按负责人、按产品线）</td></tr>
+        <tr><td>导出权限</td><td>只有被授权的人才能导出 Excel 和预投表</td></tr>
+        <tr><td>输入/修改权限</td><td>预投表的「我要投」、广告决策的「接受/修改」，需要对应权限才能操作</td></tr>
+        <tr><td>Agent 配置权限</td><td>门槛参数的调整、配置方案的切换，仅管理员可操作</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">Bamboocool AI 运营工作台 · 2026-09-04</div>
+</footer>
+
+</body>
+</html>

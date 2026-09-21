@@ -1,0 +1,2115 @@
+/* 广告分析模块样式（契约 5.3）
+ *
+ * 全部规则在 [data-module="ads"] 之下；零 #id 选择器、零裸元素选择器、
+ * 零新增 token——只用 tokens.css 已有的变量。
+ *
+ * 两条踩过的工程规矩写在这里免得再犯：
+ *   grid 轨道用 minmax(0,1fr) 而非 1fr，子项显式 min-width:0，
+ *   否则 nowrap 的长文本会顶爆轨道、把后面的列挤出容器；
+ *   关键词表七列轨道至少 420px，塞进窄列会把第一列压爆成竖排单字，
+ *   所以它必须占整行。
+ */
+
+[data-module="ads"] .ads-card {
+  background: var(--bg1);
+  border-radius: var(--r);
+  box-shadow: var(--card);
+  padding: var(--s4) var(--s5);
+  margin-bottom: var(--s4);
+}
+[data-module="ads"] .ads-secthead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  margin-bottom: var(--s3);
+}
+[data-module="ads"] .ads-h2 {
+  margin: 0;
+  font-size: var(--fs-title);
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+[data-module="ads"] .ads-h3 {
+  margin: 0 0 var(--s2);
+  font-size: var(--fs-sub);
+  font-weight: 700;
+}
+[data-module="ads"] .ads-mut { color: var(--fg3); font-size: var(--fs-axis); }
+[data-module="ads"] .ads-mono {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-subhead {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  font-weight: 600;
+  margin: var(--s3) 0 var(--s1);
+}
+[data-module="ads"] .ads-hint { font-size: var(--fs-anno); color: var(--fg3); }
+
+/* ------------------------------------------------------------- 侧栏选择器 */
+[data-module="ads"] .ads-railhead {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  margin: var(--s3) 0 var(--s1);
+}
+[data-module="ads"] .ads-railtitle {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  font-weight: 600;
+}
+[data-module="ads"] .ads-pick {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 72px;
+  gap: var(--s2);
+  align-items: center;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r3);
+  cursor: pointer;
+  font-size: var(--fs-anno);
+}
+[data-module="ads"] .ads-pick > * { min-width: 0; }
+[data-module="ads"] .ads-pick:nth-child(odd) { background: var(--bg3); }
+[data-module="ads"] .ads-pick:hover { background: var(--bg2); }
+[data-module="ads"] .ads-pick.ads-on {
+  background: var(--bg2);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+[data-module="ads"] .ads-pickname {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-anno);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-picknote {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-picknum {
+  font-family: var(--sans);
+  font-size: var(--fs-axis);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+}
+[data-module="ads"] .ads-chip {
+  font-size: var(--fs-axis);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  padding: 2px var(--s2);
+  border-radius: 20px;
+  background: var(--bg2);
+  color: var(--fg2);
+}
+[data-module="ads"] .ads-chip::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: 0 0 4px;
+}
+[data-module="ads"] .ads-chip-good { color: var(--good); }
+[data-module="ads"] .ads-chip-warn { color: var(--warn); }
+[data-module="ads"] .ads-chip-alert { color: var(--alert); }
+[data-module="ads"] .ads-chip-calm { color: var(--calm); }
+[data-module="ads"] .ads-vers { font-size: var(--fs-axis); color: var(--fg3); }
+[data-module="ads"] .ads-btn {
+  appearance: none;
+  border: 0;
+  background: var(--bg2);
+  color: var(--fg);
+  font: inherit;
+  font-size: var(--fs-axis);
+  border-radius: var(--r3);
+  padding: var(--s1) var(--s2);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-btn:hover { background: var(--accent); color: var(--bg1); }
+[data-module="ads"] .ads-ib {
+  appearance: none;
+  border: 0;
+  background: var(--bg2);
+  color: var(--fg3);
+  width: 15px;
+  height: 15px;
+  line-height: 1;
+  border-radius: 50%;
+  font-size: var(--fs-axis);
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 15px;
+}
+[data-module="ads"] .ads-ib:hover { background: var(--accent); color: var(--bg1); }
+[data-module="ads"] .ads-evrow {
+  background: var(--bg3);
+  border-radius: var(--r2);
+  padding: var(--s2) var(--s3);
+  margin-bottom: var(--s2);
+  font-size: var(--fs-anno);
+  color: var(--fg2);
+  box-shadow: inset 0 0 0 1px var(--bg2);
+  scroll-margin-top: 72px;
+}
+[data-module="ads"] .ads-flash {
+  box-shadow: inset 0 0 0 2px var(--accent);
+  background: var(--bg2);
+}
+[data-module="ads"] .ads-evhead {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-bottom: var(--s1);
+  flex-wrap: wrap;
+}
+[data-module="ads"] .ads-evhead > b {
+  font-size: var(--fs-anno);
+  color: var(--fg);
+  font-weight: 600;
+}
+[data-module="ads"] .ads-kv {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2px var(--s3);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-kv > dt { color: var(--fg3); }
+[data-module="ads"] .ads-kv > dd {
+  margin: 0;
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+[data-module="ads"] .ads-cav {
+  margin-top: var(--s1);
+  color: var(--fg3);
+  font-size: var(--fs-axis);
+}
+[data-module="ads"] .ads-ref {
+  appearance: none;
+  border: 0;
+  background: var(--bg2);
+  color: var(--fg2);
+  font: inherit;
+  font-size: var(--fs-axis);
+  border-radius: 20px;
+  padding: 1px var(--s2);
+  margin: 0 var(--s1) var(--s1) 0;
+  cursor: pointer;
+}
+[data-module="ads"] .ads-ref:hover { background: var(--accent); color: var(--bg1); }
+[data-module="ads"] .ads-kwhead { color: var(--fg3); font-weight: 600; }
+[data-module="ads"] .ads-kwnum {
+  font-family: var(--sans);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+/* 对比表与基准阶梯里的数字列也要等宽，否则上下行小数点对不齐 */
+[data-module="ads"] .ads-cmprow > *,
+[data-module="ads"] .ads-bmkrow > *,
+[data-module="ads"] .ads-lblrow > * {
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-idle .ads-h2 { color: var(--fg3); }
+[data-module="ads"] .ads-cov { font-size: var(--fs-axis); font-weight: 600; }
+[data-module="ads"] .ads-decide {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-top: var(--s2);
+  flex-wrap: wrap;
+}
+[data-module="ads"] .ads-decided {
+  font-size: var(--fs-axis);
+  color: var(--good);
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-handoff {
+  margin-top: var(--s2);
+  background: var(--bg1);
+  border-radius: var(--r3);
+  padding: var(--s2) var(--s3);
+  font-size: var(--fs-axis);
+  color: var(--fg2);
+  box-shadow: inset 0 0 0 1px var(--bg2);
+}
+[data-module="ads"] .ads-cov { font-size: var(--fs-axis); }
+
+/* --------------------------------------------------------- 板块5 结构表 */
+[data-module="ads"] .ads-tablewrap {
+  overflow: auto;
+  max-height: 400px;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+[data-module="ads"] .ads-table {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 900px;
+}
+[data-module="ads"] .ads-trow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 52px 128px 56px 88px 96px 60px 56px 64px 56px;
+  gap: var(--s2);
+  align-items: center;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r3);
+  font-size: var(--fs-anno);
+  scroll-margin-top: 72px;
+}
+[data-module="ads"] .ads-trow > * {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-trow:nth-child(even) { background: var(--bg3); }
+[data-module="ads"] .ads-thead {
+  color: var(--fg3);
+  font-size: var(--fs-axis);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background: var(--bg1);
+  z-index: 2;
+}
+[data-module="ads"] .ads-td { color: var(--fg2); }
+[data-module="ads"] .ads-td > b { display: block; font-weight: 600; color: var(--fg); }
+[data-module="ads"] .ads-td > em {
+  display: block;
+  font-style: normal;
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+}
+[data-module="ads"] .ads-tnum {
+  font-family: var(--sans);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-tag {
+  font-size: var(--fs-axis);
+  color: var(--calm);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+}
+[data-module="ads"] .ads-tag::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: 0 0 4px;
+}
+
+/* ================================================ 页面一 分类与数据查看 */
+
+[data-module="ads"] .ads-scope {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s5);
+  flex-wrap: wrap;
+}
+[data-module="ads"] .ads-scopemain { min-width: 0; flex: 1 1 auto; }
+[data-module="ads"] .ads-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s5);
+  margin-bottom: var(--s2);
+}
+[data-module="ads"] .ads-sc { display: flex; flex-direction: column; }
+[data-module="ads"] .ads-sc > b {
+  font-family: var(--sans);
+  font-size: var(--fs-value);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-sc > span { font-size: var(--fs-axis); color: var(--fg3); }
+[data-module="ads"] .ads-attrib {
+  background: var(--bg2);
+  border-radius: var(--r2);
+  padding: var(--s2) var(--s3);
+  font-size: var(--fs-axis);
+  color: var(--fg2);
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+/* 板块4 结果概览：一个 hero 独大，2-4 个 support 降级 */
+[data-module="ads"] .ads-herotop {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s6);
+  flex-wrap: wrap;
+}
+[data-module="ads"] .ads-herolead { min-width: 210px; }
+[data-module="ads"] .ads-big {
+  font-size: var(--fs-num);
+  font-weight: 600;
+  letter-spacing: -.03em;
+  line-height: 1.05;
+  margin: var(--s1) 0;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-lead { font-size: var(--fs-num); }
+[data-module="ads"] .ads-herosupport {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3) var(--s6);
+  padding-top: var(--s2);
+}
+[data-module="ads"] .ads-hs { display: flex; flex-direction: column; }
+[data-module="ads"] .ads-hs > b {
+  font-family: var(--sans);
+  font-size: var(--fs-value);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-hs > span { font-size: var(--fs-axis); color: var(--fg3); }
+[data-module="ads"] .ads-hs > em {
+  font-style: normal;
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-blocks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--s2);
+  margin-top: var(--s4);
+}
+[data-module="ads"] .ads-blk {
+  background: var(--bg2);
+  border-radius: var(--r2);
+  padding: var(--s2) var(--s3);
+}
+[data-module="ads"] .ads-blkhead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  margin-bottom: var(--s1);
+}
+[data-module="ads"] .ads-blkhead > b { font-size: var(--fs-anno); }
+[data-module="ads"] .ads-statrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s4);
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+}
+[data-module="ads"] .ads-statrow b {
+  font-family: var(--sans);
+  font-size: var(--fs-anno);
+  color: var(--fg);
+  font-weight: 600;
+  margin-left: var(--s1);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 类目基准阶梯：6 行是 6 层嵌套类目 */
+[data-module="ads"] .ads-bmk {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--s2);
+}
+[data-module="ads"] .ads-bmkrow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(3, 150px);
+  gap: var(--s3);
+  padding: var(--s1) 0;
+  font-size: var(--fs-axis);
+}
+[data-module="ads"] .ads-bmkrow > * {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-bmkrow:nth-child(even) { background: var(--bg3); }
+[data-module="ads"] .ads-cmprow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px 100px 62px 56px 92px;
+  gap: var(--s2);
+  padding: var(--s1) var(--s2);
+  font-size: var(--fs-axis);
+  border-radius: var(--r3);
+  align-items: center;
+}
+[data-module="ads"] .ads-cmprow > * {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-cmprow:nth-child(even) { background: var(--bg3); }
+[data-module="ads"] .ads-lblrow {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) 84px 68px 132px;
+  gap: var(--s2);
+  padding: var(--s1) var(--s2);
+  font-size: var(--fs-axis);
+  border-radius: var(--r3);
+}
+[data-module="ads"] .ads-lblrow > * {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-lblrow:nth-child(even) { background: var(--bg3); }
+
+/* 板块3 筛选面板。勾选行三列定宽：勾 / 名字（可省略）/ 候选数。
+   名字列必须 minmax(0,1fr) 否则长 Campaign 名会顶爆轨道把计数挤出侧栏。 */
+[data-module="ads"] .ads-grainhint {
+  margin: calc(var(--s1) * -1) 0 var(--s2);
+}
+[data-module="ads"] .ads-search { margin-bottom: var(--s2); }
+[data-module="ads"] .ads-sinput {
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: var(--s1) var(--s2);
+  font: inherit;
+  font-size: var(--fs-anno);
+  color: var(--fg);
+  background: var(--bg2);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r3);
+}
+[data-module="ads"] .ads-sinput:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+[data-module="ads"] .ads-cfilter { margin-bottom: var(--s1); }
+[data-module="ads"] .ads-actbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin-bottom: var(--s3);
+}
+[data-module="ads"] .ads-actchip {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 2px var(--s2);
+  font-size: var(--fs-axis);
+  color: var(--fg);
+  background: var(--bg3);
+  border: 1px solid var(--accent);
+  border-radius: var(--r3);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-clr {
+  padding: 2px var(--s2);
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  background: none;
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r3);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-fopt {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  gap: var(--s2);
+  align-items: center;
+  width: 100%;
+  padding: 3px var(--s1);
+  font-size: var(--fs-axis);
+  text-align: left;
+  color: var(--fg2);
+  background: none;
+  border: 0;
+  border-radius: var(--r3);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-fopt:hover { background: var(--bg3); }
+[data-module="ads"] .ads-fopt.ads-on { color: var(--fg); }
+[data-module="ads"] .ads-fbox {
+  width: 14px;
+  height: 14px;
+  line-height: 13px;
+  text-align: center;
+  font-size: var(--fs-axis);
+  border: 1px solid var(--glass-line);
+  border-radius: 3px;
+}
+[data-module="ads"] .ads-fopt.ads-on .ads-fbox {
+  color: var(--bg1);
+  background: var(--fg);
+  border-color: var(--fg);
+}
+[data-module="ads"] .ads-fname {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-fn {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg3);
+}
+[data-module="ads"] .ads-fopt.ads-zero { cursor: default; opacity: 0.42; }
+[data-module="ads"] .ads-fopt.ads-off { display: none; }
+[data-module="ads"] .ads-more {
+  padding: 2px var(--s1);
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* 浮层跟抽屉一样在模块作用域外，靠内容侧打标记把作用域带过去。
+   外壳给的是 white-space: normal 的纯文本浮层，\n 会被当空格吃掉。 */
+[data-module="ads"].ads-popbody {
+  white-space: pre-line;
+  max-width: 380px;
+  line-height: 1.55;
+}
+
+/* 抽屉内容不在外壳的模块作用域里，是模块自己补的标记。
+   抽屉窄，长表要限高内滚，否则标签历史几十条会把面板撑到一千多像素。 */
+[data-module="ads"] .ads-drawer .ads-evrow { margin-bottom: var(--s3); }
+[data-module="ads"] .ads-drawer .ads-bmk {
+  max-height: 260px;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+[data-module="ads"] .ads-drawer .ads-lblrow {
+  grid-template-columns: 72px minmax(0, 1fr) 68px 56px 96px;
+}
+[data-module="ads"] .ads-drawer .ads-cmprow {
+  grid-template-columns: minmax(0, 1fr) 62px 52px 60px 56px 52px;
+}
+
+/* 板块5 异常规则命中比例条。名字列封顶，条也封顶——
+   9/8/7 这种小数值配半屏长的条没有信息量。 */
+[data-module="ads"] .ads-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--s3);
+}
+[data-module="ads"] .ads-rr {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) 40px 200px minmax(0, 1fr);
+  gap: var(--s3);
+  align-items: center;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r3);
+  font-size: var(--fs-anno);
+}
+[data-module="ads"] .ads-rr > * { min-width: 0; }
+[data-module="ads"] .ads-rr:nth-child(odd) { background: var(--bg3); }
+[data-module="ads"] .ads-rn {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-rc {
+  font-family: var(--sans);
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-hb {
+  height: 4px;
+  background: var(--bg2);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+[data-module="ads"] .ads-hb > i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: block;
+  border-radius: 2px;
+  background: var(--ink);
+}
+[data-module="ads"] .ads-camprows {
+  margin-top: var(--s3);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--bg2);
+}
+[data-module="ads"] .ads-cr {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) 108px 160px 52px minmax(0, 1fr);
+  gap: var(--s3);
+  align-items: center;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r3);
+  font-size: var(--fs-anno);
+}
+[data-module="ads"] .ads-cr > * { min-width: 0; }
+[data-module="ads"] .ads-cr:nth-child(odd) { background: var(--bg3); }
+[data-module="ads"] .ads-cn {
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-axis);
+  color: var(--fg2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-crule {
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-cr .ads-rc { cursor: pointer; }
+[data-module="ads"] .ads-cr .ads-rc:hover { color: var(--accent); }
+
+/* 板块7 对象清单：flex 定宽列，横向可滚 */
+[data-module="ads"] .ads-ltablewrap {
+  overflow: auto;
+  max-height: 560px;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+[data-module="ads"] .ads-ltable {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: max-content;
+}
+[data-module="ads"] .ads-lrow {
+  display: flex;
+  gap: var(--s2);
+  align-items: center;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r3);
+  font-size: var(--fs-anno);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-lrow:nth-child(even) { background: var(--bg3); }
+[data-module="ads"] .ads-lrow:hover { background: var(--bg2); }
+[data-module="ads"] .ads-lhead {
+  color: var(--fg3);
+  font-size: var(--fs-axis);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background: var(--bg1);
+  z-index: 2;
+  cursor: default;
+}
+[data-module="ads"] .ads-ld {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--fg2);
+}
+[data-module="ads"] .ads-ld > b {
+  display: block;
+  font-weight: 600;
+  color: var(--fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+[data-module="ads"] .ads-ld > em {
+  display: block;
+  font-style: normal;
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+[data-module="ads"] .ads-selbox {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  accent-color: var(--ink);
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--fg3);
+  border-radius: 3px;
+}
+[data-module="ads"] .ads-selbox:checked { background: var(--ink); }
+
+/* 侧栏 板块2/3 粒度锁与标签选项 */
+[data-module="ads"] .ads-grainlock {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s1);
+  background: var(--bg2);
+  border-radius: var(--r3);
+  padding: 3px;
+  margin-bottom: var(--s2);
+}
+[data-module="ads"] .ads-gl {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: var(--s1) var(--s1);
+  font: inherit;
+  font-size: var(--fs-anno);
+  color: var(--fg3);
+  border-radius: var(--r3);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-gl.ads-on {
+  background: var(--bg1);
+  color: var(--fg);
+  font-weight: 600;
+  box-shadow: var(--card);
+}
+[data-module="ads"] .ads-lopt.ads-on { background: var(--ink); color: var(--bg1); }
+
+/* ==========================================================================
+   页面二重构（2026-09-04）
+   施工单：04-广告分析模块/01-方案与数据需求/07-页面二屏幕决策设计.md
+
+   规矩同上：全部在 [data-module="ads"] 下、零 #id、零裸元素选择器、
+   零新增 token、字号只用 --fs-* 阶梯（门禁 G3 / G20 / G21）。
+   数字列一律 tabular-nums，不用等宽字族（G22）。
+   ========================================================================== */
+
+/* 数字：比例字体 + tabular-nums 就能列对齐，不必换等宽（要则第二节） */
+[data-module="ads"] .num { font-variant-numeric: tabular-nums; }
+
+/* 语义色只用现成四档，且颜色永远不是唯一信号 —— 每处都另有文字或形状 */
+[data-module="ads"] .ads-t-good { color: var(--good); }
+[data-module="ads"] .ads-t-warn { color: var(--warn); }
+[data-module="ads"] .ads-t-alert { color: var(--alert); }
+[data-module="ads"] .ads-t-calm { color: var(--calm); }
+[data-module="ads"] .ads-br-f.ads-t-good,
+[data-module="ads"] .ads-dr-f.ads-t-good,
+[data-module="ads"] .ads-dil-f.ads-t-good { background: var(--good); }
+[data-module="ads"] .ads-br-f.ads-t-warn,
+[data-module="ads"] .ads-dr-f.ads-t-warn,
+[data-module="ads"] .ads-dil-f.ads-t-warn { background: var(--warn); }
+[data-module="ads"] .ads-br-f.ads-t-alert,
+[data-module="ads"] .ads-dr-f.ads-t-alert { background: var(--alert); }
+[data-module="ads"] .ads-br-f.ads-t-calm { background: var(--calm); }
+[data-module="ads"] .ads-vd-dot.ads-t-alert { background: var(--alert); }
+[data-module="ads"] .ads-vd-dot.ads-t-warn { background: var(--warn); }
+[data-module="ads"] .ads-rkline.ads-t-good { stroke: var(--good); }
+[data-module="ads"] .ads-rkline.ads-t-warn { stroke: var(--warn); }
+[data-module="ads"] .ads-rkdot.ads-t-good { fill: var(--good); }
+[data-module="ads"] .ads-rkdot.ads-t-warn { fill: var(--warn); }
+[data-module="ads"] .ads-tl-m.ads-t-warn .ads-tl-dot { background: var(--warn); }
+[data-module="ads"] .ads-tl-m.ads-t-alert .ads-tl-dot { background: var(--alert); }
+
+/* 板块序号。①②③ 那一层，让六段链在扫视时数得出来 */
+[data-module="ads"] .ads-secno {
+  font-style: normal;
+  color: var(--fg3);
+  margin-right: var(--s1);
+  font-weight: 400;
+}
+
+/* -------------------------------------------------------------- 决策条 */
+[data-module="ads"] .ads-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.5fr) minmax(0, auto);
+  gap: var(--s5);
+  align-items: start;
+}
+[data-module="ads"] .ads-hr-id { min-width: 0; }
+[data-module="ads"] .ads-hr-asin {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex-wrap: wrap;
+}
+[data-module="ads"] .ads-hr-asin > b {
+  font-size: var(--fs-title);
+  font-weight: 700;
+  letter-spacing: -.01em;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-hr-parent { color: var(--fg3); font-size: var(--fs-meta); }
+[data-module="ads"] .ads-hr-goal {
+  font-size: var(--fs-sub);
+  margin-top: var(--s1);
+  color: var(--fg);
+}
+[data-module="ads"] .ads-hr-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  margin-top: var(--s2);
+}
+[data-module="ads"] .ads-hr-run {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--s1);
+  text-align: right;
+}
+[data-module="ads"] .ads-hr-stamp { font-size: var(--fs-meta); color: var(--fg3); }
+[data-module="ads"] .ads-hr-model { font-size: var(--fs-axis); color: var(--fg3); }
+
+/* 指标格。--fs-num 给单个数字，--fs-value 给文字型的值（要则第一节） */
+[data-module="ads"] .ads-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s4);
+}
+[data-module="ads"] .ads-stats-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+[data-module="ads"] .ads-stats-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+[data-module="ads"] .ads-st { min-width: 0; }
+[data-module="ads"] .ads-st-l {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  line-height: 1.3;
+}
+[data-module="ads"] .ads-st-v {
+  font-size: var(--fs-num);
+  font-weight: 600;
+  line-height: 1.15;
+  margin-top: var(--s1);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.015em;
+}
+/* 文字型的值、以及放不下 30 的复合值与日期，降到 22 不降到 16 */
+[data-module="ads"] .ads-st-word { font-size: var(--fs-value); font-weight: 600; }
+[data-module="ads"] .ads-st-f {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  margin-top: var(--s1);
+  line-height: 1.4;
+}
+
+/* 一句话结论：归 --fs-sub，不因为重要就升到 22（要则第一节的分界） */
+[data-module="ads"] .ads-say {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s1);
+  font-size: var(--fs-sub);
+  line-height: 1.5;
+  margin-top: var(--s2);
+}
+
+/* ----------------------------------------------------------- 横条行 */
+[data-module="ads"] .ads-brs { display: grid; gap: var(--s2); }
+[data-module="ads"] .ads-brs-dense { gap: var(--s1); }
+[data-module="ads"] .ads-br {
+  display: grid;
+  grid-template-columns: minmax(0, 190px) minmax(0, 1fr) minmax(0, 92px) auto;
+  align-items: center;
+  gap: var(--s3);
+  font-size: var(--fs-body);
+}
+[data-module="ads"] .ads-br-l { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+[data-module="ads"] .ads-br-l > em {
+  font-style: normal;
+  color: var(--fg3);
+  font-size: var(--fs-meta);
+  margin-left: var(--s1);
+}
+[data-module="ads"] .ads-br-t {
+  position: relative;
+  display: block;
+  height: 8px;
+  border-radius: var(--r3);
+  background: var(--bg2);
+  overflow: hidden;
+}
+/* 行内 span 给 width/height 是无效的，必须 block + absolute ——
+   库存模块的库龄柱曾经就因为这个从深色版起一直塌成 0×0，没人发现。 */
+[data-module="ads"] .ads-br-f {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  border-radius: var(--r3);
+}
+[data-module="ads"] .ads-br-na {
+  position: absolute;
+  inset: 0 auto 0 var(--s1);
+  color: var(--fg3);
+  font-size: var(--fs-axis);
+  line-height: 8px;
+}
+[data-module="ads"] .ads-br-v { text-align: right; font-variant-numeric: tabular-nums; }
+[data-module="ads"] .ads-br-b { color: var(--fg3); font-size: var(--fs-meta); }
+
+/* ------------------------------------------------- 核心词表（含斜线） */
+[data-module="ads"] .ads-kwtbl { margin-top: var(--s2); }
+[data-module="ads"] .ads-kw {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.5fr) minmax(0, 1.6fr) minmax(0, 1.15fr)
+    minmax(0, 62px) minmax(0, 1.4fr) minmax(0, 96px);
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--bg2);
+  font-size: var(--fs-body);
+}
+[data-module="ads"] .ads-kw-head {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  font-weight: 600;
+  border-bottom: 1px solid var(--fg3);
+  padding-bottom: var(--s1);
+}
+[data-module="ads"] .ads-kw-n { min-width: 0; }
+[data-module="ads"] .ads-kw-n > b { display: block; font-weight: 600; }
+[data-module="ads"] .ads-kw-n > em {
+  font-style: normal;
+  color: var(--fg3);
+  font-size: var(--fs-meta);
+}
+[data-module="ads"] .ads-kw-s,
+[data-module="ads"] .ads-kw-i {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s2);
+}
+[data-module="ads"] .ads-kw-s > b,
+[data-module="ads"] .ads-kw-i > b {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-kw-r { display: flex; align-items: center; gap: var(--s2); }
+[data-module="ads"] .ads-kw-r > em {
+  font-style: normal;
+  color: var(--fg3);
+  font-size: var(--fs-meta);
+}
+[data-module="ads"] .ads-kw-a { text-align: center; font-variant-numeric: tabular-nums; }
+[data-module="ads"] .ads-kw-c { color: var(--fg2); font-size: var(--fs-meta); }
+[data-module="ads"] .ads-dotf,
+[data-module="ads"] .ads-doth {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: var(--s1);
+}
+[data-module="ads"] .ads-dotf { background: var(--ink); }
+[data-module="ads"] .ads-doth { border: 1.5px solid var(--fg3); }
+
+/* 排名斜线。轴是反的：名次小画在上面 */
+[data-module="ads"] .ads-rkwrap { display: inline-flex; align-items: center; gap: var(--s1); }
+[data-module="ads"] .ads-rksvg { display: block; overflow: visible; }
+[data-module="ads"] .ads-rkline { stroke: var(--fg3); stroke-width: 1.6; }
+[data-module="ads"] .ads-rkdot { fill: var(--ink); }
+[data-module="ads"] .ads-rkdot-a { fill: var(--fg3); }
+[data-module="ads"] .ads-rktxt { font-size: var(--fs-meta); font-variant-numeric: tabular-nums; }
+[data-module="ads"] .ads-rktxt > i { font-style: normal; color: var(--fg3); margin: 0 2px; }
+[data-module="ads"] .ads-rkar { font-size: var(--fs-meta); }
+[data-module="ads"] .ads-rk { font-size: var(--fs-meta); color: var(--fg3); }
+[data-module="ads"] .ads-rk-one { font-variant-numeric: tabular-nums; color: var(--fg); }
+
+/* ------------------------------------------------------------- 量的链 */
+[data-module="ads"] .ads-cn {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  margin-top: var(--s3);
+}
+[data-module="ads"] .ads-cn-s {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+[data-module="ads"] .ads-cn-s > b {
+  font-size: var(--fs-value);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+}
+[data-module="ads"] .ads-cn-s > em,
+[data-module="ads"] .ads-cn-r > em {
+  font-style: normal;
+  color: var(--fg3);
+  font-size: var(--fs-meta);
+}
+[data-module="ads"] .ads-cn-r {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 var(--s2);
+  border-left: 1px solid var(--bg2);
+  border-right: 1px solid var(--bg2);
+}
+[data-module="ads"] .ads-cn-r > b {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------- 归因稀释条 */
+[data-module="ads"] .ads-dil { margin-top: var(--s3); }
+[data-module="ads"] .ads-dil-t {
+  position: relative;
+  display: block;
+  height: 10px;
+  border-radius: var(--r3);
+  background: var(--bg2);
+  overflow: hidden;
+}
+[data-module="ads"] .ads-dil-f {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: block;
+  height: 100%;
+  background: var(--ink);
+}
+[data-module="ads"] .ads-dil-x {
+  display: block;
+  margin-top: var(--s1);
+  font-size: var(--fs-meta);
+  color: var(--fg2);
+}
+[data-module="ads"] .ads-dil-x > b { font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------- 时间轴 */
+[data-module="ads"] .ads-fig-tl { padding-top: var(--s5); }
+[data-module="ads"] .ads-tl { position: relative; height: 74px; margin-top: var(--s3); }
+[data-module="ads"] .ads-tl-axis {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8px;
+  height: 1px;
+  background: var(--bg2);
+}
+[data-module="ads"] .ads-tl-m {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 108px;
+}
+[data-module="ads"] .ads-tl-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink);
+  margin-top: 4px;
+}
+[data-module="ads"] .ads-tl-hollow { background: var(--bg1); border: 1.5px solid var(--fg3); }
+/* 图上标注：名称比日期大一档（要则第一节，直觉容易做反） */
+[data-module="ads"] .ads-tl-lb {
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  margin-top: var(--s2);
+  text-align: center;
+  line-height: 1.25;
+}
+[data-module="ads"] .ads-tl-dt {
+  font-size: var(--fs-anno);
+  font-style: normal;
+  color: var(--fg3);
+  font-variant-numeric: tabular-nums;
+}
+/* 口径说明。原来是 absolute + bottom:0，和标注文字叠在一起糊成一团 ——
+   标注宽 108px 且分两行，绝对定位在同一个 74px 的盒子里必然压上。
+   改成时间轴之后的普通块，让它自己占一行。 */
+[data-module="ads"] .ads-tl-note {
+  margin-top: var(--s2);
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+}
+
+/* -------------------------------------------------------- 双向变化条 */
+[data-module="ads"] .ads-drs { display: grid; gap: var(--s1); margin-top: var(--s2); }
+[data-module="ads"] .ads-dr {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 180px) minmax(0, 96px) minmax(0, 1fr)
+    minmax(0, 96px) minmax(0, 122px);
+  align-items: center;
+  gap: var(--s3);
+  font-size: var(--fs-body);
+}
+[data-module="ads"] .ads-dr-head {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  font-weight: 600;
+  border-bottom: 1px solid var(--fg3);
+  padding-bottom: var(--s1);
+}
+[data-module="ads"] .ads-dr-l { min-width: 0; }
+[data-module="ads"] .ads-dr-l > em {
+  font-style: normal;
+  color: var(--fg3);
+  font-size: var(--fs-meta);
+  margin-left: var(--s1);
+}
+[data-module="ads"] .ads-dr-b,
+[data-module="ads"] .ads-dr-o { text-align: right; font-variant-numeric: tabular-nums; }
+[data-module="ads"] .ads-dr-b { color: var(--fg3); }
+[data-module="ads"] .ads-dr-t {
+  position: relative;
+  display: block;
+  height: 10px;
+  background: var(--bg2);
+  border-radius: var(--r3);
+}
+[data-module="ads"] .ads-dr-mid {
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  bottom: -2px;
+  width: 1px;
+  background: var(--fg3);
+}
+[data-module="ads"] .ads-dr-f {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: block;
+  background: var(--ink);
+  border-radius: 2px;
+}
+[data-module="ads"] .ads-dr-c { text-align: right; font-variant-numeric: tabular-nums; }
+[data-module="ads"] .ads-dr-c > em {
+  display: block;
+  font-style: normal;
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+}
+
+/* --------------------------------------------------------- 压力矩阵 */
+[data-module="ads"] .ads-mx { margin-top: var(--s2); }
+[data-module="ads"] .ads-mx-r {
+  display: grid;
+  grid-template-columns: minmax(0, 220px) repeat(7, minmax(0, 1fr));
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--bg2);
+  font-size: var(--fs-body);
+}
+[data-module="ads"] .ads-mx-head {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  font-weight: 600;
+  border-bottom: 1px solid var(--fg3);
+}
+[data-module="ads"] .ads-mx-c { text-align: center; min-width: 0; }
+[data-module="ads"] .ads-mx-name { text-align: left; }
+[data-module="ads"] .ads-mx-name > b { display: block; font-weight: 600; }
+[data-module="ads"] .ads-mx-name > em {
+  font-style: normal;
+  color: var(--fg3);
+  font-size: var(--fs-meta);
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-mx-on { color: var(--warn); }
+[data-module="ads"] .ads-mx-ok { color: var(--alert); }
+[data-module="ads"] .ads-mx-off { color: var(--bg2); }
+[data-module="ads"] .ads-mx-lg {
+  display: flex;
+  gap: var(--s4);
+  margin-top: var(--s2);
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+}
+
+/* ------------------------------------------------------- 覆盖核对网格 */
+[data-module="ads"] .ads-cg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin-top: var(--s2);
+}
+[data-module="ads"] .ads-cg-i {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  padding: var(--ai-pad-y) var(--s2);
+  border: 1px solid var(--bg2);
+  border-radius: var(--r3);
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+}
+[data-module="ads"] .ads-cg-i > i { font-style: normal; }
+[data-module="ads"] .ads-cg-hit {
+  border-color: var(--alert);
+  color: var(--fg);
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------- 归因两口径块 */
+[data-module="ads"] .ads-bks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  gap: var(--s4);
+}
+[data-module="ads"] .ads-bk {
+  min-width: 0;
+  background: var(--bg3);
+  border-radius: var(--r2);
+  padding: var(--s3) var(--s4);
+}
+[data-module="ads"] .ads-bk-h {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  margin-bottom: var(--s3);
+  flex-wrap: wrap;
+}
+[data-module="ads"] .ads-bk-h > b { font-size: var(--fs-sub); font-weight: 700; }
+
+/* ---------------------------------------------------------- 诊断结论带 */
+[data-module="ads"] .ads-vds { display: grid; gap: var(--s1); margin-top: var(--s2); }
+[data-module="ads"] .ads-vd {
+  display: grid;
+  grid-template-columns: 10px 34px minmax(0, 230px) minmax(0, 1fr) auto auto;
+  align-items: baseline;
+  gap: var(--s2);
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--bg2);
+  font-size: var(--fs-body);
+}
+[data-module="ads"] .ads-vd-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--fg3);
+  align-self: center;
+}
+[data-module="ads"] .ads-vd-pri {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-vd-name { font-weight: 600; }
+[data-module="ads"] .ads-vd-say { color: var(--fg2); line-height: 1.5; }
+[data-module="ads"] .ads-vd-conf { font-size: var(--fs-meta); color: var(--fg3); }
+
+/* --------------------------------------------------------- 约束四域 */
+[data-module="ads"] .ads-cds {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: var(--s3);
+  margin-top: var(--s2);
+}
+[data-module="ads"] .ads-cd {
+  min-width: 0;
+  background: var(--bg3);
+  border-radius: var(--r2);
+  padding: var(--s3);
+}
+[data-module="ads"] .ads-cd-h {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s2);
+  margin-bottom: var(--s2);
+}
+[data-module="ads"] .ads-cd-h > b { font-size: var(--fs-body); font-weight: 700; }
+[data-module="ads"] .ads-cd-i {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s1);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  margin-top: var(--s1);
+}
+[data-module="ads"] .ads-cd-k {
+  flex: 0 0 auto;
+  font-style: normal;
+  font-size: var(--fs-axis);
+  color: var(--fg3);
+  border: 1px solid var(--bg2);
+  border-radius: var(--r3);
+  padding: 0 var(--s1);
+}
+[data-module="ads"] .ads-cd-none { color: var(--fg3); font-size: var(--fs-meta); }
+
+/* ---------------------------------------------------------- 结构问题 */
+[data-module="ads"] .ads-iss {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--bg2);
+  font-size: var(--fs-body);
+}
+[data-module="ads"] .ads-iss-say { flex: 1 1 320px; min-width: 0; line-height: 1.5; }
+
+/* ------------------------------------------------------ 建议卡（三栏） */
+[data-module="ads"] .ads-pc {
+  border: 1px solid var(--bg2);
+  border-radius: var(--r2);
+  padding: var(--s3) var(--s4);
+  margin-top: var(--s3);
+}
+[data-module="ads"] .ads-pc-dir {
+  font-size: var(--fs-value);
+  font-weight: 700;
+  line-height: 1.2;
+}
+[data-module="ads"] .ads-pc-obj {
+  font-size: var(--fs-body);
+  color: var(--fg2);
+  margin-top: var(--s1);
+  line-height: 1.45;
+}
+[data-module="ads"] .ads-pc-from {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  margin-top: var(--s2);
+}
+[data-module="ads"] .ads-tagbtn {
+  border: 1px solid var(--bg2);
+  background: var(--bg1);
+  border-radius: var(--r3);
+  padding: var(--s1) var(--s2);
+  font-family: var(--sans);
+  font-size: var(--fs-meta);
+  color: var(--fg2);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-tagbtn:hover { border-color: var(--fg3); color: var(--fg); }
+
+/* --------------------------------------------------------- 效果监控 */
+[data-module="ads"] .ads-mn {
+  border: 1px solid var(--bg2);
+  border-radius: var(--r2);
+  padding: var(--s3) var(--s4);
+  margin-top: var(--s3);
+}
+[data-module="ads"] .ads-mn-h {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  margin-bottom: var(--s2);
+}
+[data-module="ads"] .ads-mn-h > b { font-size: var(--fs-sub); font-weight: 700; }
+[data-module="ads"] .ads-mn-say {
+  font-size: var(--fs-sub);
+  line-height: 1.5;
+  margin-top: var(--s3);
+}
+[data-module="ads"] .ads-mn-next {
+  font-size: var(--fs-body);
+  color: var(--fg2);
+  margin-top: var(--s2);
+}
+[data-module="ads"] .ads-ev {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--bg2);
+  font-size: var(--fs-body);
+}
+[data-module="ads"] .ads-ev-d { color: var(--fg3); font-variant-numeric: tabular-nums; }
+[data-module="ads"] .ads-ev-s { font-weight: 600; }
+[data-module="ads"] .ads-ev-r { color: var(--fg2); }
+
+/* --------------------------------------------------------- 决策沿革 */
+[data-module="ads"] .ads-lv {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  flex-wrap: wrap;
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--bg2);
+  font-size: var(--fs-body);
+}
+[data-module="ads"] .ads-lv-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--bg2);
+  align-self: center;
+}
+[data-module="ads"] .ads-lv-on .ads-lv-dot { background: var(--ink); }
+[data-module="ads"] .ads-lv-d { font-weight: 600; font-variant-numeric: tabular-nums; }
+[data-module="ads"] .ads-lv-g { flex: 1 1 240px; min-width: 0; color: var(--fg2); }
+[data-module="ads"] .ads-bt-needs { margin-top: var(--s2); }
+[data-module="ads"] .ads-bt-needs > ol {
+  margin: var(--s1) 0 0;
+  padding-left: var(--s4);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--fg2);
+}
+
+/* ------------------------------------------------------------- 通用件 */
+/* 未接入 / 无数据。**明确说出缺什么**，不写「暂无数据」 */
+[data-module="ads"] .ads-empty {
+  background: var(--bg3);
+  border-radius: var(--r2);
+  padding: var(--s4);
+  margin-top: var(--s3);
+}
+[data-module="ads"] .ads-empty > b {
+  display: block;
+  font-size: var(--fs-sub);
+  margin-bottom: var(--s1);
+}
+[data-module="ads"] .ads-empty > span {
+  display: block;
+  font-size: var(--fs-body);
+  color: var(--fg2);
+  line-height: 1.6;
+}
+/* 口径警示行。它说的是数据本身的口径问题，不是业务风险，所以用 warn 不用 alert */
+[data-module="ads"] .ads-warnline {
+  display: flex;
+  gap: var(--s1);
+  flex-wrap: wrap;
+  margin-top: var(--s3);
+  padding: var(--s2) var(--s3);
+  border-left: 2px solid var(--warn);
+  background: var(--bg3);
+  border-radius: 0 var(--r3) var(--r3) 0;
+  font-size: var(--fs-body);
+  color: var(--fg2);
+  line-height: 1.55;
+}
+[data-module="ads"] .ads-warnline-flat { border-left-color: var(--fg3); }
+[data-module="ads"] .ads-fig { margin-top: var(--s3); }
+[data-module="ads"] .ads-lg {
+  display: flex;
+  gap: var(--s4);
+  flex-wrap: wrap;
+  margin-top: var(--s2);
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+}
+[data-module="ads"] .ads-fold {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  margin-top: var(--s2);
+}
+[data-module="ads"] .ads-daymount { height: 260px; margin-top: var(--s3); }
+
+/* 两栏并排。轨道用 minmax(0,1fr) 而非 1fr —— 1fr 的最小内容宽度是
+   auto，长文本会把轨道顶爆并把另一栏挤出容器（文件头那条规矩）。
+   窄屏落回单栏，不硬挤。 */
+[data-module="ads"] .ads-two {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  gap: var(--s5);
+  align-items: start;
+}
+[data-module="ads"] .ads-half { min-width: 0; }
+
+/* 证据卡（抽不出图时的如实列举）。不渲染 payload 的键 —— 那是英文列名 */
+[data-module="ads"] .ads-evc {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--bg2);
+  font-size: var(--fs-body);
+}
+[data-module="ads"] .ads-evc > b { font-weight: 600; }
+[data-module="ads"] .ads-evc-c { color: var(--fg3); font-size: var(--fs-meta); }
+
+/* ---------------------------- 指标视图（2026-09-04 照参考稿构图） */
+/* 左侧竖排页签 + 右侧两个归因块并排。轨道用 minmax(0,1fr)：
+   1fr 的最小内容宽是 auto，九个指标会把轨道顶爆并挤掉另一块。 */
+[data-module="ads"] .ads-mvcard {
+  display: grid;
+  grid-template-columns: minmax(0, 96px) minmax(0, 1fr);
+  gap: var(--s5);
+  align-items: start;
+}
+[data-module="ads"] .ads-mvtitle {
+  font-size: var(--fs-sub);
+  font-weight: 700;
+  margin-bottom: var(--s3);
+}
+[data-module="ads"] .ads-mvrail { display: grid; gap: var(--s1); }
+[data-module="ads"] .ads-mvtab {
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r3);
+  font-family: var(--sans);
+  font-size: var(--fs-body);
+  color: var(--fg3);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-mvtab:hover { color: var(--fg); }
+[data-module="ads"] .ads-mvtab.ads-on {
+  background: var(--bg2);
+  color: var(--fg);
+  font-weight: 600;
+}
+[data-module="ads"] .ads-mvblks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: var(--s5);
+  min-width: 0;
+}
+[data-module="ads"] .ads-mvblk { min-width: 0; }
+[data-module="ads"] .ads-mv-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  padding-bottom: var(--s2);
+  border-bottom: 1px solid var(--bg2);
+}
+[data-module="ads"] .ads-mv-head > b { font-size: var(--fs-sub); font-weight: 700; }
+/* 九个指标一行排开。auto-fit + 最小 76px：窄屏自动折行，不横向滚动 */
+/* 九个指标。最小列宽 104px 不是拍的：$491,805 在 --fs-value(22px) 下实测
+   约 96px，原来给 76px 必然和邻列贴上（实测「$56,184$491,805」连成一串）。
+   给到 104 之后自然折成 5+4 两行，比硬塞一行可读。 */
+[data-module="ads"] .ads-mv-cells {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+  gap: var(--s4) var(--s3);
+  margin-top: var(--s3);
+}
+[data-module="ads"] .ads-mv-cell { min-width: 0; }
+[data-module="ads"] .ads-mv-lab {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  line-height: 1.3;
+}
+/* 指标值：复合值与长金额放不下 30，落 22（要则 16/22/30 分界） */
+[data-module="ads"] .ads-mv-val {
+  font-size: var(--fs-value);
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.01em;
+}
+[data-module="ads"] .ads-dl {
+  display: block;
+  font-size: var(--fs-meta);
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+[data-module="ads"] .ads-dl-na { color: var(--fg3); }
+[data-module="ads"] .ads-mv-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s2);
+  margin-top: var(--s3);
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+}
+[data-module="ads"] .ads-mv-foot-na { font-style: italic; }
+
+/* 趋势页签的逐日柱。行内 span 给 height 无效，必须 block —— 库存那边
+   的库龄柱就因为这个塌成 0×0 过一次。 */
+[data-module="ads"] .ads-tbwrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 118px;
+  margin-top: var(--s3);
+}
+[data-module="ads"] .ads-tb { flex: 1 1 0; min-width: 0; height: 100%; }
+[data-module="ads"] .ads-tb-t {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 100%;
+}
+[data-module="ads"] .ads-tb-s,
+[data-module="ads"] .ads-tb-a {
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 1px;
+}
+[data-module="ads"] .ads-tb-s { background: var(--ink); }
+[data-module="ads"] .ads-tb-a { background: var(--bg2); }
+/* 一格字段。值是「本次运行未给出」就压低显示 —— 要看得见，但不抢戏。
+   **不留空白**：空白会把「Agent 没输出这一格」藏起来，比显示出来更难查。 */
+/* --------------------- 对象清单表（2026-09-04 照两张参考稿构图） */
+/* ① 状态计数页签行。计数是真的（来自 state_labels 分布），
+   词换成数据状态 —— 这个包里没有投放状态。 */
+[data-module="ads"] .ads-ltabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+  margin-bottom: var(--s3);
+  padding-bottom: var(--s2);
+  border-bottom: 1px solid var(--bg2);
+}
+[data-module="ads"] .ads-ltab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s1);
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: var(--r3);
+  padding: var(--s1) var(--s2);
+  font-family: var(--sans);
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-ltab:hover { color: var(--fg); background: var(--bg2); }
+[data-module="ads"] .ads-ltab.ads-on {
+  background: var(--ink);
+  color: var(--bg1);
+  font-weight: 600;
+}
+[data-module="ads"] .ads-ltab > i {
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  opacity: .72;
+}
+
+/* 工具条 */
+[data-module="ads"] .ads-ltools {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  margin-bottom: var(--s2);
+}
+
+/* ② 两级列组表头 */
+[data-module="ads"] .ads-lgrp {
+  border-bottom: 1px solid var(--bg2);
+  background: var(--bg3);
+}
+[data-module="ads"] .ads-lgc {
+  font-size: var(--fs-meta);
+  font-weight: 700;
+  color: var(--fg2);
+  border-right: 1px solid var(--bg2);
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}
+
+/* ③ 状态彩色圆点。标黄的依据是「命中了数据状态类异常规则」，
+   从 anomalies 读出来，不是另定一套严重度。 */
+[data-module="ads"] .ads-sdot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fg3);
+  margin-right: var(--s1);
+}
+[data-module="ads"] .ads-sdot-warn { background: var(--warn); }
+[data-module="ads"] .ads-stxt { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+/* ④ 选中行整行高亮 */
+[data-module="ads"] .ads-lsel { background: var(--bg2); }
+
+/* 行尾 ⋯ */
+[data-module="ads"] .ads-more {
+  border: 0;
+  background: transparent;
+  color: var(--fg3);
+  cursor: pointer;
+  padding: 0 var(--s1);
+  font-family: var(--sans);
+  font-size: var(--fs-sub);
+  line-height: 1;
+}
+[data-module="ads"] .ads-more:hover { color: var(--fg); }
+
+/* ⑤ 底部分页条 */
+[data-module="ads"] .ads-lpager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  flex-wrap: wrap;
+  margin-top: var(--s3);
+  padding-top: var(--s2);
+  border-top: 1px solid var(--bg2);
+  font-size: var(--fs-meta);
+}
+[data-module="ads"] .ads-lpright {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  flex-wrap: wrap;
+}
+[data-module="ads"] .ads-lsize {
+  font-family: var(--sans);
+  font-size: var(--fs-meta);
+  border: 1px solid var(--bg2);
+  border-radius: var(--r3);
+  padding: 2px var(--s1);
+  background: var(--bg1);
+  color: var(--fg2);
+}
+[data-module="ads"] .ads-pgb {
+  min-width: 26px;
+  border: 1px solid var(--bg2);
+  background: var(--bg1);
+  border-radius: var(--r3);
+  padding: 2px var(--s1);
+  font-family: var(--sans);
+  font-size: var(--fs-meta);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg2);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-pgb:hover { border-color: var(--fg3); color: var(--fg); }
+[data-module="ads"] .ads-pgb.ads-on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg1);
+  font-weight: 600;
+}
+[data-module="ads"] .ads-pgb-off { opacity: .4; cursor: default; }
+
+/* -------------------------- 对象详情抽屉（照参考稿 A 右侧那个抽屉） */
+/* 元信息一行。稿子五格，这里六格 —— 多一格数据性质 */
+[data-module="ads"] .ads-drmeta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 148px), 1fr));
+  gap: var(--s3);
+  padding-bottom: var(--s3);
+  border-bottom: 1px solid var(--bg2);
+}
+[data-module="ads"] .ads-drm { min-width: 0; }
+[data-module="ads"] .ads-drm-l {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  line-height: 1.3;
+}
+[data-module="ads"] .ads-drm-v {
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  margin-top: 2px;
+  word-break: break-word;
+}
+[data-module="ads"] .ads-drflag {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  margin-top: var(--s3);
+  padding: var(--s2) var(--s3);
+  border-left: 2px solid var(--warn);
+  background: var(--bg3);
+  border-radius: 0 var(--r3) var(--r3) 0;
+  font-size: var(--fs-body);
+}
+[data-module="ads"] .ads-drsec { margin-top: var(--s5); }
+[data-module="ads"] .ads-drhead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  margin-bottom: var(--s2);
+}
+[data-module="ads"] .ads-drhead > .ads-h3 { margin: 0; }
+/* 趋势区间切换。稿子放在标题右侧 */
+[data-module="ads"] .ads-drtabs {
+  display: flex;
+  gap: var(--s1);
+  margin-left: auto;
+}
+[data-module="ads"] .ads-drtab {
+  border: 1px solid var(--bg2);
+  background: var(--bg1);
+  border-radius: var(--r3);
+  padding: 2px var(--s2);
+  font-family: var(--sans);
+  font-size: var(--fs-meta);
+  color: var(--fg2);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-drtab.ads-on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg1);
+  font-weight: 600;
+}
+/* 三个图例带当期值。图标形状区分柱与线（要则第五节）。
+   三项一行放不下会把第三项挤下去，所以给 --s4 而不是 --s5，
+   并允许它自己换行不挤压值 */
+[data-module="ads"] .ads-drleg {
+  display: flex;
+  gap: var(--s4);
+  flex-wrap: wrap;
+  margin-bottom: var(--s2);
+}
+[data-module="ads"] .ads-drleg > div {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s1);
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  white-space: nowrap;
+}
+[data-module="ads"] .ads-drleg b {
+  font-size: var(--fs-sub);
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-lg-bar,
+[data-module="ads"] .ads-lg-line1,
+[data-module="ads"] .ads-lg-line2 {
+  display: inline-block;
+  flex: 0 0 auto;
+}
+[data-module="ads"] .ads-lg-bar { width: 8px; height: 8px; background: var(--ink); }
+[data-module="ads"] .ads-lg-line1 { width: 12px; height: 2px; background: var(--good); }
+[data-module="ads"] .ads-lg-line2 { width: 12px; height: 2px; background: var(--accent); }
+[data-module="ads"] .ads-drchart { height: 210px; }
+
+/* 核心指标：八格 + 每格挂环比 */
+[data-module="ads"] .ads-drcs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: var(--s4) var(--s3);
+}
+[data-module="ads"] .ads-drc { min-width: 0; }
+[data-module="ads"] .ads-drc-l {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  line-height: 1.3;
+}
+[data-module="ads"] .ads-drc-v {
+  font-size: var(--fs-value);
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 异常规则匹配表 */
+[data-module="ads"] .ads-drtable { margin-top: var(--s1); }
+[data-module="ads"] .ads-drtr {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.5fr) minmax(0, 72px) minmax(0, 78px)
+    minmax(0, 66px) minmax(0, 1.5fr);
+  gap: var(--s2);
+  align-items: baseline;
+  padding: var(--s2) 0;
+  border-bottom: 1px solid var(--bg2);
+  font-size: var(--fs-body);
+}
+[data-module="ads"] .ads-drth {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  font-weight: 600;
+  border-bottom-color: var(--fg3);
+}
+
+/* 底部：这一页不出诊断，给一条真链接跳页面二 */
+[data-module="ads"] .ads-drfoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  flex-wrap: wrap;
+  margin-top: var(--s5);
+  padding: var(--s3);
+  background: var(--bg3);
+  border-radius: var(--r2);
+}
+[data-module="ads"] .ads-drfoot-t { min-width: 0; flex: 1 1 260px; }
+[data-module="ads"] .ads-drfoot-t > b {
+  display: block;
+  font-size: var(--fs-sub);
+  margin-bottom: var(--s1);
+}
+[data-module="ads"] .ads-drfoot-t > span {
+  font-size: var(--fs-body);
+  color: var(--fg2);
+  line-height: 1.55;
+}
+
+/* ------------------------- 标准模板字段表（Agent 与示例共用） */
+[data-module="ads"] .ads-fg {
+  display: grid;
+  grid-template-columns: minmax(0, 118px) minmax(0, 1fr);
+  gap: var(--s1) var(--s3);
+  margin: var(--s2) 0 0;
+  font-size: var(--fs-body);
+}
+[data-module="ads"] .ads-fr { display: contents; }
+[data-module="ads"] .ads-fr > dt {
+  color: var(--fg3);
+  font-size: var(--fs-meta);
+  line-height: 1.5;
+}
+[data-module="ads"] .ads-fr > dd {
+  margin: 0;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-fr-miss > dd,
+[data-module="ads"] .ads-fr-miss { color: var(--fg3); font-style: italic; }
+
+/* 监控指标表：指标 / 基准值 / 目标值 三列 */
+[data-module="ads"] .ads-wt { margin-top: var(--s2); }
+[data-module="ads"] .ads-wt-r {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s2);
+  padding: var(--s1) 0;
+  border-bottom: 1px solid var(--bg2);
+  font-size: var(--fs-body);
+  font-variant-numeric: tabular-nums;
+}
+[data-module="ads"] .ads-wt-head {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  font-weight: 600;
+  border-bottom-color: var(--fg3);
+}
+
+/* 字段覆盖率条 = 给 Agent 侧的验收单 */
+[data-module="ads"] .ads-cv { margin-top: var(--s4); }
+[data-module="ads"] .ads-cvrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+[data-module="ads"] .ads-cvi {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s1);
+  padding: var(--ai-pad-y) var(--s2);
+  border: 1px solid var(--bg2);
+  border-radius: var(--r3);
+  font-size: var(--fs-meta);
+}
+[data-module="ads"] .ads-cvi > b { font-weight: 500; }
+[data-module="ads"] .ads-cvi > i {
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg3);
+}
+[data-module="ads"] .ads-cvi-ok { border-color: var(--good); }
+[data-module="ads"] .ads-cvi-part { border-color: var(--warn); }
+[data-module="ads"] .ads-cvi-none { border-color: var(--alert); color: var(--fg3); }
+
+/* 载入按钮。默认不载入 —— 页面不许自动把人写的东西当结论渲染 */
+[data-module="ads"] .ads-loadbtn {
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bg1);
+  border-radius: var(--r3);
+  padding: var(--s1) var(--s3);
+  font-family: var(--sans);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  cursor: pointer;
+}
+[data-module="ads"] .ads-loadbtn:hover { opacity: .86; }
+[data-module="ads"] .ads-pri-tag {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 建议卡三栏布局（2026-09-04 回退：四层版被否，还原这一版） */
+[data-module="ads"] .ads-withheld { font-size: var(--fs-axis); color: var(--fg3); }
+[data-module="ads"] .ads-pc-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.5fr) minmax(0, 1.1fr);
+  gap: var(--s5);
+}
+[data-module="ads"] .ads-pc-col { min-width: 0; }
+[data-module="ads"] .ads-pc-cl {
+  font-size: var(--fs-meta);
+  color: var(--fg3);
+  font-weight: 600;
+  border-bottom: 1px solid var(--bg2);
+  padding-bottom: var(--s1);
+  margin-bottom: var(--s2);
+}
+[data-module="ads"] .ads-pc-obs {
+  margin: 0;
+  padding-left: var(--s4);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+[data-module="ads"] .ads-pc-win {
+  display: flex;
+  gap: var(--s1);
+  flex-wrap: wrap;
+  margin-top: var(--s2);
+}
+[data-module="ads"] .ads-pc-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  margin-top: var(--s3);
+  padding-top: var(--s2);
+  border-top: 1px solid var(--bg2);
+}
+
+/* 表格工具条（照参考稿 A 表格上方那一排） */
+[data-module="ads"] .ads-tbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  border: 1px solid var(--bg2);
+  background: var(--bg1);
+  border-radius: var(--r3);
+  padding: var(--s1) var(--s2);
+  font-family: var(--sans);
+  font-size: var(--fs-meta);
+  color: var(--fg2);
+  cursor: pointer;
+}
+[data-module="ads"] .ads-tbtn:hover { border-color: var(--fg3); color: var(--fg); }
+[data-module="ads"] .ads-tbtn-date > span { font-variant-numeric: tabular-nums; }
+[data-module="ads"] .ads-tsearch {
+  flex: 1 1 220px;
+  min-width: 0;
+  max-width: 300px;
+  border: 1px solid var(--bg2);
+  border-radius: var(--r3);
+  padding: var(--s1) var(--s2);
+  font-family: var(--sans);
+  font-size: var(--fs-meta);
+  color: var(--fg);
+  background: var(--bg1);
+}
+[data-module="ads"] .ads-tsearch:focus {
+  outline: none;
+  border-color: var(--fg3);
+}
+/* 把导出那组推到右边 */
+[data-module="ads"] .ads-tsp { flex: 1 1 auto; }

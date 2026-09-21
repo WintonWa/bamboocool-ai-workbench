@@ -63,6 +63,12 @@ COMPETITOR_DB = _path(
     "WORKBENCH_COMPETITOR_DB",
     REBUILD_ROOT / "08-竞品分析模块/02-数据构建/v0.1.0/competitor_demo.sqlite",
 )
+# 面料预投：57 个配色组（款号x组合）+ 真实预投/下单历史。
+# 判断对象比库存粗一层 —— 库存最小对象是子 ASIN，预投是配色组。
+PREINVEST_DB = _path(
+    "WORKBENCH_PREINVEST_DB",
+    REBUILD_ROOT / "03-面料预投模块/02-数据构建/v0.1.0/preinvest_demo.sqlite",
+)
 
 # ---- AI Agent -----------------------------------------------------------
 # 独立的 Pi Agent 服务。外壳反代 /api/agent/* 过去，浏览器只见一个 origin。
